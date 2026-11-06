@@ -1,0 +1,1124 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MEDIA OUTLOOK 미디어아웃룩</title>
+<meta name="description" content="MEDIA OUTLOOK(미디어아웃룩) — 광고·마케팅·미디어·테크 뉴스를 하나의 연결로 읽는 미디어 인사이트 & 업계 커뮤니티">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;700&family=Nanum+Myeongjo:wght@700;800&display=swap">
+<style>
+:root{
+  --paper:#FFFFFF; --surface:#FFFFFF; --band:#F1F3F1; --sunk:#E6EAE8;
+  --ink:#111A22; --muted:#56646E; --faint:#8A969E; --line:#DADFDD; --rule:#111A22;
+  --accent:#2446C9; --on-accent:#FFFFFF; --hot:#C8371D; --good:#0F7B4E;
+  --tv:#E0662E; --ctv:#8B5CF6; --social:#DB3F76; --ooh:#5E9E2F;
+  --data:#1A93BA; --ai:#C4930F; --owner:#6F7C8E; --commerce:#0F766E;
+  --serif:"Nanum Myeongjo","Noto Serif KR",Batang,Georgia,serif;
+  --sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0D1419; --surface:#141D24; --band:#121A20; --sunk:#1B262E;
+    --ink:#E4EAEC; --muted:#9AA7B0; --faint:#6D7B85; --line:#26333C; --rule:#E4EAEC;
+    --accent:#8AA3FF; --on-accent:#0D1419; --hot:#FF7A5C; --good:#4CC38A;
+    --owner:#97A3B4; --commerce:#2BA99C;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0D1419; --surface:#141D24; --band:#121A20; --sunk:#1B262E;
+  --ink:#E4EAEC; --muted:#9AA7B0; --faint:#6D7B85; --line:#26333C; --rule:#E4EAEC;
+  --accent:#8AA3FF; --on-accent:#0D1419; --hot:#FF7A5C; --good:#4CC38A;
+  --owner:#97A3B4; --commerce:#2BA99C;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;margin:0;padding-inline:16px;padding-block:0 48px}
+h1,h2,h3,h4,p,b,a{word-break:keep-all;overflow-wrap:anywhere}
+.wrap{max-width:1240px;margin:0 auto}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:500}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.dim{opacity:.25}
+.hl:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+
+/* utility + masthead */
+.util{margin-inline:-16px;padding-inline:16px;background:var(--ink);color:var(--paper);font-size:12.5px}
+.util .wrap{display:flex;gap:16px;align-items:center;padding-block:6px;flex-wrap:wrap}
+.util .sp{margin-left:auto;display:flex;gap:14px;align-items:center}
+.util a:hover{text-decoration:underline}
+.util .subbtn{background:var(--hot);color:#fff;border-radius:3px;padding:2px 10px;font-weight:700}
+.mast .wrap{display:flex;align-items:flex-end;gap:18px;padding-block:18px 12px;flex-wrap:wrap}
+.logo b{font-family:var(--serif);font-weight:800;font-size:clamp(36px,5vw,56px);letter-spacing:-.035em;line-height:1;display:block}
+.logo span{font-family:var(--mono);font-size:10.5px;letter-spacing:.34em;color:var(--muted);display:block;margin-top:4px}
+.mast .slogan{font-size:13px;color:var(--muted);padding-bottom:6px;border-left:1px solid var(--line);padding-left:18px}
+.mast .search{margin-left:auto;display:flex;gap:6px;padding-bottom:4px}
+.mast .search input{border:1px solid var(--line);background:var(--surface);border-radius:3px;padding:6px 10px;width:220px;max-width:50vw}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--paper);margin-inline:-16px;padding-inline:16px;border-top:3px solid var(--rule);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;overflow-x:auto;scrollbar-width:none}
+.nav .wrap::-webkit-scrollbar{display:none}
+.nav a{padding:11px 12px;font-size:14px;font-weight:700;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-1px}
+.nav a:first-child{padding-left:0}
+.nav a:hover{color:var(--accent)}
+.nav a.on{border-bottom-color:var(--hot)}
+.focusbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-block:7px;font-size:13px;border-top:1px solid var(--line)}
+.focusbar .fname{font-weight:700;display:inline-flex;align-items:center;gap:6px}
+.focusbar .stat{color:var(--muted)}
+
+/* shared */
+.page{padding-top:20px}
+.adslot{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;border:1px dashed var(--faint);color:var(--muted);font-size:12.5px;text-align:center;background:repeating-linear-gradient(135deg,transparent 0 10px,color-mix(in srgb,var(--sunk) 70%,transparent) 10px 11px)}
+.adslot .tag{font-family:var(--mono);font-size:10px;letter-spacing:.14em;border:1px solid var(--faint);border-radius:2px;padding:0 5px}
+.adslot a{color:var(--accent);font-weight:500}
+.ad-lb{min-height:90px;margin-top:16px;padding:12px}
+.ad-mpu{min-height:250px;padding:12px;flex-direction:column}
+.sechd{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-top:3px solid var(--rule);padding-top:8px;margin-bottom:14px}
+.sechd h2{font-size:20px;font-weight:700;letter-spacing:-.01em}
+.sechd h2 em{font-style:normal;color:var(--hot)}
+.sechd a{font-size:12.5px;color:var(--accent);font-weight:500;white-space:nowrap}
+.sec{padding-top:34px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:1px 9px;font-size:11.5px;cursor:pointer;line-height:1.6}
+.chip:hover{border-color:var(--ink)}
+.chip.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chip .dot{width:6px;height:6px}
+.btn{background:var(--accent);color:var(--on-accent);border:0;border-radius:3px;padding:9px 16px;font-weight:700;cursor:pointer;font-size:14px;display:inline-block}
+.btn.red{background:var(--hot);color:#fff}
+.btn-ghost{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:2px 12px;cursor:pointer;font-size:12.5px}
+.btn-ghost:hover{border-color:var(--ink)}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;align-items:center}
+.filters .lbl{font-size:12px;color:var(--muted);min-width:52px}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin-bottom:14px;overflow-x:auto}
+.tabs button{background:none;border:0;border-bottom:3px solid transparent;padding:8px 14px;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;color:var(--muted)}
+.tabs button.on{color:var(--ink);border-bottom-color:var(--hot)}
+.field{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+.field input,.field select,.field textarea{background:var(--paper);border:1px solid var(--line);border-radius:3px;padding:8px 10px;color:var(--ink);width:100%}
+.field textarea{min-height:84px;resize:vertical}
+.msg{font-size:12.5px;color:var(--muted);min-height:1.2em}
+.box{background:var(--surface);border:1px solid var(--line);padding:18px}
+.band{background:var(--band);margin-inline:-16px;padding-inline:16px;padding-block:26px;margin-top:34px}
+.soon{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--muted);border:1px solid var(--line);border-radius:2px;padding:0 5px;white-space:nowrap;vertical-align:2px}
+.example{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--hot);border:1px solid currentColor;border-radius:2px;padding:0 5px;margin-left:6px;vertical-align:2px}
+.empty{color:var(--muted);font-size:14px;padding:14px 0}
+.pagetitle{padding-block:6px 18px;border-bottom:1px solid var(--line);margin-bottom:22px}
+.pagetitle h1{font-family:var(--serif);font-weight:800;font-size:clamp(28px,4.4vw,44px);letter-spacing:-.02em;line-height:1.15;margin-top:6px}
+.pagetitle p{color:var(--muted);max-width:64ch;margin-top:8px}
+
+/* story art — generated cover */
+.art{position:relative;aspect-ratio:16/9;max-width:100%;overflow:hidden;background:var(--c);color:#fff;display:block}
+.art::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(var(--ang,115deg),transparent 0 14px,rgba(255,255,255,.16) 14px 15px)}
+.art::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,transparent 35%,rgba(0,0,0,.38))}
+.art .al{position:absolute;left:12px;top:10px;z-index:1;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;display:flex;gap:6px;flex-wrap:wrap}
+.art .al span{background:rgba(0,0,0,.28);padding:1px 6px;border-radius:2px}
+.art .ag{position:absolute;right:12px;bottom:4px;z-index:1;font-family:var(--serif);font-weight:800;font-size:clamp(40px,7vw,86px);line-height:1;opacity:.9;letter-spacing:-.04em}
+.art.sm .ag{font-size:34px}
+.art.sm .al{display:none}
+
+/* home top */
+.top3{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr) minmax(0,1fr);gap:24px;padding-top:18px}
+.lead h1{font-family:var(--serif);font-weight:800;font-size:clamp(26px,3.4vw,40px);line-height:1.2;letter-spacing:-.02em;margin-block:12px 8px}
+.lead p{color:var(--muted);font-size:15.5px}
+.lead .chips{margin-top:10px}
+.sidestack{display:flex;flex-direction:column;gap:18px}
+.story{display:flex;flex-direction:column;gap:6px}
+.story h3{font-size:17px;line-height:1.35;font-weight:700}
+.story p{font-size:13.5px;color:var(--muted)}
+.story + .story{border-top:1px solid var(--line);padding-top:16px}
+.latest h2{font-size:15px;font-weight:700;border-top:3px solid var(--hot);padding-top:8px;display:flex;justify-content:space-between;align-items:baseline}
+.latest ol{list-style:none;padding:0;margin:4px 0 0;counter-reset:l}
+.latest li{padding-block:9px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:auto 1fr;gap:4px 8px}
+.latest li .k{grid-column:1/-1}
+.latest li b{font-size:14px;line-height:1.4;font-weight:500;grid-column:1/-1}
+
+/* map band */
+.mapband{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:28px;align-items:center}
+.mapband svg{width:100%;height:auto;display:block;max-width:100%}
+.mapband h2{font-family:var(--serif);font-weight:800;font-size:clamp(24px,3vw,32px);letter-spacing:-.02em;line-height:1.25;margin-block:6px 10px}
+.mapband p.lede{color:var(--muted);max-width:52ch}
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px 0;margin-block:16px}
+.chain .step{font-family:var(--mono);font-size:12px;padding:2px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
+.chain .arrow{color:var(--faint);padding-inline:5px;font-family:var(--mono)}
+.watch{display:flex;flex-direction:column}
+.watch div{border-top:1px solid var(--line);padding-block:8px;display:grid;grid-template-columns:78px 1fr;gap:8px;font-size:13.5px}
+.watch small{font-family:var(--mono);font-size:11px;color:var(--hot);padding-top:2px}
+.hub{cursor:pointer}
+.hub text{font-family:var(--sans);font-size:14px;font-weight:500;fill:var(--ink)}
+.hub .cnt{font-family:var(--mono);font-size:11px;fill:var(--muted);font-weight:400}
+.chord{fill:none;transition:opacity .25s}
+@media (prefers-reduced-motion:reduce){.chord{transition:none}}
+
+/* desks */
+.desks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.desk .story:first-of-type h3{font-size:16.5px}
+.desk ul{list-style:none;padding:0;margin:10px 0 0}
+.desk li{border-top:1px solid var(--line);padding-block:8px;font-size:14px;font-weight:500;line-height:1.4}
+
+/* opinion */
+.ops{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+.op{display:flex;flex-direction:column;gap:8px}
+.op .by{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+.op .av{width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-family:var(--serif);font-weight:800;font-size:15px;flex:none}
+.op h3{font-family:var(--serif);font-weight:800;font-size:19px;line-height:1.35}
+.op p{font-size:13.5px;color:var(--muted)}
+
+/* datacenter */
+.dc{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) 300px;gap:26px;align-items:start}
+.rank{list-style:none;padding:0;margin:0}
+.rank li{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;padding-block:6px;border-bottom:1px solid var(--line);font-size:13.5px;cursor:pointer}
+.rank li .n{font-family:var(--mono);color:var(--muted);font-size:12px}
+.rank .barw{display:flex;flex-direction:column;gap:3px}
+.rank .bar{height:6px;border-radius:0 3px 3px 0;min-width:2px}
+.rank .v{font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums}
+.sigs{display:flex;flex-direction:column}
+.sg{display:grid;grid-template-columns:26px 1fr;gap:2px 10px;padding-block:8px;border-bottom:1px solid var(--line)}
+.sg .arr{grid-row:span 2;font-family:var(--mono);font-size:18px;line-height:1.2}
+.sg .arr.up{color:var(--good)} .sg .arr.down{color:var(--hot)} .sg .arr.flat{color:var(--muted)}
+.sg b{font-size:14px}
+.sg span.st{font-size:12.5px;color:var(--muted)}
+.sg .src{font-family:var(--mono);font-size:10px;color:var(--faint)}
+.signals{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:0 24px}
+
+/* trio */
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px}
+.term{border-top:1px solid var(--line);padding-block:10px}
+.term b{font-size:15px}
+.term .en{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:6px}
+.term p{font-size:13.5px;color:var(--muted);margin-top:2px}
+.quiz .q{font-weight:700;font-size:15px;margin-block:6px 10px}
+.quiz .opts{display:flex;flex-direction:column;gap:6px}
+.quiz .opts button{text-align:left;border:1px solid var(--line);background:var(--surface);padding:8px 12px;border-radius:3px;cursor:pointer;font-size:14px}
+.quiz .opts button:hover{border-color:var(--ink)}
+.quiz .opts button.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 12%,transparent)}
+.quiz .opts button.wrong{border-color:var(--hot);background:color-mix(in srgb,var(--hot) 10%,transparent)}
+.quiz .foot{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:13px;color:var(--muted)}
+.mini{padding-block:9px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:3px}
+.mini b{font-size:14.5px;line-height:1.4}
+.mini span{font-size:12px;color:var(--muted)}
+
+/* events / podcast */
+.evp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.ev{border:1px solid var(--line);background:var(--surface);padding:16px;display:flex;flex-direction:column;gap:6px}
+.ev .t{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--hot)}
+.ev b{font-size:16px}
+.ev p{font-size:13px;color:var(--muted)}
+.nl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:center;background:var(--ink);color:var(--paper);padding:26px}
+.nl h2{font-family:var(--serif);font-weight:800;font-size:clamp(22px,2.8vw,30px);letter-spacing:-.02em}
+.nl p{color:color-mix(in srgb,var(--paper) 72%,transparent);font-size:14px;margin-top:6px}
+.nl form{display:flex;gap:8px;flex-wrap:wrap}
+.nl input{flex:1 1 200px;min-width:0;border:0;border-radius:3px;padding:10px 12px;background:var(--paper);color:var(--ink)}
+.nl .msg{color:color-mix(in srgb,var(--paper) 72%,transparent);width:100%}
+
+/* list page */
+.list{display:flex;flex-direction:column}
+.row{display:grid;grid-template-columns:200px 1fr;gap:18px;padding-block:16px;border-bottom:1px solid var(--line)}
+.row h3{font-size:18px;line-height:1.35}
+.row p{font-size:14px;color:var(--muted);margin-block:4px 8px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:30px;align-items:start}
+.rail{position:sticky;top:110px;display:flex;flex-direction:column;gap:16px}
+
+/* notes */
+.notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.note{border:1px solid var(--line);background:var(--surface);padding:18px;display:flex;flex-direction:column;gap:10px}
+.note h3{font-size:18px;font-family:var(--serif);font-weight:800}
+.flow{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:13.5px}
+.flow span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);padding-top:2px}
+.flow .bm{font-weight:700}
+.skills{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.skill{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:3px;padding:10px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.skill:hover{border-color:var(--ink)}
+.skill.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.skill .en{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.skill b{font-size:13.5px}
+.skill.vision{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.skill.vision .en{color:color-mix(in srgb,var(--paper) 70%,transparent)}
+.pill{font-family:var(--mono);font-size:12px;background:var(--sunk);border-radius:3px;padding:2px 8px}
+.nextrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px;font-size:13px}
+
+/* glossary */
+.gl{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0 28px}
+
+/* tools */
+.planner{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:24px}
+.mixrow{display:grid;grid-template-columns:110px 1fr 46px;gap:10px;align-items:center;font-size:13.5px;padding-block:5px}
+.mixrow input[type=range]{width:100%;accent-color:var(--accent)}
+.mixrow .v{font-family:var(--mono);text-align:right}
+.mixrow .nm{display:flex;align-items:center;gap:6px}
+.sum{font-family:var(--mono);font-size:12.5px;margin-top:6px}
+.sum.bad{color:var(--hot)}
+.mixbar{display:flex;height:34px;overflow:hidden;margin-block:10px 8px;background:var(--sunk)}
+.mixbar div{min-width:0}
+.split{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.split b{color:var(--ink);font-family:var(--mono);font-weight:500}
+.tbl-wrap{overflow-x:auto;margin-top:12px}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:520px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:500;color:var(--muted);font-size:12px}
+td{font-family:var(--mono)}
+td:first-child{font-family:var(--sans)}
+.ach{display:inline-block;padding:0 7px;border-radius:999px;font-size:11.5px}
+.ach.good{background:color-mix(in srgb,var(--good) 15%,transparent);color:var(--good)}
+.ach.warn{background:color-mix(in srgb,var(--hot) 14%,transparent);color:var(--hot)}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:22px}
+.steps div{border-top:3px solid var(--rule);padding-top:8px}
+.steps small{font-family:var(--mono);color:var(--muted);font-size:11px}
+.steps b{display:block;font-size:15px}
+.steps p{font-size:13px;color:var(--muted)}
+
+/* lounge / partner / about */
+.post{border-bottom:1px solid var(--line);padding-block:14px;display:flex;flex-direction:column;gap:6px}
+.post .head{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.post .kind{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;background:var(--sunk);color:var(--ink);border-radius:2px;padding:0 6px}
+.post h3{font-size:17px}
+.rooms button{display:flex;justify-content:space-between;width:100%;align-items:center;gap:8px;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:8px 0;cursor:pointer;font-size:14px}
+.rooms button span{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.prod{border-top:3px solid var(--rule);padding-top:10px;display:flex;flex-direction:column;gap:5px}
+.prod .where{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em}
+.prod b{font-size:16px}
+.prod p{font-size:13px;color:var(--muted)}
+.aud{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.aud div{background:var(--band);padding:14px}
+.aud b{display:block;font-size:14.5px}
+.aud span{font-size:12.5px;color:var(--muted)}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.formgrid .full{grid-column:1/-1}
+.check{display:flex;gap:8px;align-items:center;font-size:13.5px}
+.features{list-style:none;padding:0;margin:12px 0 0;display:flex;flex-direction:column;gap:8px;font-size:13.5px}
+.features li{display:grid;grid-template-columns:18px 1fr;gap:6px}
+.features li::before{content:"↳";color:var(--accent);font-family:var(--mono)}
+.about{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:28px}
+.quote{font-family:var(--serif);font-weight:800;font-size:clamp(20px,2.4vw,27px);line-height:1.45;letter-spacing:-.01em}
+.timeline{list-style:none;padding:0;margin:22px 0 0}
+.timeline li{display:grid;grid-template-columns:52px 14px 1fr;gap:10px;align-items:start;padding-bottom:12px;position:relative}
+.timeline .yr{font-family:var(--mono);font-size:12.5px;color:var(--muted);padding-top:1px}
+.timeline .pin{width:11px;height:11px;border-radius:50%;border:2px solid var(--ink);background:var(--surface);margin-top:5px;position:relative;z-index:1}
+.timeline li:not(:last-child)::after{content:"";position:absolute;left:67px;top:16px;bottom:-4px;width:1.5px;background:var(--line)}
+.timeline li.now .pin{background:var(--hot);border-color:var(--hot)}
+.timeline small{display:block;color:var(--muted);font-size:12.5px}
+.virtues{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.virtues div{border-top:1px solid var(--line);padding-top:8px}
+.virtues p{font-size:13px;color:var(--muted)}
+
+footer{margin-top:48px;margin-inline:-16px;padding:28px 16px;background:var(--ink);color:color-mix(in srgb,var(--paper) 72%,transparent);font-size:13px}
+footer .wrap{display:grid;grid-template-columns:minmax(0,1fr) repeat(3,minmax(0,.6fr)) minmax(0,1.2fr);gap:24px}
+footer .flogo{font-family:var(--serif);font-weight:800;font-size:26px;color:var(--paper)}
+footer h4{color:var(--paper);font-size:12px;font-family:var(--mono);letter-spacing:.12em;margin-bottom:8px;font-weight:500}
+footer ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px}
+footer a:hover{color:var(--paper)}
+footer .src li{font-size:12px}
+
+@media (max-width:1040px){
+  .top3{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .top3 .leadcol{grid-column:1/-1;order:-1}
+  .desks,.ops{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dc{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .dc .adcol{grid-column:1/-1}
+  footer .wrap{grid-template-columns:repeat(3,minmax(0,1fr))}
+  footer .wrap > div:first-child,footer .wrap > div:last-child{grid-column:1/-1}
+}
+@media (max-width:820px){
+  .mapband,.two,.planner,.about,.nl,.trio,.evp,.notes{grid-template-columns:minmax(0,1fr)}
+  .rail{position:static}
+  .products,.aud,.steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mast .slogan{display:none}
+}
+@media (max-width:560px){
+  .top3,.desks,.ops,.dc,.products,.aud,.steps,.formgrid,.virtues{grid-template-columns:minmax(0,1fr)}
+  .row{grid-template-columns:minmax(0,1fr)}
+  .mast .search{margin-left:0;width:100%}
+  .mast .search input{width:100%;max-width:none}
+  .mixrow{grid-template-columns:92px 1fr 40px}
+  footer .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+/* ===== ADWEEK-style layer ===== */
+.topbar{margin-inline:-16px;padding-inline:16px;border-bottom:1px solid var(--line);font-size:12.5px}
+.topbar .wrap{display:flex;align-items:center;gap:16px;padding-block:6px}
+.topbar .sp{margin-left:auto;display:flex;gap:16px;align-items:center}
+.topbar a:hover{text-decoration:underline}
+.topbar .sp a{white-space:nowrap}
+@media (max-width:560px){.topbar .eyebrow{display:none}}
+.topbar .subbtn{background:var(--hot);color:#fff;padding:3px 12px;font-weight:700;letter-spacing:.02em}
+.mh .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding-block:18px 14px}
+.mh .date{font-size:12.5px;color:var(--muted);line-height:1.4}
+.mh .word{text-align:center;display:block}
+.mh .word b{font-family:var(--serif);font-weight:800;font-size:clamp(30px,6vw,72px);letter-spacing:-.02em;line-height:.95;display:block;white-space:nowrap}
+.mh .word b em,footer.aw .flogo em{font-style:normal;color:var(--hot)}
+.mh .word span{font-family:var(--mono);font-size:10.5px;letter-spacing:.36em;color:var(--muted);display:block;margin-top:6px}
+.mh .search{justify-self:end;display:flex;gap:6px}
+.mh .search input{border:1px solid var(--line);background:var(--surface);padding:6px 10px;width:190px;max-width:40vw}
+.vnav{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;margin-inline:-16px;padding-inline:16px;background:var(--ink);color:var(--paper)}
+.vnav .wrap{display:flex;align-items:stretch;overflow-x:auto;scrollbar-width:none}
+.vnav .wrap::-webkit-scrollbar{display:none}
+.vnav a{display:flex;align-items:center;gap:6px;padding:11px 12px;font-size:13.5px;font-weight:700;white-space:nowrap;border-bottom:3px solid transparent;letter-spacing:.01em}
+.vnav a .dot{width:6px;height:6px}
+.vnav a:hover{background:color-mix(in srgb,var(--paper) 10%,transparent)}
+.vnav a.on{border-bottom-color:var(--hot)}
+.vnav .sep{width:1px;background:color-mix(in srgb,var(--paper) 25%,transparent);margin:9px 8px;flex:none}
+.vnav + .focusbar,.fbwrap{margin-inline:-16px;padding-inline:16px;background:var(--band);border-bottom:1px solid var(--line)}
+.fbwrap .focusbar{border-top:0}
+
+.hero{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:28px;align-items:center;padding-block:22px 26px;border-bottom:3px solid var(--rule)}
+.hero .art{aspect-ratio:16/9}
+.hero h1{font-family:var(--serif);font-weight:800;font-size:clamp(28px,3.8vw,46px);line-height:1.18;letter-spacing:-.025em;margin-block:10px 12px}
+.hero p{font-size:16px;color:var(--muted)}
+.byline{font-size:12.5px;color:var(--muted);margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.byline b{color:var(--ink);font-weight:700}
+.hero .chips{margin-top:12px}
+
+.mainrail{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:36px;align-items:start;padding-top:28px}
+.feedhd{display:flex;align-items:baseline;justify-content:space-between;border-bottom:3px solid var(--rule);padding-bottom:6px;margin-bottom:4px}
+.feedhd h2{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.feedhd h2 em{font-style:normal;color:var(--hot)}
+.feed .fi{display:grid;grid-template-columns:230px minmax(0,1fr);gap:18px;padding-block:18px;border-bottom:1px solid var(--line)}
+.feed .fi h3{font-size:19px;line-height:1.35;font-weight:700;margin-block:4px 6px}
+.feed .fi p{font-size:14px;color:var(--muted)}
+.feed .fi .byline{margin-top:8px}
+.morebtn{display:block;width:100%;margin-top:14px;padding:11px;border:2px solid var(--ink);background:var(--surface);font-weight:700;cursor:pointer;font-size:14px}
+.morebtn:hover{background:var(--ink);color:var(--paper)}
+.railbox{border-top:3px solid var(--rule);padding-top:8px;margin-bottom:26px}
+.railbox h2{font-size:15px;font-weight:700;margin-bottom:6px;display:flex;justify-content:space-between;align-items:baseline}
+.railbox h2 small{font-family:var(--mono);font-weight:400;font-size:10.5px;color:var(--muted);letter-spacing:.06em}
+.most{list-style:none;padding:0;margin:0}
+.most li{display:grid;grid-template-columns:34px 1fr;gap:10px;padding-block:10px;border-bottom:1px solid var(--line)}
+.most .n{font-family:var(--serif);font-weight:800;font-size:28px;line-height:1;color:var(--hot)}
+.most b{font-size:14.5px;line-height:1.4;font-weight:700;display:block}
+.most small{font-size:11.5px;color:var(--muted)}
+.railnl{background:var(--ink);color:var(--paper);padding:18px;margin-bottom:26px}
+.railnl b{font-family:var(--serif);font-size:20px;font-weight:800;display:block;line-height:1.3}
+.railnl p{font-size:13px;color:color-mix(in srgb,var(--paper) 72%,transparent);margin-block:6px 12px}
+.railnl input{width:100%;border:0;padding:9px 10px;background:var(--paper);color:var(--ink);margin-bottom:8px}
+.railnl .btn{width:100%}
+.railnl .msg{color:color-mix(in srgb,var(--paper) 72%,transparent);margin-top:6px}
+
+.feature{margin-inline:-16px;padding-inline:16px;background:var(--ink);color:var(--paper);margin-top:40px}
+.feature .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:32px;align-items:center;padding-block:34px}
+.feature .tag{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--hot)}
+.feature h2{font-family:var(--serif);font-weight:800;font-size:clamp(26px,3.4vw,40px);line-height:1.2;letter-spacing:-.02em;margin-block:10px}
+.feature p{color:color-mix(in srgb,var(--paper) 75%,transparent);font-size:15.5px}
+.feature .byline{color:color-mix(in srgb,var(--paper) 60%,transparent)}
+.feature .byline b{color:var(--paper)}
+.feature .chip{background:transparent;color:var(--paper);border-color:color-mix(in srgb,var(--paper) 35%,transparent)}
+.feature .chip.on{background:var(--paper);color:var(--ink)}
+
+.cards3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.card3{display:flex;flex-direction:column;gap:6px}
+.card3 h3{font-size:17.5px;line-height:1.38;font-weight:700;margin-top:6px}
+.card3 p{font-size:13.5px;color:var(--muted)}
+.branded{border:1px solid var(--line);background:var(--band);padding:22px;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center}
+.branded .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;border:1px solid var(--muted);color:var(--muted);padding:2px 8px;white-space:nowrap}
+.branded b{font-size:18px;display:block}
+.branded p{font-size:13.5px;color:var(--muted)}
+.week{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto;gap:22px}
+.week .big{grid-row:span 2}
+.week .big h3{font-family:var(--serif);font-weight:800;font-size:26px;line-height:1.25}
+.voices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.voice{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:8px}
+.voice .who{display:flex;gap:10px;align-items:center}
+.voice .av{width:46px;height:46px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-family:var(--serif);font-weight:800;font-size:19px;flex:none}
+.voice .who b{display:block;font-size:14px}
+.voice .who small{color:var(--muted);font-size:12px}
+.voice h3{font-family:var(--serif);font-weight:800;font-size:21px;line-height:1.35}
+.voice blockquote{margin:0;font-size:14px;color:var(--muted);border-left:3px solid var(--hot);padding-left:12px}
+.slider{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}
+.slide{flex:0 0 260px;scroll-snap-align:start;border:1px dashed var(--faint);padding:16px;display:flex;flex-direction:column;gap:8px;background:repeating-linear-gradient(135deg,transparent 0 10px,color-mix(in srgb,var(--sunk) 70%,transparent) 10px 11px)}
+.slide .lab{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--muted)}
+.slide b{font-size:15.5px}
+.slide p{font-size:13px;color:var(--muted)}
+.slide a{color:var(--accent);font-size:13px;font-weight:500;margin-top:auto}
+.wire{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}
+.wireitem{border-top:1px solid var(--line);padding-block:10px;display:grid;grid-template-columns:78px 1fr;gap:10px;font-size:14px}
+.wireitem small{font-family:var(--mono);font-size:11px;color:var(--hot);padding-top:2px}
+
+.vhead{border-top:6px solid var(--vc);padding-top:14px;padding-bottom:18px;border-bottom:1px solid var(--line);margin-top:18px}
+.vhead h1{font-family:var(--serif);font-weight:800;font-size:clamp(32px,5vw,54px);letter-spacing:-.03em;line-height:1.05}
+.vhead p{color:var(--muted);margin-top:8px;max-width:60ch}
+.vhead .meta{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:12px;font-size:13px;color:var(--muted)}
+.vhead .meta b{font-family:var(--mono);color:var(--ink)}
+
+.artv{padding-top:18px}
+.artv .back{font-size:13px;color:var(--accent)}
+.artv h1{font-family:var(--serif);font-weight:800;font-size:clamp(28px,4vw,44px);line-height:1.2;letter-spacing:-.02em;margin-block:10px 12px}
+.artv .lede{font-size:18px;line-height:1.75;margin-block:18px;max-width:68ch}
+.artv .art{margin-top:16px;aspect-ratio:21/5}
+.artv .srcbox{border:1px solid var(--line);background:var(--band);padding:16px;margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.artv .srcbox .row2{display:flex;gap:8px;flex-wrap:wrap}
+.btn-line{border:1.5px solid var(--ink);background:var(--surface);color:var(--ink);padding:8px 14px;font-weight:700;font-size:14px;display:inline-block}
+.btn-line:hover{background:var(--ink);color:var(--paper)}
+.artv .note{font-size:12.5px;color:var(--muted)}
+h1 a:hover,h2 a:hover,h3 a:hover{text-decoration:underline;text-underline-offset:3px}
+.mapmini svg{width:100%;height:auto;display:block;max-width:100%}
+
+footer.aw{margin-top:48px;margin-inline:-16px;padding:32px 16px 24px;background:var(--ink);color:color-mix(in srgb,var(--paper) 72%,transparent);font-size:13px}
+footer.aw .wrap{display:block}
+footer.aw .top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;border-bottom:1px solid color-mix(in srgb,var(--paper) 20%,transparent);padding-bottom:18px;margin-bottom:22px}
+footer.aw .flogo{font-family:var(--serif);font-weight:800;font-size:clamp(28px,4vw,40px);color:var(--paper);letter-spacing:-.04em;line-height:1}
+footer.aw .cols{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:24px}
+footer.aw h4{color:var(--paper);font-size:11.5px;font-family:var(--mono);letter-spacing:.14em;margin-bottom:8px;font-weight:500}
+footer.aw ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px}
+footer.aw a:hover{color:var(--paper)}
+footer.aw .legal{margin-top:24px;font-size:12px}
+
+@media (max-width:1040px){
+  .mainrail{grid-template-columns:minmax(0,1fr) 280px}
+  .week{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .week .big{grid-column:1/-1;grid-row:auto}
+  footer.aw .cols{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:820px){
+  .hero,.mainrail,.feature .wrap,.wire{grid-template-columns:minmax(0,1fr)}
+  .cards3,.voices{grid-template-columns:minmax(0,1fr)}
+  .branded{grid-template-columns:minmax(0,1fr)}
+  .mh .wrap{grid-template-columns:1fr}
+  .mh .date{display:none}
+  .mh .search{justify-self:stretch}
+  .mh .search input{width:100%;max-width:none;flex:1}
+}
+@media (max-width:560px){
+  .feed .fi{grid-template-columns:minmax(0,1fr)}
+  .week{grid-template-columns:minmax(0,1fr)}
+  footer.aw .cols{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+.adslot.adlive{display:block;border:0;background:none;padding:0;text-align:left}
+.adslot .adlab{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--faint);margin-bottom:4px}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap">
+  <span class="eyebrow">Media News · Insight · Community</span>
+  <span class="sp"><a href="#subscribe">뉴스레터</a><a href="#partner">광고 문의</a><a href="#subscribe" class="subbtn">구독하기</a></span>
+</div></div>
+<header class="mh"><div class="wrap">
+  <div class="date" id="utildate"></div>
+  <a class="word" href="#home" aria-label="MEDIA OUTLOOK 미디어아웃룩 홈"><b>MEDIA<em>OUTLOOK</em></b><span>미디어아웃룩 · KNOW WHAT&#39;S NEXT</span></a>
+  <form class="search" id="searchform" role="search"><input id="q" type="search" placeholder="뉴스·용어 검색" aria-label="검색"><button class="btn" type="submit">검색</button></form>
+</div></header>
+<nav class="vnav" aria-label="섹션"><div class="wrap" id="navlinks"></div></nav>
+<div class="fbwrap" id="fbwrap" hidden><div class="wrap focusbar" id="focusbar">
+  <span class="eyebrow">지금 따라가는 실</span>
+  <span class="fname" id="fb-name"></span>
+  <span class="stat" id="fb-stat"></span>
+  <span class="chips" id="fb-rel"></span>
+  <button class="btn-ghost" id="fb-clear" type="button">전체 보기</button>
+</div></div>
+
+<main class="wrap">
+  <!-- ================= HOME ================= -->
+  <section class="page" data-page="home">
+    <article class="hero" id="hero"></article>
+
+    <div class="mainrail">
+      <div>
+        <div class="feedhd"><h2>최신 뉴스 <em>·</em> The Latest</h2><a class="eyebrow" href="#latest">전체 보기 →</a></div>
+        <div class="feed" id="homefeed"></div>
+        <button class="morebtn" type="button" id="homemore">최신 뉴스 더 보기</button>
+      </div>
+      <aside>
+        <div class="railbox"><h2>가장 많이 연결된 뉴스 <small>허브 연결 수 기준</small></h2><ol class="most" id="most"></ol></div>
+        <div class="adslot ad-mpu" style="margin-bottom:26px"><span class="tag">AD</span><span>300×250</span><a href="#partner">광고 문의 →</a></div>
+        <form class="railnl" id="nlform" autocomplete="off"><b>매주 월요일, 연결해서 읽는 미디어</b><p>한 주의 뉴스를 허브별로 묶어 보내드립니다.</p><input id="nl-email" type="email" required placeholder="이메일 주소" aria-label="이메일 주소"><button class="btn red" type="submit">무료 구독</button><p class="msg" id="nl-out"></p></form>
+        <div class="railbox mapmini"><h2>오늘의 연결 지도 <small>허브를 눌러 따라가기</small></h2><svg class="loom" viewBox="-80 -30 580 480" role="img" aria-label="오늘의 미디어 연결 지도"></svg></div>
+      </aside>
+    </div>
+
+    <section class="feature" id="feature"></section>
+
+    <div class="sec"><div class="sechd"><h2>테크·AI</h2><a href="#ai">섹션 전체 →</a></div><div class="cards3" id="aisec"></div></div>
+
+    <div class="sec"><div class="branded">
+      <span class="lab">SPONSORED</span>
+      <div><b>MEDIA OUTLOOK 브랜디드 — 파트너의 인사이트가 실릴 자리</b><p>광고주·매체사·애드테크가 직접 만든 리포트와 플레이북을 ‘스폰서드’ 표기와 함께 소개합니다.</p></div>
+      <a class="btn" href="#partner">게재 문의</a>
+    </div></div>
+
+    <div class="sec"><div class="sechd"><h2>마켓 위크 <em>·</em> 광고비·커머스</h2><a href="#commerce">섹션 전체 →</a></div><div class="week" id="week"></div></div>
+
+    <div class="sec"><div class="sechd"><h2>리더의 목소리</h2><a href="#opinion">오피니언 전체 →</a></div><div class="voices" id="voices"></div></div>
+
+    <div class="sec"><div class="sechd"><h2>파트너 콘텐츠</h2><a href="#partner">스폰서 안내 →</a></div><div class="slider" id="slider"></div></div>
+
+    <div class="sec"><div class="wire">
+      <div><div class="sechd"><h2>MEDIA OUTLOOK 와이어</h2><a href="#partner">보도자료 보내기 →</a></div>
+        <p style="font-size:14px;color:var(--muted)">매체사·광고주·대행사의 신상품, 인사, 캠페인 소식을 보도자료로 받아 정리해 싣습니다. 첫 보도자료를 기다립니다.</p>
+        <div class="box" style="margin-top:12px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><span style="font-size:13.5px">보도자료 게재 기준 · 편집 방침 안내</span><a class="btn" href="#partner">접수하기</a></div>
+      </div>
+      <div><div class="sechd"><h2>이번 주 일정</h2><span class="eyebrow">주목할 것</span></div><div id="watch"></div></div>
+    </div></div>
+
+    <div class="sec"><div class="wire">
+      <div class="quiz"><div class="sechd"><h2>오늘의 퀴즈</h2><span class="eyebrow" id="qz-n"></span></div><div id="quiz"></div></div>
+      <div><div class="sechd"><h2>미디어 용어사전</h2><a href="#glossary">전체 →</a></div><div id="hometerms"></div></div>
+    </div></div>
+  </section>
+
+  <!-- ================= LATEST ================= -->
+  <section class="page" data-page="latest" hidden>
+    <div class="vhead" style="--vc:var(--rule)"><div class="eyebrow" id="news-date"></div><h1>최신 뉴스</h1><p>이번 브리핑의 모든 기사. 허브를 고르면 연결된 기사만 남습니다.</p></div>
+    <div class="mainrail">
+      <div><div class="filters" id="hubfilters" style="margin-top:14px"><span class="lbl">허브</span></div><div class="feed" id="latestfeed"></div></div>
+      <aside><div class="adslot ad-mpu" style="margin-bottom:26px"><span class="tag">AD</span><span>300×250</span><a href="#partner">문의 →</a></div><div class="railbox"><h2>가장 많이 연결된 뉴스</h2><ol class="most" id="most2"></ol></div></aside>
+    </div>
+  </section>
+
+  <!-- ================= VERTICAL (hub) ================= -->
+  <section class="page" data-page="vertical" hidden>
+    <div class="vhead" id="vhead"></div>
+    <div class="mainrail">
+      <div><div class="feed" id="vfeed"></div></div>
+      <aside>
+        <div class="railbox mapmini"><h2>이 섹션의 연결 <small>함께 묶인 허브</small></h2><svg id="vloom" class="loom" viewBox="-80 -30 580 480" role="img" aria-label="연결 지도"></svg></div>
+        <div class="railbox"><h2>관련 오피니언</h2><div id="vops"></div></div>
+        <div class="railbox"><h2>관련 용어</h2><div id="vterms"></div></div>
+        <div class="adslot ad-mpu"><span class="tag">AD</span><span>섹션 스폰서 300×250</span><a href="#partner">문의 →</a></div>
+      </aside>
+    </div>
+  </section>
+  <!-- ================= OPINION ================= -->
+  <section class="page" data-page="opinion" hidden>
+    <div class="pagetitle"><div class="eyebrow">Opinion</div><h1>변화를 기회와 사업모델로</h1><p>뉴스를 읽고 끝내지 않습니다. 변화 → 기회 → 사업모델까지 연결하는 편집인의 노트와 칼럼.</p></div>
+    <div class="sechd"><h2>오늘의 연결 노트</h2></div>
+    <div class="notes" id="notes"></div>
+    <div class="sec"><div class="two">
+      <div><div class="sechd"><h2>편집인 칼럼</h2></div><div class="list" id="columns"></div></div>
+      <aside>
+        <div class="sechd"><h2>2026 미디어 전문가의 7가지 능력</h2></div>
+        <div class="skills" id="skills"></div>
+        <div class="box" style="margin-top:14px"><b>Know What's Next</b>
+          <div class="nextrow"><span class="pill">어디서 보는가?</span>→<span class="pill">YouTube</span><span class="pill">Shorts</span><span class="pill">CTV</span><span class="pill">Creator</span><span class="pill">Podcast</span><span class="pill">AI Answer</span></div>
+          <div class="nextrow"><span class="pill">그곳에서</span>→<span class="pill">광고하고</span><span class="pill">측정하고</span><span class="pill">판매한다</span></div>
+        </div>
+      </aside>
+    </div></div>
+  </section>
+
+  <!-- ================= DATA ================= -->
+  <section class="page" data-page="datacenter" hidden>
+    <div class="pagetitle"><div class="eyebrow">Datacenter</div><h1>데이터센터</h1><p>시장의 방향과 뉴스의 연결 구조를 숫자로. 공개 발표에 나온 수치만 싣고, 나머지는 방향으로 표시합니다.</p></div>
+    <div class="sechd"><h2>마켓 시그널</h2></div>
+    <div class="signals" id="signals"></div>
+    <div class="sec"><div class="two">
+      <div>
+        <div class="sechd"><h2>함께 묶인 허브 순위</h2><span class="eyebrow">같은 기사에 함께 등장한 횟수</span></div>
+        <ol class="rank" id="pairrank"></ol>
+      </div>
+      <aside>
+        <div class="sechd"><h2>허브별 뉴스 비중</h2></div>
+        <ol class="rank" id="rank2"></ol>
+        <div class="box" style="margin-top:16px"><b>곧 공개</b><p style="font-size:13px;color:var(--muted);margin-top:4px">KOBACO 방송통신광고비 조사가 공개되면 매체별 광고비 추이 차트를 이곳에 추가합니다.</p></div>
+      </aside>
+    </div></div>
+  </section>
+
+  <!-- ================= GLOSSARY ================= -->
+  <section class="page" data-page="glossary" hidden>
+    <div class="pagetitle"><div class="eyebrow">Encyclopedia</div><h1>미디어 용어사전</h1><p>플래너·바이어·매체 영업이 매일 쓰는 말. 올드미디어와 뉴미디어의 용어를 같은 자리에 둡니다.</p></div>
+    <div class="filters"><div class="field" style="flex:1;max-width:360px"><label for="gq">용어 찾기</label><input id="gq" type="search" placeholder="예) GRP, CTV, 포스트바이"></div></div>
+    <div class="gl" id="gl"></div>
+  </section>
+
+  <!-- ================= TOOLS ================= -->
+  <section class="page" data-page="tools" hidden>
+    <div class="pagetitle"><div class="eyebrow">All-Media Tool · 베타 준비 중</div><h1>올드·뉴미디어를 한 장부로</h1><p>매체별 예산 책정부터 집행, 포스트바이 분석, 캠페인 히스토리 추적까지 같은 기준으로 관리하는 툴을 준비하고 있습니다. 아래는 미리보기입니다.</p></div>
+    <div class="steps">
+      <div><small>STEP 1</small><b>예산 책정</b><p>매체별 배분, 올드·뉴미디어 비중 확인</p></div>
+      <div><small>STEP 2</small><b>집행 관리</b><p>계약·집행액과 KPI 기준을 한 표에</p></div>
+      <div><small>STEP 3</small><b>포스트바이 분석</b><p>계획 대비 실적 자동 대조</p></div>
+      <div><small>STEP 4</small><b>히스토리 추적</b><p>시즌·카테고리별 기준선 형성</p></div>
+    </div>
+    <div class="planner">
+      <div class="box">
+        <div class="field"><label for="budget">총 예산 (억원)</label><input id="budget" type="number" min="0" step="0.5" value="10"></div>
+        <div style="margin-top:14px" id="mix"></div>
+        <div class="sum" id="mixsum"></div>
+      </div>
+      <div class="box">
+        <div class="eyebrow">예산 배분</div>
+        <div class="mixbar" id="mixbar" aria-hidden="true"></div>
+        <div class="split" id="mixsplit"></div>
+        <div class="eyebrow" style="margin-top:22px">포스트바이 리포트 <span class="example">예시 데이터</span></div>
+        <div class="tbl-wrap"><table><thead><tr><th>매체</th><th>계획(백만원)</th><th>집행(백만원)</th><th>KPI</th><th>계획</th><th>실적</th><th>달성</th></tr></thead><tbody id="postbuy"></tbody></table></div>
+      </div>
+    </div>
+    <div class="box" style="margin-top:20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between">
+      <div><b>베타 테스터를 모집합니다</b><p style="color:var(--muted);font-size:13.5px">광고주·대행사·매체사 실무자라면 먼저 써보고 의견을 주세요.</p></div>
+      <a class="btn" href="#subscribe">베타 신청</a>
+    </div>
+  </section>
+
+  <!-- ================= LOUNGE ================= -->
+  <section class="page" data-page="lounge" hidden>
+    <div class="pagetitle"><div class="eyebrow">Lounge</div><h1>업계 사람들의 단골 라운지</h1><p>광고주·대행사·매체사·애드테크 실무자가 묻고 답하는 곳. 모든 대화는 뉴스와 같은 허브에 연결됩니다.</p></div>
+    <div class="two">
+      <div><div class="filters" id="loungefilters"><span class="lbl">허브</span></div><div id="feed"></div></div>
+      <aside class="rail" style="position:static">
+        <div class="box"><div class="eyebrow">허브별 대화방</div><div class="rooms" id="rooms"></div></div>
+        <form class="box" id="compose" autocomplete="off" style="display:flex;flex-direction:column;gap:10px">
+          <b>질문·인사이트 보내기</b>
+          <p style="font-size:13px;color:var(--muted)">회원 글쓰기는 정식 오픈과 함께 열립니다. 그 전까지 보내주신 글은 편집인이 확인해 라운지에 소개합니다.</p>
+          <div class="field"><label for="p-kind">글 유형</label><select id="p-kind"><option>질문</option><option>인사이트</option><option>협업·구인</option><option>행사·세미나</option></select></div>
+          <div class="field"><label for="p-title">제목</label><input id="p-title" maxlength="80" required></div>
+          <div class="field"><label for="p-body">내용</label><textarea id="p-body" maxlength="1500" required></textarea></div>
+          <div class="field"><label for="p-email">답변 받을 이메일</label><input id="p-email" type="email" maxlength="80" required></div>
+          <button class="btn" type="submit">보내기</button>
+          <p class="msg" id="p-msg"></p>
+        </form>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================= EVENTS ================= -->
+  <section class="page" data-page="events" hidden>
+    <div class="pagetitle"><div class="eyebrow">Events · Awards · Podcast</div><h1>만나서 더 깊게</h1><p>업계 사람들이 직접 만나는 자리와 귀로 듣는 MEDIA OUTLOOK. 일정은 확정되는 대로 공지합니다.</p></div>
+    <div class="evp" id="evlist"></div>
+    <div class="box" style="margin-top:20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between">
+      <div><b>일정 알림 받기</b><p style="color:var(--muted);font-size:13.5px">뉴스레터 구독자에게 가장 먼저 알려드립니다.</p></div>
+      <a class="btn" href="#subscribe">구독하기</a>
+    </div>
+  </section>
+
+  <!-- ================= PARTNER ================= -->
+  <section class="page" data-page="partner" hidden>
+    <div class="pagetitle"><div class="eyebrow">Advertise &amp; Partner</div><h1>미디어 의사결정자에게 닿는 광고</h1><p>광고주·대행사·매체사 실무자가 매일 아침 들르는 곳. 브리핑, 뉴스레터, 라운지, 리포트, 이벤트에 브랜드를 연결하세요.</p></div>
+    <div class="sechd"><h2>누가 읽나</h2></div>
+    <div class="aud">
+      <div><b>광고주 마케터</b><span>매체 믹스·예산 의사결정</span></div>
+      <div><b>대행사 플래너·바이어</b><span>플래닝, 바잉, 포스트바이</span></div>
+      <div><b>매체사 영업·전략</b><span>TV·디지털·옥외 판매</span></div>
+      <div><b>애드테크·데이터</b><span>측정, 타겟팅, 플랫폼</span></div>
+    </div>
+    <div class="sec"><div class="sechd"><h2>광고 상품</h2></div>
+      <div class="products">
+        <div class="prod"><span class="where">DISPLAY · 전 페이지</span><b>리더보드 · 렉탱글</b><p>상단 970×90, 레일 300×250 디스플레이.</p></div>
+        <div class="prod"><span class="where">WEEKLY · 뉴스레터</span><b>뉴스레터 헤드라인</b><p>주간 메일 첫 칸 네이티브 광고.</p></div>
+        <div class="prod"><span class="where">ALWAYS-ON · 허브</span><b>허브 스폰서십</b><p>CTV·DOOH 등 특정 허브의 뉴스·대화 전체를 후원.</p></div>
+        <div class="prod"><span class="where">EVENT · 리포트</span><b>세미나·리포트 협찬</b><p>분기 리포트, 워크숍, 어워즈 공동 개최.</p></div>
+      </div>
+    </div>
+    <div class="sec"><div class="two">
+      <form class="box formgrid" id="adform" autocomplete="off">
+        <b class="full" style="font-size:16px">광고·제휴 문의</b>
+        <div class="field"><label for="a-name">이름</label><input id="a-name" maxlength="40" required></div>
+        <div class="field"><label for="a-org">회사</label><input id="a-org" maxlength="60" required></div>
+        <div class="field full"><label for="a-email">이메일</label><input id="a-email" type="email" maxlength="80" required></div>
+        <div class="field full"><label for="a-prod">관심 상품</label><select id="a-prod"><option>리더보드·렉탱글</option><option>뉴스레터 헤드라인</option><option>허브 스폰서십</option><option>세미나·리포트 협찬</option><option>기타·패키지</option></select></div>
+        <div class="field full"><label for="a-msg">내용</label><textarea id="a-msg" maxlength="800" placeholder="기간, 목표, 예산 범위 등"></textarea></div>
+        <div class="full" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn" type="submit">문의 보내기</button><span class="msg" id="a-out"></span></div>
+      </form>
+      <aside class="box"><b style="font-size:16px">왜 MEDIA OUTLOOK인가</b>
+        <ul class="features">
+          <li>광고회사 바잉·플래닝부터 매체사 판매까지, 30년 현장 관점의 해석</li>
+          <li>TV·CTV·스트리밍·DOOH를 하나의 연결로 보는 편집</li>
+          <li>독자가 곧 커뮤니티 — 라운지에서 실무자와 직접 대화</li>
+        </ul>
+      </aside>
+    </div></div>
+  </section>
+
+  <!-- ================= ABOUT ================= -->
+  <section class="page" data-page="about" hidden>
+    <div class="pagetitle"><div class="eyebrow">Editor</div><h1>광고회사와 미디어 오너, 양쪽에서 30년</h1></div>
+    <div class="about">
+      <div class="box">
+        <p class="quote">“무엇을 만들 수 있는가보다, 무엇을 만들어야 하는가를 발견하는 능력.”</p>
+        <p style="margin-top:10px;font-size:13px;color:var(--muted)">오흥주 · MEDIA OUTLOOK 편집인</p>
+        <ol class="timeline" aria-label="경력">
+          <li><span class="yr">1995</span><span class="pin"></span><div><b>대방기획</b><small>일양약품 · 경동나비엔 바잉</small></div></li>
+          <li><span class="yr">1998</span><span class="pin"></span><div><b>덴츠코리아</b><small>P&amp;G 바잉</small></div></li>
+          <li><span class="yr">2000</span><span class="pin"></span><div><b>JWT</b><small>CJ 플래닝팀장</small></div></li>
+          <li><span class="yr">2006</span><span class="pin"></span><div><b>애드리치</b><small>국장</small></div></li>
+          <li class="now"><span class="yr">2012</span><span class="pin"></span><div><b>KBSN</b><small>마케팅본부장 · ALL-MEDIA REP</small></div></li>
+        </ol>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <p style="font-family:var(--serif);font-weight:800;font-size:22px;line-height:1.5">사람의 변화를 읽고, 미디어의 변화를 이해하며, 기술과 데이터로 새로운 비즈니스 가치를 만드는 사람들의 자리.</p>
+        <div class="virtues">
+          <div><b>호기심</b><p>왜 사람들이 이것을 보는가를 끝없이 묻는다</p></div>
+          <div><b>경청</b><p>시장보다 먼저 사람의 변화를 듣는다</p></div>
+          <div><b>겸손</b><p>내가 아는 미디어 문법이 이미 낡았을 수 있다</p></div>
+          <div><b>윤리와 신뢰</b><p>AI 시대, 무엇을 믿게 할 것인가를 판단한다</p></div>
+        </div>
+        <div class="box"><b>함께하기</b><p style="color:var(--muted);font-size:13.5px;margin-top:4px">강연·자문·공동 리포트 제안은 광고·제휴 문의로 보내주세요.</p><a style="color:var(--accent);font-size:13px" href="#partner">문의하기 →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SUBSCRIBE ================= -->
+  <section class="page" data-page="subscribe" hidden>
+    <div class="pagetitle"><div class="eyebrow">Newsletter</div><h1>매주, 연결해서 읽는 미디어</h1><p>한 주의 브리핑을 허브별로 묶고, 편집인의 연결 노트와 라운지의 좋은 질문을 함께 보내드립니다.</p></div>
+    <form class="box formgrid" id="subform" autocomplete="off" style="max-width:640px">
+      <div class="field"><label for="s-name">이름</label><input id="s-name" maxlength="40" required></div>
+      <div class="field"><label for="s-org">소속</label><input id="s-org" maxlength="60" placeholder="광고주 / 대행사 / 매체사"></div>
+      <div class="field full"><label for="s-email">이메일</label><input id="s-email" type="email" maxlength="80" required></div>
+      <label class="check full"><input type="checkbox" id="s-beta"> 올미디어 툴 베타 테스터로 신청</label>
+      <div class="full" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn" type="submit">구독하기</button><span class="msg" id="s-out"></span></div>
+    </form>
+  </section>
+
+  <!-- ================= ARTICLE ================= -->
+  <section class="page" data-page="article" hidden>
+    <div class="mainrail">
+      <article class="artv" id="artview"></article>
+      <aside>
+        <div class="railbox"><h2>관련 기사 <small>같은 허브로 연결</small></h2><div id="artrel"></div></div>
+        <div class="adslot ad-mpu"><span class="tag">AD</span><span>300×250</span><a href="#partner">문의 →</a></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================= SEARCH ================= -->
+  <section class="page" data-page="search" hidden>
+    <div class="pagetitle"><div class="eyebrow">Search</div><h1 id="sq-title">검색 결과</h1></div>
+    <div class="list" id="sresults"></div>
+  </section>
+</main>
+
+<footer class="aw"><div class="wrap">
+  <div class="top"><div><div class="flogo">MEDIA<em>OUTLOOK</em></div><p style="margin-top:8px">광고·마케팅·미디어·테크를 하나의 연결로 읽는 인텔리전스 &amp; 커뮤니티 · 편집인 오흥주</p></div><a class="btn red" href="#subscribe">뉴스레터 구독</a></div>
+  <div class="cols">
+    <div><h4>섹션</h4><ul id="footsec"></ul></div>
+    <div><h4>인사이트</h4><ul><li><a href="#latest">최신 뉴스</a></li><li><a href="#opinion">오피니언</a></li><li><a href="#datacenter">데이터센터</a></li><li><a href="#glossary">용어사전</a></li><li><a href="#tools">올미디어 툴</a></li></ul></div>
+    <div><h4>커뮤니티</h4><ul><li><a href="#lounge">라운지</a></li><li><a href="#events">이벤트·어워즈</a></li><li><a href="#events">팟캐스트</a></li><li><a href="#subscribe">뉴스레터</a></li></ul></div>
+    <div><h4>회사</h4><ul><li><a href="#about">편집인 소개</a></li><li><a href="#partner">광고·미디어킷</a></li><li><a href="#partner">스폰서드 콘텐츠</a></li><li><a href="#partner">보도자료 접수</a></li></ul></div>
+    <div><h4>이번 브리핑 참고 출처</h4><ul class="src" id="sources"></ul></div>
+  </div>
+  <p class="legal">© 2026 MEDIA OUTLOOK 미디어아웃룩 · 브리핑 수치는 각 출처의 공개 발표를 따릅니다.</p>
+</div></footer>
+<script>
+/* =====================================================================
+   SITE CONFIG — 배포 전에 여기만 바꾸면 됩니다
+   ===================================================================== */
+var CONFIG={
+  formEndpoint:"",                    // Formspree 등 폼 수신 주소 (비우면 이메일 안내)
+  contactEmail:"contact@mediaoutlook.co.kr", // 문의 받을 이메일
+  adsenseClient:"",                  // 구글 애드센스 게시자 ID (예: ca-pub-1234567890123456) — 비우면 기존 광고 자리 안내가 그대로 보입니다
+  adSlots:{rail:"",infeed:""}        // 애드센스 광고 단위 ID — rail: 사이드 300×250, infeed: 피드 인라인
+};
+
+/* =====================================================================
+   DAILY DATA — 매일 이 블록만 교체합니다
+   h: 허브 id (tv, ctv, social, ooh, data, ai, owner, commerce) — 첫 번째 허브로 데스크가 정해집니다
+   ===================================================================== */
+var BRIEF={
+ dateLabel:"2026년 11월 6일 금요일",
+ news:[
+ {t:"카카오 3분기 영업익 2403억…톡 디스플레이 광고 35%↑",d:"매출 2조867억원(6%↑), 영업이익 2403억원(7%↑). 톡비즈 매출 6329억원(13%↑) 중 광고·구독 3915억원(11%↑)이고 톡 디스플레이 광고는 35% 늘었다. 선물하기·톡딜 거래액은 2조3000억원(13%↑)이며, 광고 관리 에이전트 'AI Crew'는 12월 비공개 베타에 들어간다(지디넷코리아·테크M).",h:["commerce","social","ai"],cat:"광고비",b:"플랫폼 실적",hot:1},
+ {t:"ChatGPT 광고 브랜드 6000곳 넘었지만…전환율은 구글 검색의 3분의 1",d:"애드세나 집계로 광고 집행 브랜드는 6월 1082곳에서 8월 6333곳으로 늘었다. 미국 광고주 대상 연구에서 세션당 매출은 ChatGPT 0.89달러 대 구글 검색 2.45달러, 전환율은 0.37% 대 1.17%였다(Digiday).",h:["ai","data","commerce"],cat:"퍼포먼스",b:"AI 광고",hot:2},
+ {t:"구글 AI 모드, 한 답변에 광고 최대 4개",d:"Search Engine Roundtable이 4일 한 쿼리의 AI 모드 응답에 구글 광고가 최대 4개까지 노출된다고 전했다. 그동안은 보통 1~2개, 가끔 3개였으며 구글은 논평하지 않았다(PPC Land).",h:["ai","commerce"],cat:"새 광고기법",b:"검색광고",hot:3},
+ {t:"크리테오 3분기 매출 11%↓·순이익 85%↓",d:"매출 4억1600만 달러(전년 4억7000만 달러), 순이익 600만 달러. Contribution ex-TAC는 17% 줄어든 2억4000만 달러였고, 연간 전망(ex-TAC 10~12% 감소)은 유지했다(PPC Land).",h:["commerce","data"],cat:"광고비",b:"리테일 미디어"},
+ {t:"\"ChatGPT 검색량, 구글의 5분의 1\"…타불라는 AI 탓",d:"오픈AI 애덤 프라이는 ChatGPT의 검색형 질의량이 구글의 약 5분의 1이라고 말했다. 타불라 3분기 매출은 6.9% 줄어든 4억6230만 달러였다(PPC Land).",h:["ai","data","owner"],cat:"트렌드",b:"글로벌"},
+ {t:"몰로코 '몰로콘 26'…광고 AI 'CARA'와 퍼포먼스 CTV 전략",d:"5일 서울에서 열린 행사에서 미국 TV 시청의 약 49%가 스트리밍이고, 2026년 미국 CTV 광고 시장은 약 293억 달러로 전망된다고 밝혔다. 데브시스터즈 쿠키런: 킹덤 미국 CTV 캠페인은 D7 ROAS 목표를 20%p 웃돌았다(매드타임스).",h:["ctv","ai","commerce"],cat:"새 광고기법"},
+ {t:"포레스터 \"AI가 대행사 없애진 않는다\"…2027년 역할 분화",d:"대행사는 '오케스트레이터'와 '실행 전문회사'로 나뉘고, 표준화 콘텐츠 업무의 최대 60%가 2027년까지 인하우스로 이동할 것으로 봤다. 2027년 대행사 RFP의 75%가 AI 전환 역량을 요구할 전망이다(매드타임스).",h:["ai","commerce"],cat:"트렌드",b:"대행사"},
+ {t:"美 자동차 광고, 브랜드 줄이고 판매 광고로…스트리밍이 TV 추월",d:"미국 자동차 브랜드의 스트리밍 광고비가 2025년 2분기 처음으로 기존 TV를 넘어섰다. 2025년 네트워크 TV는 11%, 케이블은 약 20% 줄었고, 지역 판매(Tier-2) 비중은 약 20%에서 약 40%로 커졌다(매드타임스·WSJ·Guideline).",h:["ctv","tv","commerce"],cat:"광고비",b:"글로벌"},
+ {t:"VAB 'Impression Gap'…프리미엄 CTV 동시시청 60% 대 유튜브 45%",d:"21개 프리미엄 영상 플랫폼과 CTV 유튜브를 비교한 연구가 MarCom 플래티넘을 받았다. 평균 세션은 1시간18분 대 52분이지만, 유튜브는 30초·프리미엄 앱은 5분부터 세션으로 셌다(PPC Land).",h:["ctv","social","data"],cat:"퍼포먼스"},
+ {t:"필립스 TV OS 타이탄OS, 4600만 달러 조달",d:"하이랜드 유럽·망그로브 지분 투자와 블랙록 운용 펀드의 신용 한도로 구성됐고 누적 조달액은 1억1000만 달러가 됐다. 3년간 매출이 15배 늘었다고 밝혔다(PPC Land).",h:["ctv","data"],cat:"Media Owner",b:"스마트TV"},
+ {t:"아마존 'Shop Direct' 포털…외부 쇼핑몰도 무료로 검색 노출",d:"4일 출시한 머천트 워크스페이스로 적격 쇼핑몰이 Feedonomics·Salsify 등 피드나 API로 상품을 올릴 수 있다. 아마존은 참여 수수료가 없다고 밝혔다(PPC Land).",h:["commerce","data"],cat:"채널 뉴스"},
+ {t:"JCDecaux 3분기 매출 9.1%↑…10억1050만 유로",d:"유기적 성장률 6.6%, 광고 매출 유기적 성장 6.7%. 스트리트 퍼니처 7.3%, 교통 7.7%, 빌보드 1.4% 성장했다(DailyDOOH).",h:["ooh","commerce"],cat:"광고비",b:"글로벌 OOH"},
+ {t:"뉴트래디션, 라스베이거스 코넬 아웃도어 인수",d:"정적·디지털 빌보드 88면과 LAX 인근 2면을 확보한다. 해리 리드 국제공항은 2025년 약 5500만 명이 이용했으며 인수가는 공개되지 않았다(DailyDOOH).",h:["ooh","owner"],cat:"Media Owner"},
+ {t:"크런치롤, 쿠팡플레이와 '크런치롤 패스' 론칭",d:"쿠팡플레이에서 크런치롤 애니메이션을 볼 수 있게 됐다. '체인소 맨: 레제편', '귀멸의 칼날: 무한성편 제1장' 등이 포함되며 시작일은 밝히지 않았다(전자신문).",h:["ctv","commerce"],cat:"채널 뉴스"},
+ {t:"영등위, OTT 자체등급분류 모니터단 51명 모집",d:"2027년도 사후관리 모니터단으로 전문 6명·일반 45명을 뽑는다. 자체등급분류 사업자는 넷플릭스·티빙·쿠팡플레이·디즈니+ 등 14곳이다(전자신문).",h:["owner","ctv"],cat:"Media Owner",b:"OTT 정책"},
+ {t:"방미통위, 통신4사와 통신분쟁 피해구제 간담회",d:"5일 SK텔레콤·SK브로드밴드·KT·LG유플러스 임원과 통신분쟁조정위원, KAIT가 참석해 분쟁 예방과 피해구제 강화를 논의했다. 보도는 통신분쟁이 151% 급증했다고 전했다(전자신문).",h:["owner"],cat:"Media Owner"},
+ {t:"美 웹 트래킹 합의금 2026년 14억 달러 넘을 듯",d:"프라이바도는 2025년 1월~2026년 8월 합의 116건을 분석해 올해 합의금이 전년보다 36% 늘 것으로 추산했다. 메타 트래커가 100번 언급됐고 피고의 약 3분의 2가 의료기관이다(PPC Land).",h:["data","ai"],cat:"트렌드",b:"프라이버시"},
+ {t:"英 ICO, AI 에이전트 개발사에 30개 질문…20일 마감",d:"AI 에이전트의 개인정보 처리에 관한 의견 수렴을 10월 8일 시작해 11월 20일 마감한다. 애드테크 분야 에이전틱 AI 보고서도 올해 안에 낼 계획이다(PPC Land).",h:["ai","data"],cat:"트렌드",b:"AI 규제"},
+ {t:"美 중간선거 민주당 의회 승리 전망…AI·프라이버시·광고 규제 변수",d:"민주당이 하원 과반(218석)에 이를 것으로 예측됐고 NBC는 최대 244석을 전망했다. 공화당은 53대 47 상원 다수로 선거일을 맞았다(PPC Land).",h:["ai","owner"],cat:"트렌드",b:"글로벌"},
+ {t:"리바이스, 2000시간 수작업 스톱모션 크리스마스 광고",d:"'Let's Get Fuzzy'는 별도 대행사 없이 Blinkink 감독들과 만들었고, 애니메이션 1초에 약 4시간을 촬영했다. 11월 2일부터 전 세계 매장·디지털 채널에서 집행된다(매드타임스).",h:["social","commerce"],cat:"트렌드",b:"크리에이티브"}
+ ],
+ watch:[
+ {t:"트레이드데스크 3분기 실적",w:"11/9(미국)",d:"장 마감 후 발표, 한국시간 10일 오전 컨퍼런스콜 — CTV·프로그래매틱 수요 점검",h:["data","ctv"]},
+ {t:"디즈니+ 광고형 스탠다드 출시",w:"11/10",d:"월 7000원, 17일부터 누구나 가입. 신규 스탠다드 1만1500원·프리미엄 1만6500원으로 인상",h:["ctv","commerce"]},
+ {t:"네이버 3분기 실적·컨퍼런스콜",w:"11/12 09:00",d:"서치플랫폼·커머스 광고 실적 확인",h:["commerce","ai"]},
+ {t:"英 ICO AI 에이전트 의견수렴 마감",w:"11/20",d:"애드테크 에이전틱 AI 보고서로 이어질 30개 질문",h:["ai","data"]},
+ {t:"LG헬로비전, CJ ENM 4개 채널 송출 종료",w:"11월 말",d:"유료방송 프로그램 사용료 갈등의 향방",h:["tv","owner"]}
+ ],
+ quiz:[
+ {q:"카카오의 3분기 영업이익은?",o:["6329억원","2403억원","1500억원"],a:1},
+ {q:"구글 AI 모드 한 답변에 노출될 수 있는 광고는 최대 몇 개?",o:["2개","3개","4개"],a:2},
+ {q:"크리테오의 3분기 순이익 감소율은?",o:["85%","11%","17%"],a:0}
+ ],
+ sources:["지디넷코리아·테크M — 카카오 3분기","Digiday — ChatGPT 광고 전환 문제","PPC Land — 구글 AI 모드·크리테오·타불라·VAB·타이탄OS·아마존·프라이바도·ICO·美 중간선거","매드타임스 — 몰로콘 26·포레스터·자동차 광고·리바이스","DailyDOOH — JCDecaux·뉴트래디션","전자신문 — 크런치롤·영등위·방미통위","트레이드데스크 IR — 3분기 실적 일정","바이라인네트워크·일간스포츠 — 디즈니+ 광고형","노잉애셋 — 네이버 실적 일정","디지털데일리 — LG헬로비전·CJ ENM 송출 종료"]
+};
+
+var SIGNALS=[
+ {k:"디지털 광고비",s:"상반기 지속 성장, 디지털 중심 재편",dir:"up",src:"KOBACO",h:["commerce","social"]},
+ {k:"방송광고비",s:"조정국면 진입",dir:"down",src:"KOBACO",h:["tv","commerce"]},
+ {k:"지상파 시청률",s:"주요 프로그램 1% 안팎 고착",dir:"down",src:"업계 보도",h:["tv","data"]},
+ {k:"CTV 광고",s:"성장세 지속 · 타겟팅 효율 우위",dir:"up",src:"모티브인텔리전스",h:["ctv","data"]},
+ {k:"스트리밍 광고 (치지직)",s:"아시안게임 계기 공식 광고 채널로 부상",dir:"up",src:"업계 보도",h:["social"]},
+ {k:"5대 플랫폼 집중도",s:"네이버·카카오·구글·메타·유튜브 쏠림 심화",dir:"up",src:"오픈애즈",h:["commerce","social"]},
+ {k:"AI·신뢰 규제",s:"가상인물 표기, AI 이용자보호법 추진",dir:"up",src:"공정위·방미통위",h:["ai","owner"]},
+ {k:"옥외광고 시장",s:"4조6472억원 역대 최대 · 디지털 비중 38.0%",dir:"up",src:"한국옥외광고센터",h:["ooh"]}
+];
+var NOTES=[
+ {t:"TV 도달은 줄고, 시청 시간은 옮겨갔다",c:"지상파 시청률 1% 고착 + CTV 광고 성장세",o:"TV에서 빠진 도달을 CTV·스트리밍이 메우는 구간을 하나의 숫자로 보여주기",m:"TV GRP + CTV 도달 통합 패키지",h:["tv","ctv","data"]},
+ {t:"스포츠는 이제 스트리밍에서 팔린다",c:"치지직·유튜브가 아시안게임 e스포츠 공식 광고 채널로",o:"경기 결과에 반응하는 실시간 크리에이티브 수요",m:"스포츠 채널 × 스트리밍 연동 스폰서십",h:["social","commerce","tv"]},
+ {t:"‘믿게 만드는 광고’가 프리미엄이 된다",c:"AI 가상인물 표기 의무화, AI 이용자보호법, 신뢰성 화두",o:"검증된 매체·인벤토리에 대한 광고주 수요 상승",m:"브랜드 세이프티 인증 인벤토리",h:["ai","owner","data"]},
+ {t:"OOH는 조용했다 — 그래서 기회다",c:"옥외광고 시장 역대 최대, 디지털 비중 38.0% — 그러나 측정 기준은 아직 부족",o:"정보가 비어 있는 매체일수록 먼저 정리한 쪽이 기준이 된다",m:"DOOH 데이터 리포트 선점",h:["ooh"]}
+];
+var COLUMNS=[
+ {t:"TV GRP와 CTV 도달, 한 장부에 쓰는 법",d:"중복 도달 보정부터 통합 리포트 양식까지, 플래너가 바로 쓰는 기준.",h:["tv","ctv","data"]},
+ {t:"바이어에서 미디어 오너로: 30년 바잉 노트",d:"대행사 책상과 매체사 책상에서 본 같은 거래의 다른 얼굴.",h:["owner","commerce"]},
+ {t:"DOOH는 왜 늘 데이터가 부족한가",d:"옥외 매체의 측정 공백과 그것을 메울 현실적인 지표.",h:["ooh","data"]},
+ {t:"AI 시대, 광고의 신뢰 비용",d:"가상인물 표기와 AI 규제가 광고 단가와 인벤토리 가치에 미치는 영향.",h:["ai","owner"]}
+];
+var POSTS=[
+ {kind:"공지",title:"MEDIA OUTLOOK 라운지를 엽니다",body:"광고주·대행사·매체사 실무자가 편하게 묻고 답하는 공간입니다. 대화에 허브를 달면 오늘의 연결 지도에 함께 묶입니다.",who:"편집인",when:"9월 23일",h:["commerce","data"]},
+ {kind:"질문",title:"CTV 도달, TV GRP와 어떻게 합산하시나요?",body:"TV와 CTV를 같은 캠페인에 묶을 때 중복 도달을 어떻게 보정하시는지 현장 사례가 궁금합니다.",who:"편집인",when:"9월 23일",h:["tv","ctv","data"]},
+ {kind:"질문",title:"DOOH 성과 측정, 어떤 지표를 쓰고 계신가요?",body:"현장에서 쓰는 DOOH 측정 기준을 나눠주세요.",who:"편집인",when:"9월 23일",h:["ooh","data"]}
+];
+var EVENTS=[
+ {t:"SEMINAR",n:"MEDIA OUTLOOK 모닝 브리핑 라이브",d:"한 달의 뉴스를 허브별로 엮어 읽는 월간 조찬 세미나.",s:"기획 중"},
+ {t:"WORKSHOP",n:"올미디어 플래닝 워크숍",d:"TV GRP와 CTV·스트리밍 도달을 한 장부로 짜는 실무 워크숍.",s:"기획 중"},
+ {t:"AWARDS",n:"MEDIA OUTLOOK 어워즈: 올해의 크로스미디어 캠페인",d:"올드·뉴미디어를 가장 잘 연결한 캠페인을 업계가 직접 뽑습니다.",s:"기획 중"},
+ {t:"PODCAST",n:"MEDIA OUTLOOK 라디오 — 30년 바잉 노트",d:"대행사와 매체사 양쪽에서 본 거래의 기술을 귀로 듣는 시리즈.",s:"준비 중"},
+ {t:"REPORT",n:"분기 미디어 시장 리포트",d:"매체별 광고비 흐름과 신규 매체 등장을 한 권으로.",s:"준비 중"},
+ {t:"MEETUP",n:"허브별 라운지 밋업 — DOOH 편",d:"옥외·디지털 옥외 실무자들의 측정 기준 이야기.",s:"기획 중"}
+];
+var TERMS=[
+ {k:"GRP",e:"Gross Rating Point",d:"광고가 도달한 시청률의 총합. 도달률 × 평균 빈도로, TV 바잉의 기본 단위.",h:["tv"]},
+ {k:"도달률 · 빈도",e:"Reach · Frequency",d:"한 번 이상 광고를 본 사람의 비율, 그리고 그들이 평균 몇 번 봤는지.",h:["tv","data"]},
+ {k:"CPM",e:"Cost Per Mille",d:"광고 노출 1,000회당 비용. 매체 간 효율 비교의 공통 잣대.",h:["commerce","data"]},
+ {k:"CPV",e:"Cost Per View",d:"영상 광고 조회 1회당 비용. 조회 인정 기준은 플랫폼마다 다르다.",h:["social","data"]},
+ {k:"CTV",e:"Connected TV",d:"인터넷에 연결된 TV 화면으로 보는 스트리밍 시청과 그 광고.",h:["ctv"]},
+ {k:"OTT",e:"Over-The-Top",d:"방송망 대신 인터넷으로 영상을 제공하는 서비스.",h:["ctv"]},
+ {k:"FAST",e:"Free Ad-Supported Streaming TV",d:"광고를 보는 대신 무료로 보는 실시간 채널형 스트리밍.",h:["ctv","commerce"]},
+ {k:"DOOH",e:"Digital Out-Of-Home",d:"디지털 스크린으로 운영되는 옥외 광고. 시간대·상황별 송출이 가능하다.",h:["ooh"]},
+ {k:"프로그래매틱",e:"Programmatic Buying",d:"데이터와 자동화 시스템으로 광고 인벤토리를 실시간 구매하는 방식.",h:["data","commerce"]},
+ {k:"PMP",e:"Private Marketplace",d:"선택된 광고주만 참여하는 프리미엄 인벤토리 전용 프로그래매틱 거래.",h:["commerce","owner"]},
+ {k:"포스트바이",e:"Post-buy Analysis",d:"집행이 끝난 뒤 계획 대비 실제 노출·도달·비용을 대조하는 분석.",h:["data","tv"]},
+ {k:"퍼스트파티 데이터",e:"1st-party Data",d:"기업이 고객과의 직접 접점에서 수집한 데이터. 쿠키 이후 타겟팅의 핵심.",h:["data"]},
+ {k:"브랜드 세이프티",e:"Brand Safety",d:"부적절하거나 허위인 콘텐츠 옆에 광고가 노출되지 않도록 관리하는 것.",h:["ai","owner"]},
+ {k:"리테일 미디어",e:"Retail Media",d:"커머스 플랫폼이 자사 구매 데이터를 바탕으로 판매하는 광고.",h:["commerce","data"]},
+ {k:"어트리뷰션",e:"Attribution",d:"전환에 어떤 광고 접점이 얼마나 기여했는지 나눠 계산하는 방법.",h:["data"]},
+ {k:"ROAS",e:"Return On Ad Spend",d:"광고비 대비 발생한 매출. 퍼포먼스 광고의 대표 성과 지표.",h:["commerce","data"]},
+ {k:"통합 도달",e:"Cross-media Reach",d:"TV·디지털·옥외 등 여러 매체의 중복을 제거한 순 도달.",h:["tv","ctv","data"]},
+ {k:"이벤트 반응형 광고",e:"Real-time Reactive Ad",d:"경기 결과·이슈에 맞춰 바로 제작·집행하는 광고.",h:["social","tv"]}
+];
+</script>
+<script>
+(function(){
+"use strict";
+var HUBS=[
+ {id:"tv",name:"TV·지상파",nav:"TV",c:"--tv",d:"지상파·케이블·종편 방송과 방송광고 시장"},
+ {id:"ctv",name:"CTV·OTT",nav:"스트리밍",c:"--ctv",d:"CTV·OTT·FAST 스트리밍과 그 광고"},
+ {id:"social",name:"소셜·스트리밍",nav:"소셜·크리에이터",c:"--social",d:"유튜브·치지직·인스타그램 등 소셜 플랫폼과 크리에이터 경제"},
+ {id:"ooh",name:"OOH·DOOH",nav:"옥외",c:"--ooh",d:"옥외·디지털 옥외(DOOH) 매체"},
+ {id:"data",name:"데이터·퍼포먼스",nav:"데이터",c:"--data",d:"시청률·측정·퍼포먼스 지표와 데이터"},
+ {id:"ai",name:"AI·규제",nav:"테크·AI",c:"--ai",d:"AI 광고 기술, 그리고 규제와 신뢰"},
+ {id:"owner",name:"미디어오너·정책",nav:"미디어·정책",c:"--owner",d:"방송사·언론사 등 미디어 오너와 방송·통신 정책"},
+ {id:"commerce",name:"광고비·커머스",nav:"광고비·커머스",c:"--commerce",d:"광고비 시장 규모와 커머스 연계 광고"}];
+var HUB={};HUBS.forEach(function(h){HUB[h.id]=h});
+function col(id){return "var("+HUB[id].c+")"}
+var GLYPH={tv:"TV",ctv:"▶",social:"S",ooh:"◧",data:"%",ai:"AI",owner:"媒",commerce:"₩"};
+var NEWS=BRIEF.news;NEWS.forEach(function(n,i){n.i=i});
+var SKILLS=[{k:"Human",n:"사람을 이해하는 능력",h:"social"},{k:"Media",n:"미디어 구조를 이해하는 능력",h:"tv"},{k:"Content",n:"콘텐츠를 발견·기획하는 능력",h:"ctv"},{k:"Data",n:"오디언스를 데이터로 이해",h:"data"},{k:"AI",n:"AI로 업무·사업을 재설계",h:"ai"},{k:"Business",n:"수익모델을 만드는 능력",h:"commerce"},{k:"Vision",n:"아직 오지 않은 변화 발견",h:"ooh",vision:1}];
+var MIX=[{k:"지상파TV",v:22,old:1},{k:"케이블·종편",v:14,old:1},{k:"CTV·OTT",v:12},{k:"유튜브·스트리밍",v:18},{k:"소셜(메타 등)",v:12},{k:"검색·포털",v:10},{k:"OOH·DOOH",v:8,old:1},{k:"오디오",v:4,old:1}];
+var MIXCOL=["var(--tv)","color-mix(in srgb,var(--tv) 55%,var(--paper))","var(--ctv)","var(--social)","color-mix(in srgb,var(--social) 55%,var(--paper))","var(--data)","var(--ooh)","var(--owner)"];
+var POSTBUY=[["지상파TV",220,214,"GRP",320,301],["케이블·종편",140,140,"GRP",260,272],["CTV·OTT",120,118,"완료 노출(만)",480,512],["유튜브·스트리밍",180,176,"조회(만)",900,861],["소셜(메타 등)",120,120,"클릭(만)",36,29],["OOH·DOOH",80,80,"노출(만)",1500,1540]];
+var BYLINE="MEDIA OUTLOOK 브리핑";
+
+var state={focus:null,route:"home",homeN:8,qi:0,qscore:0,qdone:false,q:""};
+try{var sf=sessionStorage.getItem("ml-focus");if(sf&&HUB[sf])state.focus=sf}catch(e){}
+var $=function(id){return document.getElementById(id)};
+function el(tag,a,kids){var e=document.createElement(tag);if(a)for(var k in a){if(k==="text")e.textContent=a[k];else if(k==="on")for(var ev in a.on)e.addEventListener(ev,a.on[ev]);else if(k==="style")e.style.cssText=a[k];else e.setAttribute(k,a[k])}(kids||[]).forEach(function(c){if(c!=null)e.appendChild(typeof c==="string"?document.createTextNode(c):c)});return e}
+function hubChip(id){return el("button",{type:"button",class:"chip"+(state.focus===id?" on":""),on:{click:function(){if(HUB[state.route]){location.hash=id;return}setFocus(state.focus===id?null:id)}}},[el("span",{class:"dot",style:"background:"+col(id)}),HUB[id].name])}
+function chipsFor(hs){return el("div",{class:"chips"},hs.map(hubChip))}
+function matches(h){return !state.focus||h.indexOf(state.focus)>=0}
+function items(){return NEWS.map(function(n){return n.h}).concat(POSTS.map(function(p){return p.h}))}
+function pairs(){var m={};items().forEach(function(hs){for(var i=0;i<hs.length;i++)for(var j=i+1;j<hs.length;j++){var k=[hs[i],hs[j]].sort().join("|");m[k]=(m[k]||0)+1}});return m}
+function hubCount(id){return items().filter(function(hs){return hs.indexOf(id)>=0}).length}
+function kick(n){var h=HUB[n.h[0]];return el("a",{href:"#"+h.id,class:"kicker",style:"color:"+col(h.id)},[h.nav+(n.b?" · "+n.b:"")])}
+function art(n,sm){return el("a",{href:"#a"+n.i,class:"art"+(sm?" sm":""),style:"--c:"+col(n.h[0])+";--ang:"+(95+(n.i*23)%70)+"deg","aria-hidden":"true",tabindex:"-1"},[el("div",{class:"al"},n.h.map(function(h){return el("span",{text:HUB[h].name})})),el("div",{class:"ag",text:GLYPH[n.h[0]]})])}
+function byline(n){return el("div",{class:"byline"},[el("b",{text:BYLINE}),el("span",{text:BRIEF.dateLabel.replace(/ \S+요일$/,"")}),el("span",{text:"· 연결 허브 "+n.h.length+"개"})])}
+function feedItem(n,nd){return el("article",{class:"fi"+(nd||matches(n.h)?"":" dim")},[art(n,true),el("div",{},[kick(n),el("h3",{class:"hl"},[el("a",{href:"#a"+n.i,text:n.t})]),el("p",{text:n.d}),byline(n),el("div",{style:"margin-top:8px"},[chipsFor(n.h)])])])}
+function hotList(){return NEWS.filter(function(n){return n.hot}).sort(function(a,b){return a.hot-b.hot})}
+
+/* NAV */
+function buildNav(){var nv=$("navlinks");nv.appendChild(el("a",{href:"#home","data-r":"home",text:"홈"}));nv.appendChild(el("a",{href:"#latest","data-r":"latest",text:"최신"}));
+ HUBS.forEach(function(h){nv.appendChild(el("a",{href:"#"+h.id,"data-r":h.id},[el("span",{class:"dot",style:"background:"+col(h.id)}),h.nav]))});
+ nv.appendChild(el("span",{class:"sep"}));
+ [["opinion","오피니언"],["datacenter","데이터센터"],["glossary","용어사전"],["lounge","라운지"],["events","이벤트"],["tools","올미디어 툴"],["partner","광고·제휴"],["about","편집인"]].forEach(function(x){nv.appendChild(el("a",{href:"#"+x[0],"data-r":x[0],text:x[1]}))});
+ var fs=$("footsec");HUBS.forEach(function(h){fs.appendChild(el("li",{},[el("a",{href:"#"+h.id,text:h.nav})]))})}
+
+/* LOOM */
+var NS="http://www.w3.org/2000/svg";
+function sv(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e}
+function renderLooms(){document.querySelectorAll("svg.loom").forEach(renderLoom)}
+function renderLoom(svg){var FO=svg.getAttribute("data-focus");var SF=state.focus;if(FO)state.focus=FO;try{drawLoom(svg,!!FO)}finally{state.focus=SF}}
+function drawLoom(svg,nav){svg.textContent="";var cx=210,cy=210,R=160,P={},pm=pairs();
+ HUBS.forEach(function(h,i){var a=-Math.PI/2+i*2*Math.PI/HUBS.length;P[h.id]={x:cx+R*Math.cos(a),y:cy+R*Math.sin(a),a:a}});
+ svg.appendChild(sv("circle",{cx:cx,cy:cy,r:R,fill:"none",stroke:"var(--line)","stroke-dasharray":"2 5"}));
+ Object.keys(pm).sort(function(a,b){return pm[a]-pm[b]}).forEach(function(k){var ab=k.split("|"),p1=P[ab[0]],p2=P[ab[1]],n=pm[k],inv=!state.focus||ab.indexOf(state.focus)>=0,c=state.focus&&inv?col(state.focus===ab[0]?ab[1]:ab[0]):"var(--ink)";
+  var p=sv("path",{class:"chord",d:"M"+p1.x+" "+p1.y+" Q"+(cx+(p1.x+p2.x-2*cx)*.18)+" "+(cy+(p1.y+p2.y-2*cy)*.18)+" "+p2.x+" "+p2.y,stroke:c,"stroke-width":(0.8+n*1.25).toFixed(2),"stroke-linecap":"round",opacity:state.focus?(inv?.85:.06):.22});
+  var tt=sv("title",{});tt.textContent=HUB[ab[0]].name+" × "+HUB[ab[1]].name+" · "+n+"건";p.appendChild(tt);svg.appendChild(p)});
+ HUBS.forEach(function(h){var p=P[h.id],n=hubCount(h.id),on=state.focus===h.id,dim=state.focus&&!on&&!pm[[state.focus,h.id].sort().join("|")];
+  var g=sv("g",{class:"hub",tabindex:"0",role:"button","aria-label":h.name+" "+n+"건",opacity:dim?.35:1}),r=7+Math.sqrt(n)*3.2;
+  if(on)g.appendChild(sv("circle",{cx:p.x,cy:p.y,r:r+6,fill:"none",stroke:col(h.id),"stroke-width":2}));
+  g.appendChild(sv("circle",{cx:p.x,cy:p.y,r:r,fill:n?col(h.id):"var(--surface)",stroke:col(h.id),"stroke-width":2}));
+  var lx=cx+(R+r+12)*Math.cos(p.a),ly=cy+(R+r+12)*Math.sin(p.a),cs=Math.cos(p.a),an=Math.abs(cs)<.2?"middle":cs>0?"start":"end",dy=Math.sin(p.a)<-.9?-8:Math.sin(p.a)>.9?16:5;
+  var t=sv("text",{x:lx,y:ly+dy,"text-anchor":an});t.textContent=h.name;g.appendChild(t);
+  var t2=sv("text",{x:lx,y:ly+dy+15,"text-anchor":an,class:"cnt"});t2.textContent=n+"건";g.appendChild(t2);
+  function go(){if(nav){location.hash=h.id;return}setFocus(on?null:h.id)}
+  g.addEventListener("click",go);g.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}});svg.appendChild(g)});
+ var a=sv("text",{x:cx,y:cy-4,"text-anchor":"middle",style:"font-family:var(--serif);font-weight:800;font-size:20px;fill:var(--ink)"});a.textContent=state.focus?HUB[state.focus].name:"오늘의 연결";svg.appendChild(a);
+ var b=sv("text",{x:cx,y:cy+18,"text-anchor":"middle",style:"font-family:var(--mono);font-size:12px;fill:var(--muted)"});b.textContent=state.focus?hubCount(state.focus)+"건의 실":Object.keys(pm).length+"개의 실";svg.appendChild(b)}
+
+/* HOME */
+function renderMost(ol){ol.textContent="";NEWS.slice().sort(function(a,b){return b.h.length-a.h.length||(a.hot||9)-(b.hot||9)||a.i-b.i}).filter(function(n){return matches(n.h)}).slice(0,6).forEach(function(n,i){
+ ol.appendChild(el("li",{},[el("span",{class:"n",text:String(i+1)}),el("div",{},[el("a",{href:"#a"+n.i},[el("b",{class:"hl",text:n.t})]),el("small",{text:n.h.map(function(h){return HUB[h].name}).join(" × ")})])]))});
+ if(!ol.children.length)ol.appendChild(el("li",{},[el("span"),el("small",{text:"이 허브의 기사가 없습니다."})]))}
+function card3(n,withDesc){return el("article",{class:"card3"+(matches(n.h)?"":" dim")},[art(n),kick(n),el("h3",{class:"hl"},[el("a",{href:"#a"+n.i,text:n.t})]),withDesc?el("p",{text:n.d}):null])}
+function renderHome(){
+ var hot=hotList(),h1=hot[0],H=$("hero");H.textContent="";H.className="hero"+(matches(h1.h)?"":" dim");
+ H.appendChild(art(h1));H.appendChild(el("div",{},[el("span",{class:"kicker",style:"color:var(--hot)",text:"TOP STORY · "+(h1.b||h1.cat)}),el("h1",{class:"hl"},[el("a",{href:"#a"+h1.i,text:h1.t})]),el("p",{text:h1.d}),byline(h1),chipsFor(h1.h)]));
+ var used={};used[h1.i]=1;var h2=hot[1];used[h2.i]=1;
+ var F=$("homefeed");F.textContent="";var list=NEWS.filter(function(n){return !used[n.i]&&matches(n.h)});
+ list.slice(0,state.homeN).forEach(function(n,i){F.appendChild(feedItem(n));if(i===3)F.appendChild(el("div",{class:"adslot",style:"padding:16px;margin-block:12px"},[el("span",{class:"tag",text:"AD"}),"피드 인라인 광고 728×90",el("a",{href:"#partner",text:"문의 →"})]))});
+ if(!list.length)F.appendChild(el("p",{class:"empty",text:"이 허브의 기사가 없습니다."}));
+ $("homemore").hidden=list.length<=state.homeN;
+ renderMost($("most"));
+ var FE=$("feature");FE.textContent="";FE.appendChild(el("div",{class:"wrap"},[el("div",{},[el("span",{class:"tag",text:"FEATURE"}),el("h2",{},[el("a",{href:"#a"+h2.i,text:h2.t})]),el("p",{text:h2.d}),byline(h2),el("div",{style:"margin-top:12px"},[chipsFor(h2.h)])]),art(h2)]));
+ var A=$("aisec");A.textContent="";NEWS.filter(function(n){return n.h.indexOf("ai")>=0}).slice(0,3).forEach(function(n){A.appendChild(card3(n,true))});
+ var W=$("week");W.textContent="";var cm=NEWS.filter(function(n){return n.h[0]==="commerce"||(!n.hot&&n.h.indexOf("commerce")>=0)}).slice(0,5);
+ cm.forEach(function(n,i){var c=card3(n,i===0);if(i===0)c.classList.add("big");W.appendChild(c)});
+ var V=$("voices");V.textContent="";NOTES.slice(0,3).forEach(function(x){V.appendChild(el("article",{class:"voice"+(matches(x.h)?"":" dim")},[el("div",{class:"who"},[el("span",{class:"av",text:"오"}),el("div",{},[el("b",{text:"오흥주"}),el("small",{text:"MEDIA OUTLOOK 편집인 · 30년 미디어 전문가"})])]),el("h3",{class:"hl",text:x.t}),el("blockquote",{text:x.o+" — 사업모델: "+x.m}),chipsFor(x.h)]))});
+ var S=$("slider");if(!S.children.length){["브리핑 스폰서","허브 스폰서십","스폰서드 리포트","웨비나 협찬","뉴스레터 헤드라인"].forEach(function(t,i){S.appendChild(el("div",{class:"slide"},[el("span",{class:"lab",text:"PARTNER · 자리 "+(i+1)}),el("b",{text:t}),el("p",{text:"이 자리에 파트너 콘텐츠가 ‘스폰서드’ 표기와 함께 노출됩니다."}),el("a",{href:"#partner",text:"게재 문의 →"})]))})}
+ var wt=$("watch");wt.textContent="";BRIEF.watch.forEach(function(x){wt.appendChild(el("div",{class:"wireitem"+(matches(x.h)?"":" dim")},[el("small",{text:x.w}),el("span",{},[el("b",{text:x.t}),el("span",{text:" — "+x.d,style:"color:var(--muted)"})])]))});
+ var ht=$("hometerms");ht.textContent="";TERMS.filter(function(t){return matches(t.h)}).slice(0,4).forEach(function(t){ht.appendChild(termEl(t))});
+}
+$("homemore").addEventListener("click",function(){state.homeN+=8;renderHome()});
+function sigEl(s){return el("div",{class:"sg"},[el("span",{class:"arr "+s.dir,text:{up:"↗",down:"↘",flat:"→"}[s.dir],"aria-label":{up:"상승",down:"하락",flat:"보합"}[s.dir]}),el("b",{text:s.k}),el("span",{class:"st"},[s.s+" ",el("span",{class:"src",text:"· "+s.src})])])}
+function termEl(t){return el("div",{class:"term"},[el("b",{text:t.k}),el("span",{class:"en",text:t.e}),el("p",{text:t.d})])}
+function evEl(x){return el("div",{class:"ev"},[el("span",{class:"t",text:x.t}),el("b",{text:x.n}),el("p",{text:x.d}),el("span",{},[el("span",{class:"soon",text:x.s})])])}
+function renderRank(ol){ol.textContent="";var arr=HUBS.map(function(h){return {h:h,n:NEWS.filter(function(x){return x.h.indexOf(h.id)>=0}).length}}).sort(function(a,b){return b.n-a.n}),mx=arr[0].n||1;
+ arr.forEach(function(x,i){ol.appendChild(el("li",{class:state.focus&&state.focus!==x.h.id?"dim":"",role:"button",tabindex:"0",on:{click:function(){setFocus(state.focus===x.h.id?null:x.h.id)}}},[el("span",{class:"n",text:String(i+1)}),el("span",{class:"barw"},[el("span",{text:x.h.name}),el("span",{class:"bar",style:"width:"+Math.max(2,x.n/mx*100)+"%;background:"+col(x.h.id)})]),el("span",{class:"v",text:x.n+"건"})]))})}
+
+/* QUIZ */
+function renderQuiz(){var Q=BRIEF.quiz,box=$("quiz");box.textContent="";
+ if(state.qdone){$("qz-n").textContent="완료";box.appendChild(el("p",{class:"q",text:Q.length+"문제 중 "+state.qscore+"개 정답"}));box.appendChild(el("div",{class:"foot"},[el("button",{type:"button",class:"btn-ghost",text:"다시 풀기",on:{click:function(){state.qi=0;state.qscore=0;state.qdone=false;renderQuiz()}}}),el("a",{href:"#latest",style:"color:var(--accent)",text:"브리핑 보기 →"})]));return}
+ var cur=Q[state.qi];$("qz-n").textContent=(state.qi+1)+" / "+Q.length;box.appendChild(el("p",{class:"q",text:cur.q}));
+ var opts=el("div",{class:"opts"}),answered=false,foot=el("div",{class:"foot"},[el("span",{text:"정답 "+state.qscore+"개"})]);
+ cur.o.forEach(function(o,i){var b=el("button",{type:"button",text:o,on:{click:function(){if(answered)return;answered=true;if(i===cur.a){state.qscore++;b.classList.add("right")}else{b.classList.add("wrong");opts.children[cur.a].classList.add("right")}
+  foot.firstChild.textContent=i===cur.a?"정답입니다":"정답은 "+cur.o[cur.a];foot.appendChild(el("button",{type:"button",class:"btn-ghost",text:state.qi<Q.length-1?"다음 문제 →":"결과 보기",on:{click:function(){if(state.qi<Q.length-1)state.qi++;else state.qdone=true;renderQuiz()}}}))}}});opts.appendChild(b)});
+ box.appendChild(opts);box.appendChild(foot)}
+
+/* LATEST + VERTICAL */
+function renderLatest(){var hf=$("hubfilters");hf.querySelectorAll("button").forEach(function(b){b.remove()});hf.appendChild(el("button",{type:"button",class:"chip"+(!state.focus?" on":""),text:"전체",on:{click:function(){setFocus(null)}}}));HUBS.forEach(function(h){hf.appendChild(hubChip(h.id))});
+ var L=$("latestfeed");L.textContent="";var list=NEWS.filter(function(n){return matches(n.h)});list.forEach(function(n,i){L.appendChild(feedItem(n));if(i===5)L.appendChild(el("div",{class:"adslot",style:"padding:16px;margin-block:12px"},[el("span",{class:"tag",text:"AD"}),"인피드 광고",el("a",{href:"#partner",text:"문의 →"})]))});
+ if(!list.length)L.appendChild(el("p",{class:"empty",text:"이 허브의 기사가 없습니다."}));renderMost($("most2"))}
+function renderVertical(id){var h=HUB[id];if(!h)return;var pm=pairs(),n=NEWS.filter(function(x){return x.h.indexOf(id)>=0});
+ var V=$("vhead");V.textContent="";V.style.cssText="--vc:"+col(id);
+ var rel=HUBS.filter(function(x){return x.id!==id&&pm[[id,x.id].sort().join("|")]}).sort(function(a,b){return pm[[id,b.id].sort().join("|")]-pm[[id,a.id].sort().join("|")]});
+ V.appendChild(el("div",{class:"eyebrow",text:"섹션 · "+h.name}));V.appendChild(el("h1",{text:h.nav}));V.appendChild(el("p",{text:h.d}));
+ V.appendChild(el("div",{class:"meta"},[el("span",{},["기사 ",el("b",{text:String(n.length)})]),el("span",{},["라운지 ",el("b",{text:String(POSTS.filter(function(p){return p.h.indexOf(id)>=0}).length)})]),el("span",{text:"함께 묶인 섹션"}),el("span",{class:"chips"},rel.slice(0,4).map(function(x){return el("a",{href:"#"+x.id,class:"chip"},[el("span",{class:"dot",style:"background:"+col(x.id)}),x.nav+" "+pm[[id,x.id].sort().join("|")]])}))]));
+ var F=$("vfeed");F.textContent="";n.forEach(function(x){F.appendChild(feedItem(x,true))});
+ if(!n.length)F.appendChild(el("div",{class:"box"},[el("b",{text:"이번 브리핑에는 이 섹션 기사가 없었습니다."}),el("p",{style:"color:var(--muted);font-size:14px;margin-top:4px",text:"정보가 비어 있는 매체일수록 먼저 정리한 쪽이 기준이 됩니다. 현장 소식을 라운지로 보내주세요."}),el("a",{href:"#lounge",class:"btn",style:"margin-top:10px",text:"라운지로 소식 보내기"})]));
+ var O=$("vops");O.textContent="";var ops=NOTES.filter(function(x){return x.h.indexOf(id)>=0}).concat(COLUMNS.filter(function(x){return x.h.indexOf(id)>=0}));
+ ops.slice(0,3).forEach(function(x){O.appendChild(el("a",{href:"#opinion",class:"mini"},[el("b",{class:"hl",text:x.t}),el("span",{text:x.m?"연결 노트":"칼럼 · 연재 예정"})]))});if(!ops.length)O.appendChild(el("p",{class:"empty",text:"아직 없습니다."}));
+ var T=$("vterms");T.textContent="";var ts=TERMS.filter(function(t){return t.h.indexOf(id)>=0});ts.slice(0,4).forEach(function(t){T.appendChild(termEl(t))});if(!ts.length)T.appendChild(el("p",{class:"empty",text:"아직 없습니다."}))}
+
+/* OPINION / DATA / GLOSSARY */
+function renderOpinion(){var n=$("notes");n.textContent="";NOTES.forEach(function(x){n.appendChild(el("article",{class:"note"+(matches(x.h)?"":" dim")},[el("h3",{text:x.t}),el("div",{class:"flow"},[el("span",{text:"변화"}),el("div",{text:x.c}),el("span",{text:"기회"}),el("div",{text:x.o}),el("span",{text:"사업모델"}),el("div",{class:"bm",text:x.m})]),chipsFor(x.h)]))});
+ var c=$("columns");c.textContent="";COLUMNS.forEach(function(x){c.appendChild(el("article",{class:"post"+(matches(x.h)?"":" dim")},[el("div",{class:"head"},[el("span",{class:"soon",text:"연재 예정"}),el("span",{text:"오흥주"})]),el("h3",{style:"font-family:var(--serif);font-weight:800",text:x.t}),el("p",{style:"color:var(--muted);font-size:14px",text:x.d}),chipsFor(x.h)]))});
+ var k=$("skills");k.textContent="";SKILLS.forEach(function(x){k.appendChild(el("button",{type:"button",class:"skill"+(x.vision?" vision":"")+(state.focus===x.h&&!x.vision?" on":""),title:"연결 허브: "+HUB[x.h].name,on:{click:function(){setFocus(state.focus===x.h?null:x.h)}}},[el("span",{class:"en",text:x.k}),el("b",{text:x.n})]))})}
+function renderData(){var s=$("signals");s.textContent="";SIGNALS.forEach(function(x){var e=sigEl(x);if(!matches(x.h))e.classList.add("dim");s.appendChild(e)});
+ renderRank($("rank2"));var pm=pairs(),ks=Object.keys(pm).sort(function(a,b){return pm[b]-pm[a]}).slice(0,10),mx=pm[ks[0]]||1,ol=$("pairrank");ol.textContent="";
+ ks.forEach(function(k,i){var ab=k.split("|");ol.appendChild(el("li",{class:state.focus&&ab.indexOf(state.focus)<0?"dim":"",role:"button",tabindex:"0",on:{click:function(){setFocus(ab[0])}}},[el("span",{class:"n",text:String(i+1)}),el("span",{class:"barw"},[el("span",{text:HUB[ab[0]].name+" × "+HUB[ab[1]].name}),el("span",{class:"bar",style:"width:"+Math.max(2,pm[k]/mx*100)+"%;background:linear-gradient(90deg,"+col(ab[0])+","+col(ab[1])+")"})]),el("span",{class:"v",text:pm[k]+"회"})]))})}
+function renderGlossary(){var q=($("gq").value||"").trim().toLowerCase(),g=$("gl");g.textContent="";var list=TERMS.filter(function(t){return matches(t.h)&&(!q||(t.k+t.e+t.d).toLowerCase().indexOf(q)>=0)});
+ list.forEach(function(t){var e=termEl(t);e.appendChild(chipsFor(t.h));g.appendChild(e)});if(!list.length)g.appendChild(el("p",{class:"empty",text:"찾는 용어가 없습니다. 라운지로 질문을 보내주세요."}))}
+$("gq").addEventListener("input",renderGlossary);
+/* TOOLS */
+function renderMix(){var box=$("mix");box.textContent="";MIX.forEach(function(m,i){var id="mix-"+i,v=el("span",{class:"v",text:m.v+"%"}),r=el("input",{type:"range",min:"0",max:"60",step:"1",value:String(m.v),id:id,"aria-label":m.k+" 비중"});r.addEventListener("input",function(){m.v=+r.value;v.textContent=m.v+"%";updateMix()});box.appendChild(el("div",{class:"mixrow"},[el("label",{class:"nm","for":id},[el("span",{class:"dot",style:"background:"+MIXCOL[i]}),m.k]),r,v]))});updateMix()}
+function updateMix(){var tot=MIX.reduce(function(a,m){return a+m.v},0),bud=Math.max(0,+$("budget").value||0),s=$("mixsum");s.textContent="합계 "+tot+"%"+(tot!==100?" — 100%로 맞춰주세요":" · 배분 완료");s.className="sum"+(tot!==100?" bad":"");
+ var bar=$("mixbar");bar.textContent="";MIX.forEach(function(m,i){if(m.v>0)bar.appendChild(el("div",{style:"flex:"+m.v+" 1 0;background:"+MIXCOL[i],title:m.k+" "+m.v+"%"}))});
+ var oldp=MIX.filter(function(m){return m.old}).reduce(function(a,m){return a+m.v},0),newp=tot-oldp,d=tot||1,sp=$("mixsplit");sp.textContent="";function f(x){return (bud*x/d).toFixed(1)}
+ sp.appendChild(el("span",{},["올드미디어 ",el("b",{text:Math.round(oldp/d*100)+"% · "+f(oldp)+"억"})]));sp.appendChild(el("span",{},["뉴미디어 ",el("b",{text:Math.round(newp/d*100)+"% · "+f(newp)+"억"})]))}
+function renderPostbuy(){var tb=$("postbuy");POSTBUY.forEach(function(r){var a=Math.round(r[5]/r[4]*100);tb.appendChild(el("tr",{},[el("td",{text:r[0]}),el("td",{text:r[1].toLocaleString()}),el("td",{text:r[2].toLocaleString()}),el("td",{text:r[3]}),el("td",{text:r[4].toLocaleString()}),el("td",{text:r[5].toLocaleString()}),el("td",{},[el("span",{class:"ach "+(a>=95?"good":"warn"),text:a+"%"})])]))})}
+/* LOUNGE */
+function renderLounge(){var lf=$("loungefilters");lf.querySelectorAll("button").forEach(function(b){b.remove()});lf.appendChild(el("button",{type:"button",class:"chip"+(!state.focus?" on":""),text:"전체",on:{click:function(){setFocus(null)}}}));HUBS.forEach(function(h){lf.appendChild(hubChip(h.id))});
+ var f=$("feed");f.textContent="";var list=POSTS.filter(function(p){return matches(p.h)});if(!list.length)f.appendChild(el("p",{class:"empty",text:"이 허브에는 아직 대화가 없습니다. 오른쪽에서 첫 질문을 보내주세요."}));
+ list.forEach(function(p){f.appendChild(el("article",{class:"post"},[el("div",{class:"head"},[el("span",{class:"kind",text:p.kind}),el("span",{text:p.who}),el("span",{text:p.when})]),el("h3",{text:p.title}),el("p",{text:p.body}),chipsFor(p.h)]))});
+ var r=$("rooms");r.textContent="";HUBS.forEach(function(h){var n=POSTS.filter(function(p){return p.h.indexOf(h.id)>=0}).length,nn=NEWS.filter(function(x){return x.h.indexOf(h.id)>=0}).length;r.appendChild(el("button",{type:"button",on:{click:function(){setFocus(h.id)}}},[el("b",{style:"display:flex;align-items:center;gap:8px;font-weight:500"},[el("span",{class:"dot",style:"background:"+col(h.id)}),h.name]),el("span",{text:"대화 "+n+" · 뉴스 "+nn})]))})}
+/* SEARCH */
+function renderSearch(){var q=state.q.toLowerCase(),R=$("sresults");R.textContent="";$("sq-title").textContent="‘"+state.q+"’ 검색 결과";if(!q)return;
+ var ns=NEWS.filter(function(n){return (n.t+n.d).toLowerCase().indexOf(q)>=0}),ts=TERMS.filter(function(t){return (t.k+t.e+t.d).toLowerCase().indexOf(q)>=0});
+ R.classList.add("feed");ns.forEach(function(n){R.appendChild(feedItem(n))});ts.forEach(function(t){R.appendChild(termEl(t))});
+ if(!ns.length&&!ts.length)R.appendChild(el("p",{class:"empty",text:"결과가 없습니다. 다른 말로 찾아보세요."}))}
+$("searchform").addEventListener("submit",function(e){e.preventDefault();state.q=$("q").value.trim();renderSearch();if(location.hash==="#search")route();else location.hash="search"});
+/* FOCUS */
+function setFocus(id){state.focus=id;try{id?sessionStorage.setItem("ml-focus",id):sessionStorage.removeItem("ml-focus")}catch(e){}renderAll()}
+function renderFocusBar(){var fb=$("fbwrap");if(!state.focus||HUB[state.route]){fb.hidden=true;return}fb.hidden=false;var f=state.focus,pm=pairs();
+ var nm=$("fb-name");nm.textContent="";nm.appendChild(el("span",{class:"dot",style:"background:"+col(f)}));nm.appendChild(document.createTextNode(HUB[f].name));
+ function c(arr){return arr.filter(function(x){return x.h.indexOf(f)>=0}).length}
+ $("fb-stat").textContent="뉴스 "+c(NEWS)+" · 오피니언 "+c(NOTES)+" · 용어 "+c(TERMS)+" · 라운지 "+c(POSTS)+" · 이어진 허브";
+ var rel=HUBS.filter(function(h){return h.id!==f&&pm[[f,h.id].sort().join("|")]}).sort(function(a,b){return pm[[f,b.id].sort().join("|")]-pm[[f,a.id].sort().join("|")]}).slice(0,3);
+ var r=$("fb-rel");r.textContent="";rel.forEach(function(h){r.appendChild(hubChip(h.id))});if(!rel.length)r.appendChild(el("span",{class:"stat",text:"아직 없음"}))}
+$("fb-clear").addEventListener("click",function(){setFocus(null)});
+function renderAll(){renderLooms();renderHome();renderLatest();if(HUB[state.route])renderVertical(state.route);renderOpinion();renderData();renderGlossary();renderLounge();renderFocusBar();fillAds()}
+/* ADSENSE — CONFIG.adsenseClient와 adSlots를 채우면 빈 광고 자리에 애드센스가 들어갑니다 */
+var ADS_ON=/^ca-pub-\d{10,20}$/.test(CONFIG.adsenseClient||""),ADS_FAIL=false,ADS_LOADING=false;
+function restoreAds(){document.querySelectorAll(".adslot[data-ph]").forEach(function(d){d.innerHTML=d.getAttribute("data-ph");d.removeAttribute("data-ph");d.classList.remove("adlive")})}
+function loadAds(){if(ADS_LOADING)return;ADS_LOADING=true;var s=document.createElement("script");s.async=true;s.crossOrigin="anonymous";s.src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client="+encodeURIComponent(CONFIG.adsenseClient);s.onerror=function(){ADS_FAIL=true;restoreAds()};document.head.appendChild(s)}
+function fillAds(){if(!ADS_ON||ADS_FAIL)return;var slots=CONFIG.adSlots||{};document.querySelectorAll(".adslot:not([data-ph])").forEach(function(d){var pg=d.closest("[data-page]");if(pg&&pg.hidden)return;var mpu=d.classList.contains("ad-mpu"),slot=mpu?slots.rail:slots.infeed;if(!slot)return;loadAds();
+ d.setAttribute("data-ph",d.innerHTML);d.classList.add("adlive");d.textContent="";d.appendChild(el("span",{class:"adlab",text:"광고"}));
+ d.appendChild(el("ins",{class:"adsbygoogle",style:"display:block;width:100%"+(mpu?";min-height:250px":""),"data-ad-client":CONFIG.adsenseClient,"data-ad-slot":slot,"data-ad-format":mpu?"rectangle":"auto","data-full-width-responsive":"true"}));
+ try{(window.adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}})}
+/* ARTICLE */
+function srcOf(n){var m=(n.d||"").match(/\(([^()]*)\)\s*\.?\s*$/);return m?m[1]:""}
+function renderArticle(i){var n=NEWS[i],V=$("artview"),R=$("artrel");V.textContent="";R.textContent="";
+ if(!n){V.appendChild(el("p",{class:"empty",text:"기사를 찾을 수 없습니다. 오늘 브리핑이 새로 바뀌었을 수 있습니다."}));V.appendChild(el("a",{href:"#latest",class:"btn",text:"최신 뉴스 보기"}));return}
+ var src=srcOf(n),q=encodeURIComponent(n.t.replace(/[‘’“”"…·]/g," ")),naver="https://search.naver.com/search.naver?where=news&query="+q,google="https://www.google.com/search?tbm=nws&q="+q;
+ V.appendChild(el("a",{href:"#latest",class:"back",text:"← 최신 뉴스"}));
+ V.appendChild(el("div",{style:"margin-top:12px"},[kick(n)]));
+ V.appendChild(el("h1",{text:n.t}));V.appendChild(byline(n));
+ var a=art(n);a.removeAttribute("href");V.appendChild(a);
+ V.appendChild(el("p",{class:"lede",text:n.d}));
+ V.appendChild(chipsFor(n.h));
+ var box=el("div",{class:"srcbox"},[el("b",{text:"원문 기사"+(src?" · "+src:"")}),
+  el("div",{class:"row2"},[n.u?el("a",{href:n.u,target:"_blank",rel:"noopener",class:"btn",text:"원문 기사 열기 →"}):null,
+   el("a",{href:naver,target:"_blank",rel:"noopener",class:n.u?"btn-line":"btn",text:"네이버 뉴스에서 찾기"}),
+   el("a",{href:google,target:"_blank",rel:"noopener",class:"btn-line",text:"구글 뉴스에서 찾기"})]),
+  el("p",{class:"note",text:"MEDIA OUTLOOK 브리핑은 원문을 요약한 것입니다. 자세한 내용과 수치는 원문 기사에서 확인하세요."})]);
+ V.appendChild(box);
+ var rel=NEWS.filter(function(x){return x!==n&&x.h.some(function(h){return n.h.indexOf(h)>=0})}).sort(function(a,b){var sa=a.h.filter(function(h){return n.h.indexOf(h)>=0}).length,sb=b.h.filter(function(h){return n.h.indexOf(h)>=0}).length;return sb-sa}).slice(0,6);
+ rel.forEach(function(x){R.appendChild(el("a",{href:"#a"+x.i,class:"mini"},[el("b",{class:"hl",text:x.t}),el("span",{text:x.h.map(function(h){return HUB[h].name}).join(" × ")})]))});
+ if(!rel.length)R.appendChild(el("p",{class:"empty",text:"연결된 기사가 없습니다."}))}
+/* ROUTER */
+var PAGES=["home","latest","opinion","datacenter","glossary","tools","lounge","events","partner","about","subscribe","search"];
+function route(){var r=(location.hash||"#home").slice(1);var isArt=/^a\d+$/.test(r);if(PAGES.indexOf(r)<0&&!HUB[r]&&!isArt)r="home";var ch=r!==state.route;state.route=r;
+ var page=HUB[r]?"vertical":isArt?"article":r;
+ if(isArt)renderArticle(+r.slice(1));
+ if(HUB[r]){$("vloom").setAttribute("data-focus",r);renderLoom($("vloom"));renderVertical(r)}
+ document.querySelectorAll("[data-page]").forEach(function(p){p.hidden=p.getAttribute("data-page")!==page});
+ document.querySelectorAll("#navlinks a").forEach(function(a){var on=a.getAttribute("data-r")===r;a.classList.toggle("on",on);if(on)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+ renderFocusBar();fillAds();if(ch)window.scrollTo(0,0)}
+window.addEventListener("hashchange",route);
+/* FORMS */
+async function send(kind,data,out){if(!CONFIG.formEndpoint){out.textContent="접수 기능 연결 전입니다. "+CONFIG.contactEmail+" 로 보내주세요.";return false}out.textContent="보내는 중…";
+ try{var r=await fetch(CONFIG.formEndpoint,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(Object.assign({_type:kind},data))});if(!r.ok)throw 0;out.textContent="접수했습니다. 확인 후 연락드리겠습니다.";return true}catch(e){out.textContent="보내지 못했습니다. "+CONFIG.contactEmail+" 로 보내주세요.";return false}}
+function v(id){return $(id).value.trim()}
+function bind(fid,kind,getter,out){var f=$(fid);f.addEventListener("submit",async function(e){e.preventDefault();if(await send(kind,getter(),$(out)))f.reset()})}
+bind("nlform","newsletter",function(){return {email:v("nl-email")}},"nl-out");
+bind("subform","newsletter",function(){return {name:v("s-name"),org:v("s-org"),email:v("s-email"),beta:$("s-beta").checked}},"s-out");
+bind("adform","ad-inquiry",function(){return {name:v("a-name"),org:v("a-org"),email:v("a-email"),product:$("a-prod").value,message:v("a-msg")}},"a-out");
+bind("compose","lounge",function(){return {kind:$("p-kind").value,title:v("p-title"),body:v("p-body"),email:v("p-email"),hub:state.focus||""}},"p-msg");
+/* INIT */
+$("utildate").textContent=BRIEF.dateLabel;
+$("news-date").textContent=BRIEF.dateLabel+" 브리핑 · 기사 "+NEWS.length+"건";
+var src=$("sources");BRIEF.sources.forEach(function(s){src.appendChild(el("li",{text:s}))});
+var evl=$("evlist");EVENTS.forEach(function(x){evl.appendChild(evEl(x))});
+$("budget").addEventListener("input",updateMix);
+buildNav();renderMix();renderPostbuy();renderQuiz();renderAll();route();
+})();
+</script>
+
+
+</body>
+</html>
