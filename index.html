@@ -448,7 +448,7 @@ footer .src li{font-size:12px}
 .vhead .meta b{font-family:var(--mono);color:var(--ink)}
 
 .edview{border-left:4px solid var(--hot);background:var(--band);padding:14px 16px;margin-block:18px;max-width:72ch}
-.edview p{font-size:16px;line-height:1.8;margin-block:6px 8px}
+.edview p{font-size:16px;line-height:1.8;margin-block:6px 8px;white-space:pre-line}
 .edview .who{font-size:12.5px;color:var(--muted);text-decoration:underline}
 .readmore{display:inline-block;font-weight:700;font-size:14px;color:var(--accent);margin-block:4px}
 .colv h1{margin-bottom:8px}
@@ -458,6 +458,25 @@ footer .src li{font-size:12px}
 .colv h2{font-family:var(--serif);font-size:21px;font-weight:800;margin-block:28px 8px}
 .colv p{font-size:16.5px;line-height:1.9;margin-block:10px;max-width:68ch}
 .colv .colnote{margin-top:22px}
+.edbtn{display:inline-flex;align-items:center;gap:4px;border:1.5px dashed var(--accent);color:var(--accent);background:var(--surface);font:700 12.5px var(--sans);padding:4px 10px;margin-top:8px;cursor:pointer}
+.edbtn:hover{background:var(--accent);color:var(--surface)}
+.edbar{position:fixed;left:12px;bottom:12px;z-index:60;background:var(--ink);color:var(--paper);font-size:12.5px;padding:8px 12px;display:flex;gap:10px;align-items:center;max-width:calc(100vw - 24px);box-shadow:0 4px 16px rgba(0,0,0,.25)}
+.edbar button{background:none;border:1px solid currentColor;color:inherit;padding:2px 8px;cursor:pointer;font:inherit}
+#edmodal{border:0;padding:0;width:min(640px,calc(100vw - 32px));max-height:calc(100vh - 32px);background:var(--surface);color:var(--ink)}
+#edmodal::backdrop{background:rgba(0,0,0,.45)}
+#edmodal form{padding:20px;display:flex;flex-direction:column;gap:12px}
+#edmodal h2{font-size:18px}
+#edmodal label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:700}
+#edmodal label.ck{flex-direction:row;align-items:center;gap:8px;font-weight:600}
+#edmodal input[type=text],#edmodal textarea{font:15px/1.6 var(--sans);padding:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);width:100%}
+#edmodal textarea{min-height:80px;resize:vertical}
+#edmodal textarea.big{min-height:220px}
+#edmodal .row{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+#edmodal .msg{font-size:13px;color:var(--muted);min-height:1em}
+.edbody{border-left:3px solid var(--accent);padding-left:16px;margin-block:18px;max-width:68ch}
+.edbody p{font-size:16px;line-height:1.8;margin-block:8px}
+.colbody summary{cursor:pointer;font-weight:700;color:var(--accent);font-size:14px;margin-top:6px}
+.colbody p{font-size:15px;line-height:1.8;margin-block:8px}
 .blograil{display:block;text-decoration:none}
 .blograil b{display:block;font-family:var(--serif);font-size:19px;font-weight:800;margin-top:2px}
 .blograil span{display:block;font-size:13px;color:var(--muted);margin-top:4px}
@@ -882,7 +901,7 @@ footer.aw .legal{margin-top:24px;font-size:12px}
     <div><h4>회사</h4><ul><li><a href="#about">편집인 소개</a></li><li><a href="https://aviationmaniac.tistory.com/" target="_blank" rel="noopener">편집인 블로그 ↗</a></li><li><a href="#partner">광고·미디어킷</a></li><li><a href="#partner">스폰서드 콘텐츠</a></li><li><a href="#partner">보도자료 접수</a></li><li><a href="#privacy">개인정보처리방침</a></li></ul></div>
     <div><h4>이번 브리핑 참고 출처</h4><ul class="src" id="sources"></ul></div>
   </div>
-  <p class="legal">© 2026 MEDIA OUTLOOK 미디어아웃룩 · 브리핑 수치는 각 출처의 공개 발표를 따릅니다. · <a href="#privacy" style="text-decoration:underline">개인정보처리방침</a></p>
+  <p class="legal">© 2026 MEDIA OUTLOOK 미디어아웃룩 · 브리핑 수치는 각 출처의 공개 발표를 따릅니다. · <a href="#privacy" style="text-decoration:underline">개인정보처리방침</a><span id="edlink" hidden> · <a href="#" id="edlogin" style="text-decoration:underline">편집자 로그인</a></span></p>
 </div></footer>
 <script>
 /* =====================================================================
@@ -892,7 +911,8 @@ var CONFIG={
   formEndpoint:"",                    // Formspree 등 폼 수신 주소 (비우면 이메일 안내)
   contactEmail:"contact@mediaoutlook.co.kr", // 문의 받을 이메일
   adsenseClient:"ca-pub-4989379274669737",                  // 구글 애드센스 게시자 ID (예: ca-pub-1234567890123456) — 비우면 기존 광고 자리 안내가 그대로 보입니다
-  adSlots:{rail:"9848043112",infeed:"1305327787"}        // 애드센스 광고 단위 ID — rail: 사이드 300×250, infeed: 피드 인라인
+  adSlots:{rail:"9848043112",infeed:"1305327787"},       // 애드센스 광고 단위 ID — rail: 사이드 300×250, infeed: 피드 인라인
+  firebase:{apiKey:"AIzaSyDU0rIYx-MJ_TeLo6QS-WWulPt6Qjk0u-o",authDomain:"mediaoutlook-34a44.firebaseapp.com",projectId:"mediaoutlook-34a44",appId:"1:471192534116:web:2669a33189a5d634d6b371"} // 편집자 로그인(Firebase) — 비우면 편집 기능이 꺼집니다
 };
 
 /* =====================================================================
@@ -1125,7 +1145,7 @@ function renderVertical(id){var h=HUB[id];if(!h)return;var pm=pairs(),n=NEWS.fil
 
 /* OPINION / DATA / GLOSSARY */
 function renderOpinion(){var n=$("notes");n.textContent="";NOTES.forEach(function(x){n.appendChild(el("article",{class:"note"+(matches(x.h)?"":" dim")},[el("h3",{text:x.t}),el("div",{class:"flow"},[el("span",{text:"변화"}),el("div",{text:x.c}),el("span",{text:"기회"}),el("div",{text:x.o}),el("span",{text:"사업모델"}),el("div",{class:"bm",text:x.m})]),chipsFor(x.h)]))});
- var c=$("columns");c.textContent="";COLUMNS.forEach(function(x,ci){c.appendChild(el("article",{class:"post"+(matches(x.h)?"":" dim")},[el("div",{class:"head"},[el("span",{class:"soon",text:x.body?"칼럼":"연재 예정"}),el("span",{text:"오흥주"+(x.date?" · "+x.date:"")})]),el("h3",{style:"font-family:var(--serif);font-weight:800"},[x.body?el("a",{href:"#c"+ci,text:x.t}):x.t]),el("p",{style:"color:var(--muted);font-size:14px",text:x.d}),x.body?el("a",{href:"#c"+ci,class:"readmore",text:"칼럼 읽기 →"}):null,chipsFor(x.h)]))});
+ var c=$("columns");c.textContent="";COLUMNS.forEach(function(x,ci){c.appendChild(el("article",{class:"post"+(matches(x.h)?"":" dim")},[el("div",{class:"head"},[el("span",{class:"soon",text:x.body?"칼럼":"연재 예정"}),el("span",{text:"오흥주"+(x.date?" · "+x.date:"")})]),el("h3",{style:"font-family:var(--serif);font-weight:800"},[x.body?el("a",{href:"#c"+ci,text:x.t}):x.t]),el("p",{style:"color:var(--muted);font-size:14px",text:x.d}),x.body?el("a",{href:"#c"+ci,class:"readmore",text:"칼럼 읽기 →"}):null,chipsFor(x.h),ED.on?edBtn("c",x):null]))});
  var k=$("skills");k.textContent="";SKILLS.forEach(function(x){k.appendChild(el("button",{type:"button",class:"skill"+(x.vision?" vision":"")+(state.focus===x.h&&!x.vision?" on":""),title:"연결 허브: "+HUB[x.h].name,on:{click:function(){setFocus(state.focus===x.h?null:x.h)}}},[el("span",{class:"en",text:x.k}),el("b",{text:x.n})]))})}
 function renderData(){var s=$("signals");s.textContent="";SIGNALS.forEach(function(x){var e=sigEl(x);if(!matches(x.h))e.classList.add("dim");s.appendChild(e)});
  renderRank($("rank2"));var pm=pairs(),ks=Object.keys(pm).sort(function(a,b){return pm[b]-pm[a]}).slice(0,10),mx=pm[ks[0]]||1,ol=$("pairrank");ol.textContent="";
@@ -1143,7 +1163,7 @@ function renderPostbuy(){var tb=$("postbuy");POSTBUY.forEach(function(r){var a=M
 /* LOUNGE */
 function renderLounge(){var lf=$("loungefilters");lf.querySelectorAll("button").forEach(function(b){b.remove()});lf.appendChild(el("button",{type:"button",class:"chip"+(!state.focus?" on":""),text:"전체",on:{click:function(){setFocus(null)}}}));HUBS.forEach(function(h){lf.appendChild(hubChip(h.id))});
  var f=$("feed");f.textContent="";var list=POSTS.filter(function(p){return matches(p.h)});if(!list.length)f.appendChild(el("p",{class:"empty",text:"이 허브에는 아직 대화가 없습니다. 오른쪽에서 첫 질문을 보내주세요."}));
- list.forEach(function(p){f.appendChild(el("article",{class:"post"},[el("div",{class:"head"},[el("span",{class:"kind",text:p.kind}),el("span",{text:p.who}),el("span",{text:p.when})]),el("h3",{text:p.title}),el("p",{text:p.body}),chipsFor(p.h)]))});
+ list.forEach(function(p){f.appendChild(el("article",{class:"post"},[el("div",{class:"head"},[el("span",{class:"kind",text:p.kind}),el("span",{text:p.who}),el("span",{text:p.when})]),el("h3",{text:p.title}),el("p",{text:p.body}),chipsFor(p.h),ED.on?edBtn("p",p):null]))});
  var r=$("rooms");r.textContent="";HUBS.forEach(function(h){var n=POSTS.filter(function(p){return p.h.indexOf(h.id)>=0}).length,nn=NEWS.filter(function(x){return x.h.indexOf(h.id)>=0}).length;r.appendChild(el("button",{type:"button",on:{click:function(){setFocus(h.id)}}},[el("b",{style:"display:flex;align-items:center;gap:8px;font-weight:500"},[el("span",{class:"dot",style:"background:"+col(h.id)}),h.name]),el("span",{text:"대화 "+n+" · 뉴스 "+nn})]))})}
 /* SEARCH */
 function renderSearch(){var q=state.q.toLowerCase(),R=$("sresults");R.textContent="";$("sq-title").textContent="‘"+state.q+"’ 검색 결과";if(!q)return;
@@ -1179,7 +1199,8 @@ function renderArticle(i){var n=NEWS[i],V=$("artview"),R=$("artrel");V.textConte
  V.appendChild(el("h1",{text:n.t}));V.appendChild(byline(n));
  var a=art(n);a.removeAttribute("href");V.appendChild(a);
  V.appendChild(el("p",{class:"lede",text:n.d}));
- if(n.v)V.appendChild(el("div",{class:"edview"},[el("div",{class:"eyebrow",text:"편집인 시각 · 오흥주"}),el("p",{text:n.v}),el("a",{href:"#about",class:"who",text:"30년 광고·미디어 현장(대행사 바이어 → 매체사 마케팅본부장)의 관점 →"})]));
+ if(n.v||ED.on)V.appendChild(el("div",{class:"edview"},[el("div",{class:"eyebrow",text:"Editor · 오흥주"}),el("p",{text:n.v||"(아직 Editor 코멘트가 없습니다)"}),ED.on?edBtn("n",n):null,el("a",{href:"#about",class:"who",text:"30년 광고·미디어 현장(대행사 바이어 → 매체사 마케팅본부장)의 관점 →"})]));
+ if(n.body){var bx=el("div",{class:"edbody"},[el("div",{class:"eyebrow",text:"편집인 추가 노트"})]);paras(n.body).forEach(function(t){bx.appendChild(el("p",{text:t}))});V.appendChild(bx)}
  V.appendChild(chipsFor(n.h));
  var box=el("div",{class:"srcbox"},[el("b",{text:"원문 기사"+(src?" · "+src:"")}),
   el("div",{class:"row2"},[n.u?el("a",{href:n.u,target:"_blank",rel:"noopener",class:"btn",text:"원문 기사 열기 →"}):null,
@@ -1197,6 +1218,7 @@ function renderColumn(i){var x=COLUMNS[i],V=$("colview"),R=$("colrel");V.textCon
  V.appendChild(el("div",{class:"eyebrow",style:"margin-top:12px",text:"편집인 칼럼"}));
  V.appendChild(el("h1",{text:x.t}));
  V.appendChild(el("p",{class:"coldek",text:x.d}));
+ if(ED.on)V.appendChild(edBtn("c",x));
  V.appendChild(el("div",{class:"colby"},[el("b",{text:"오흥주"}),el("span",{text:"MEDIA OUTLOOK 편집인 · 광고·미디어 30년"+(x.date?" · "+x.date:"")})]));
  x.body.split(/\n\s*\n/).forEach(function(t){t=t.trim();if(!t)return;if(t.indexOf("## ")===0)V.appendChild(el("h2",{text:t.slice(3)}));else V.appendChild(el("p",{text:t}))});
  V.appendChild(chipsFor(x.h));
@@ -1224,6 +1246,49 @@ bind("nlform","newsletter",function(){return {email:v("nl-email")}},"nl-out");
 bind("subform","newsletter",function(){return {name:v("s-name"),org:v("s-org"),email:v("s-email"),beta:$("s-beta").checked}},"s-out");
 bind("adform","ad-inquiry",function(){return {name:v("a-name"),org:v("a-org"),email:v("a-email"),product:$("a-prod").value,message:v("a-msg")}},"a-out");
 bind("compose","lounge",function(){return {kind:$("p-kind").value,title:v("p-title"),body:v("p-body"),email:v("p-email"),hub:state.focus||""}},"p-msg");
+/* EDITOR — 편집자 전용 수정 (Firebase 구글 로그인 · 보안 규칙으로 편집자 계정만 저장 가능) */
+var ED={on:false,data:{},user:null};
+function paras(t){return String(t).split(/\n\s*\n/).map(function(x){return x.trim()}).filter(Boolean)}
+function hk(t){var h=0;for(var i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))|0;return (h>>>0).toString(36)}
+function cl(o){return JSON.parse(JSON.stringify(o))}
+var ORIG={n:NEWS.map(cl),c:COLUMNS.map(cl),p:POSTS.map(cl)};
+ORIG.n.forEach(function(x){x.k="n_"+hk(x.t)});ORIG.c.forEach(function(x){x.k="c_"+hk(x.t)});ORIG.p.forEach(function(x){x.k="p_"+hk(x.title)});
+var EDF={n:[["v","Editor 코멘트 (빈 줄로 문단 구분)","big"]],
+ c:[["t","제목"],["d","소개","t"],["body","칼럼 본문 (빈 줄로 문단 구분 · ## 로 시작하면 소제목)","big"]],
+ p:[["title","제목"],["body","내용","big"]]};
+function merged(type,k){var o=ORIG[type].filter(function(x){return x.k===k})[0];if(!o)return null;var x=cl(o),e=ED.data[k]||{};for(var f in e)if(f!=="hide")x[f]=e[f];x.hide=!!e.hide;return x}
+function applyEdits(){function build(arr,type,tf){arr.length=0;ORIG[type].forEach(function(o){var x=merged(type,o.k);if(x.hide){if(!ED.on)return;x[tf]="[숨김] "+x[tf]}delete x.hide;arr.push(x)})}
+ build(NEWS,"n","t");NEWS.forEach(function(n,i){n.i=i});build(COLUMNS,"c","t");build(POSTS,"p","title")}
+function edRefresh(){applyEdits();renderAll();if(/^a\d+$/.test(state.route))renderArticle(+state.route.slice(1));if(/^c\d+$/.test(state.route))renderColumn(+state.route.slice(1));$("news-date").textContent=BRIEF.dateLabel+" 브리핑 · 기사 "+NEWS.length+"건"}
+function fbOn(){var c=CONFIG.firebase;return !!(c&&c.apiKey&&c.projectId)}
+function loadEdits(){if(!fbOn())return Promise.resolve();var c=CONFIG.firebase;
+ return fetch("https://firestore.googleapis.com/v1/projects/"+c.projectId+"/databases/(default)/documents/edits?pageSize=300&key="+c.apiKey).then(function(r){return r.json()}).then(function(j){var d={};
+  (j.documents||[]).forEach(function(doc){var id=doc.name.split("/").pop(),f=doc.fields||{},o={};for(var k in f){var v=f[k];if("stringValue" in v)o[k]=v.stringValue;else if("booleanValue" in v)o[k]=v.booleanValue}d[id]=o});
+  ED.data=d;edRefresh()}).catch(function(){})}
+var FB="https://www.gstatic.com/firebasejs/10.12.2/",fbP=null;
+function lsrc(u){return new Promise(function(res,rej){var x=document.createElement("script");x.src=u;x.onload=res;x.onerror=rej;document.head.appendChild(x)})}
+function fbReady(){if(!fbP)fbP=lsrc(FB+"firebase-app-compat.js").then(function(){return Promise.all([lsrc(FB+"firebase-auth-compat.js"),lsrc(FB+"firebase-firestore-compat.js")])}).then(function(){firebase.initializeApp(CONFIG.firebase)});return fbP}
+function edCheck(u){return firebase.firestore().collection("admin").doc("check").get().then(function(){ED.on=true;ED.user=u;try{localStorage.setItem("mo-ed","1")}catch(e){}edBar();return loadEdits().then(edRefresh)},function(){alert("편집자 계정이 아닙니다. 등록된 편집자 구글 계정으로 로그인해 주세요.");firebase.auth().signOut();try{localStorage.removeItem("mo-ed")}catch(e){}})}
+function edLogin(){fbReady().then(function(){var a=firebase.auth();if(a.currentUser)return edCheck(a.currentUser);return a.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(function(r){return edCheck(r.user)})}).catch(function(e){if(e&&e.code!=="auth/popup-closed-by-user"&&e.code!=="auth/cancelled-popup-request")alert("로그인하지 못했습니다: "+((e&&e.message)||e))})}
+function edLogout(){document.querySelectorAll(".edbtn").forEach(function(b){b.remove()});firebase.auth().signOut();ED.on=false;ED.user=null;try{localStorage.removeItem("mo-ed")}catch(e){}var b=$("edbar");if(b)b.remove();$("edlink").hidden=false;edRefresh()}
+function edBar(){$("edlink").hidden=true;if($("edbar"))return;document.body.appendChild(el("div",{class:"edbar",id:"edbar"},[el("b",{text:"✎ 편집자 모드"}),el("span",{text:(ED.user&&ED.user.email)||""}),el("button",{type:"button",text:"로그아웃",on:{click:edLogout}})]))}
+function edBtn(type,x){return el("button",{type:"button",class:"edbtn",on:{click:function(){edOpen(type,x.k)}}},[type==="n"?"✎ Editor 수정":"✎ 이 글 수정"])}
+function edOpen(type,k){var x=merged(type,k);if(!x)return;var d=$("edmodal");if(d)d.remove();var ins={};
+ var f=el("form",{method:"dialog"},[el("h2",{text:type==="n"?"Editor 수정 — "+x.t:"글 수정 — 편집자 전용"})]);
+ EDF[type].forEach(function(fd){var i=fd[2]?el("textarea",{class:fd[2]==="big"?"big":""}):el("input",{type:"text"});i.value=x[fd[0]]||"";ins[fd[0]]=i;f.appendChild(el("label",{},[fd[1],i]))});
+ var hide=el("input",{type:"checkbox"});hide.checked=x.hide;if(type!=="n")f.appendChild(el("label",{class:"ck"},[hide,"이 글 숨기기 (방문자에게 보이지 않음)"]));
+ var msg=el("p",{class:"msg"}),sv=el("button",{type:"submit",class:"btn",text:"저장"});
+ var rs=el("button",{type:"button",class:"btn-line",text:"원래대로",on:{click:function(){if(!confirm("수정 내용을 지우고 원래 글로 되돌릴까요?"))return;msg.textContent="되돌리는 중…";firebase.firestore().collection("edits").doc(k).delete().then(function(){delete ED.data[k];d.close();edRefresh()},function(e){msg.textContent="실패: "+e.message})}}});
+ f.appendChild(msg);f.appendChild(el("div",{class:"row"},[rs,el("button",{type:"button",class:"btn-line",text:"취소",on:{click:function(){d.close()}}}),sv]));
+ f.addEventListener("submit",function(e){e.preventDefault();var o={hide:hide.checked};for(var key in ins)o[key]=ins[key].value.trim();
+  if(o.u&&!/^https?:\/\//i.test(o.u)){msg.textContent="원문 URL은 http:// 또는 https:// 로 시작해야 합니다.";return}
+  if(type!=="n"&&!(o.t||o.title)){msg.textContent="제목을 비울 수 없습니다.";return}
+  sv.disabled=true;msg.textContent="저장 중…";var w=cl(o);w.at=firebase.firestore.FieldValue.serverTimestamp();
+  firebase.firestore().collection("edits").doc(k).set(w).then(function(){ED.data[k]=o;d.close();edRefresh()},function(e){sv.disabled=false;msg.textContent="저장하지 못했습니다(편집자 권한 확인): "+e.message})});
+ d=el("dialog",{id:"edmodal"},[f]);document.body.appendChild(d);d.showModal()}
+function edInit(){if(!fbOn())return;$("edlink").hidden=false;$("edlogin").addEventListener("click",function(e){e.preventDefault();edLogin()});loadEdits();
+ var was=false;try{was=localStorage.getItem("mo-ed")==="1"}catch(e){}
+ if(was)fbReady().then(function(){var un=firebase.auth().onAuthStateChanged(function(u){un();if(u)edCheck(u)})}).catch(function(){})}
 /* INIT */
 $("utildate").textContent=BRIEF.dateLabel;
 $("privmail").textContent=CONFIG.contactEmail;
@@ -1231,7 +1296,7 @@ $("news-date").textContent=BRIEF.dateLabel+" 브리핑 · 기사 "+NEWS.length+"
 var src=$("sources");BRIEF.sources.forEach(function(s){src.appendChild(el("li",{text:s}))});
 var evl=$("evlist");EVENTS.forEach(function(x){evl.appendChild(evEl(x))});
 $("budget").addEventListener("input",updateMix);
-buildNav();renderMix();renderPostbuy();renderQuiz();renderAll();route();
+buildNav();renderMix();renderPostbuy();renderQuiz();renderAll();route();edInit();
 })();
 </script>
 
