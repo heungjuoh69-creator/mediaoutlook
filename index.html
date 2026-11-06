@@ -1236,7 +1236,7 @@ function renderArticle(i){var n=NEWS[i],V=$("artview"),R=$("artrel");V.textConte
  V.appendChild(el("h1",{text:n.t}));V.appendChild(byline(n));
  var a=art(n);a.removeAttribute("href");V.appendChild(a);
  V.appendChild(el("p",{class:"lede",text:n.d}));
- if(n.v||ED.on)V.appendChild(el("div",{class:"edview"},[el("div",{class:"eyebrow",text:"Editor · 오흥주"}),el("p",{text:n.v||"(아직 Editor 코멘트가 없습니다)"}),ED.on?edBtn("n",n):null,el("a",{href:"#about",class:"who",text:"30년 광고·미디어 현장(대행사 바이어 → 매체사 마케팅본부장)의 관점 →"})]));
+ if(n.v||ED.on)V.appendChild(el("div",{class:"edview"},[el("div",{class:"eyebrow",text:"Editor · 오흥주"}),el("p",{text:n.v||"(아직 Editor 코멘트가 없습니다)"}),ED.on?edBtn("n",n):null]));
  if(n.body){var bx=el("div",{class:"edbody"},[el("div",{class:"eyebrow",text:"편집인 추가 노트"})]);paras(n.body).forEach(function(t){bx.appendChild(el("p",{text:t}))});V.appendChild(bx)}
  V.appendChild(chipsFor(n.h));
  var box=el("div",{class:"srcbox"},[el("b",{text:"원문 기사"+(src?" · "+src:"")}),
