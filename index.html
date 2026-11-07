@@ -476,7 +476,9 @@ footer .src li{font-size:12px}
 .agrp{display:flex;align-items:center;gap:6px;font-weight:800;font-size:14px;margin:16px 0 6px}
 .aitem{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;border-bottom:1px solid var(--line);padding-block:12px}
 .arank{font-family:var(--serif);font-size:24px;font-weight:800;color:var(--hot);line-height:1}
-.ameta{font-size:12px;color:var(--muted)}
+.ameta{font-size:12px;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.acat{border:1px solid var(--c);color:var(--c);padding:0 6px;font-weight:700}
+.aviews{color:var(--ink)}
 .aitem h3{font-size:17px;margin-block:4px}
 .aitem .ad{font-size:14.5px;line-height:1.7;color:var(--muted)}
 .aitem details summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--hot);margin-top:6px}
@@ -853,7 +855,7 @@ footer.aw .legal{margin-top:24px;font-size:12px}
 
   <!-- ================= ARCHIVE ================= -->
   <section class="page" data-page="archive" hidden>
-    <div class="pagetitle"><div class="eyebrow">Weekly Top 10%</div><h1>주간 인기 아카이브</h1><p>한 주 동안 올라온 기사 가운데 독자 조회수 상위 10%만 골라 차곡차곡 쌓아 둡니다. 매주 월요일 지난주 목록이 확정되고, 이번 주는 실시간 순위로 보여드립니다.</p></div>
+    <div class="pagetitle"><div class="eyebrow">Weekly Top 10%</div><h1>주간 인기 아카이브</h1><p>한 주 동안 올라온 기사 가운데 독자 조회수 상위 10%만 골라 차곡차곡 쌓아 둡니다. 순위는 한 주(월~일) 동안 쌓인 누적 조회수로 매기며, 다음 월요일 새벽 2시에 집계를 마감합니다. 이번 주는 실시간 순위로 보여드립니다.</p></div>
     <div id="archview"><p class="empty">불러오는 중…</p></div>
   </section>
 
@@ -1403,26 +1405,26 @@ function isoOfLabel(l){var m=/(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일/.exec(l||
 var TODAY=isoOfLabel(BRIEF.dateLabel);
 function weekOf(iso){var d=new Date(iso+"T00:00:00Z"),day=(d.getUTCDay()+6)%7;return new Date(d.getTime()-day*864e5).toISOString().slice(0,10)}
 function wkEnd(mon){return new Date(new Date(mon+"T00:00:00Z").getTime()+6*864e5).toISOString().slice(0,10)}
+function wkCut(mon){return Date.parse(new Date(new Date(mon+"T00:00:00Z").getTime()+7*864e5).toISOString().slice(0,10)+"T02:00:00+09:00")}
 function md(iso){var p=iso.split("-");return (+p[1])+"월 "+(+p[2])+"일"}
 function nkey(x){return x.k||("n_"+hk(x.t))}
 function fsBase(){var c=CONFIG.firebase;return "https://firestore.googleapis.com/v1/projects/"+c.projectId+"/databases/(default)/documents"}
 function fsVal(v){if("stringValue" in v)return v.stringValue;if("integerValue" in v)return +v.integerValue;if("doubleValue" in v)return v.doubleValue;if("booleanValue" in v)return v.booleanValue;if("arrayValue" in v)return (v.arrayValue.values||[]).map(fsVal);return null}
 function fsList(col,mask){var out=[],c=CONFIG.firebase;function pg(tok){return fetch(fsBase()+"/"+col+"?pageSize=1000"+(mask||"")+"&key="+c.apiKey+(tok?"&pageToken="+encodeURIComponent(tok):"")).then(function(r){return r.json()}).then(function(j){(j.documents||[]).forEach(function(d){var o={_id:d.name.split("/").pop()},f=d.fields||{};for(var k in f)o[k]=fsVal(f[k]);out.push(o)});return j.nextPageToken?pg(j.nextPageToken):out})}return pg()}
-function countView(n){if(!fbOn()||!n)return;var k=nkey(n),lk="mo-v-"+k+"-"+TODAY;try{if(localStorage.getItem(lk))return;localStorage.setItem(lk,"1")}catch(e){}
+function countView(n){if(!fbOn()||!n)return;if(Date.now()>=wkCut(weekOf(n.date||TODAY)))return;var k=nkey(n),lk="mo-v-"+k+"-"+TODAY;try{if(localStorage.getItem(lk))return;localStorage.setItem(lk,"1")}catch(e){}
  var c=CONFIG.firebase;fetch("https://firestore.googleapis.com/v1/projects/"+c.projectId+"/databases/(default)/documents:commit?key="+c.apiKey,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({writes:[{transform:{document:"projects/"+c.projectId+"/databases/(default)/documents/views/"+k,fieldTransforms:[{fieldPath:"n",increment:{integerValue:"1"}}]}}]})}).then(function(){VIEWS[k]=(VIEWS[k]||0)+1}).catch(function(){})}
 function archLoad(force){if(!fbOn())return Promise.resolve();if(archP&&!force)return archP;
  archP=Promise.all([fsList("views","&mask.fieldPaths=n").then(function(a){VIEWS={};a.forEach(function(o){VIEWS[o._id]=o.n||0})}),fsList("archive").then(function(a){ARCH=a})]).catch(function(){});return archP}
 function candidates(){var seen={},out=[];POOL.concat(NEWS.map(function(n){var x=cl(n);x.date=x.date||TODAY;return x})).forEach(function(x){if(!x||!x.t)return;var k=nkey(x);if(seen[k])return;seen[k]=1;var e=ED.data[k]||{};if(e.hide)return;var y=cl(x);for(var f in e)if(f!=="hide")y[f]=e[f];y.k=k;y.date=y.date||TODAY;y.views=VIEWS[k]||0;out.push(y)});return out}
-function topTen(items){var a=items.slice().sort(function(p,q){return q.views-p.views||(p.hot||9)-(q.hot||9)});return a.slice(0,Math.max(1,Math.ceil(a.length*0.1)))}
+function rankSort(a){return a.sort(function(p,q){return (q.views||0)-(p.views||0)||(p.hot||9)-(q.hot||9)||(q.date>p.date?1:q.date<p.date?-1:0)})}
+function topTen(items){var a=rankSort(items.slice());return a.slice(0,Math.max(1,Math.ceil(a.length*0.1)))}
 function weeksLive(){var W={};candidates().forEach(function(x){var w=weekOf(x.date);(W[w]=W[w]||[]).push(x)});return W}
 function archFinalize(){if(!ED.on||!fbOn())return;return archLoad(true).then(function(){var done={};ARCH.forEach(function(a){done[a.week]=1});var W=weeksLive(),db=firebase.firestore(),b=db.batch(),n=0;
- Object.keys(W).forEach(function(w){if(done[w]||wkEnd(w)>=TODAY)return;topTen(W[w]).forEach(function(x){b.set(db.collection("archive").doc(w+"_"+x.k),{week:w,k:x.k,t:x.t,d:x.d||"",v:x.v||"",u:x.u||"",h:x.h||[],cat:x.cat||"",date:x.date,views:x.views,at:firebase.firestore.FieldValue.serverTimestamp()});n++})});
+ Object.keys(W).forEach(function(w){if(done[w]||Date.now()<wkCut(w))return;topTen(W[w]).forEach(function(x){b.set(db.collection("archive").doc(w+"_"+x.k),{week:w,k:x.k,t:x.t,d:x.d||"",v:x.v||"",u:x.u||"",h:x.h||[],cat:x.cat||"",date:x.date,views:x.views,at:firebase.firestore.FieldValue.serverTimestamp()});n++})});
  if(n)return b.commit().then(function(){return archLoad(true)}).then(function(){if(state.route==="archive")renderArchive()})}).catch(function(){})}
-function archItem(x,rank){var b=el("article",{class:"aitem"},[el("div",{class:"arank",text:String(rank)}),el("div",{},[el("div",{class:"ameta",text:md(x.date)+" · "+(x.cat||"")+" · 조회 "+(x.views||0)}),el("h3",{text:x.t}),el("p",{class:"ad",text:x.d||""}),x.v?el("details",{},[el("summary",{text:"Editor 코멘트"}),el("p",{class:"av2",text:x.v})]):null,x.u?el("a",{href:x.u,target:"_blank",rel:"noopener",class:"btn-line",text:"원문 기사 →"}):null])]);return b}
-function archWeek(w,items,live){var box=el("section",{class:"aweek"},[el("div",{class:"awhd"},[el("h2",{text:md(w)+" ~ "+md(wkEnd(w))}),el("span",{class:"abadge"+(live?" live":""),text:live?"실시간 집계 중":"확정 · 조회수 상위 10%"})])]);
- var G={};items.forEach(function(x){var h=(x.h&&x.h[0])||"etc";(G[h]=G[h]||[]).push(x)});var r=0;
- var rk={};items.slice().sort(function(p,q){return q.views-p.views}).forEach(function(x,i){rk[x.k]=i+1});
- HUBS.concat([{id:"etc",name:"기타"}]).forEach(function(h){if(!G[h.id])return;box.appendChild(el("div",{class:"agrp"},[el("span",{class:"dot",style:h.c?"background:"+col(h.id):""}),h.name]));G[h.id].sort(function(p,q){return q.views-p.views}).forEach(function(x){box.appendChild(archItem(x,rk[x.k]||++r))})});return box}
+function archItem(x,rank){var b=el("article",{class:"aitem"},[el("div",{class:"arank",text:String(rank)}),el("div",{},[el("div",{class:"ameta"},[x.h&&x.h[0]&&HUB[x.h[0]]?el("span",{class:"acat",style:"--c:"+col(x.h[0])},[HUB[x.h[0]].name]):null,el("b",{class:"aviews",text:"조회 "+(x.views||0).toLocaleString()}),el("span",{text:md(x.date)+(x.cat?" · "+x.cat:"")})]),el("h3",{text:x.t}),el("p",{class:"ad",text:x.d||""}),x.v?el("details",{},[el("summary",{text:"Editor 코멘트"}),el("p",{class:"av2",text:x.v})]):null,x.u?el("a",{href:x.u,target:"_blank",rel:"noopener",class:"btn-line",text:"원문 기사 →"}):null])]);return b}
+function archWeek(w,items,live){var box=el("section",{class:"aweek"},[el("div",{class:"awhd"},[el("h2",{text:md(w)+" ~ "+md(wkEnd(w))}),el("span",{class:"abadge"+(live?" live":""),text:live?(Date.now()>=wkCut(w)?"집계 마감 · 확정 대기":"실시간 집계 중 · 다음 월요일 02:00 마감"):"확정 · 조회수 상위 10%"})])]);
+ rankSort(items.slice()).forEach(function(x,i){box.appendChild(archItem(x,i+1))});return box}
 function renderArchive(){var V=$("archview");if(!fbOn()){V.textContent="";V.appendChild(el("p",{class:"empty",text:"조회수 집계 설정 전입니다."}));return}
  archLoad().then(function(){V.textContent="";var conf={};ARCH.forEach(function(a){(conf[a.week]=conf[a.week]||[]).push(a)});var W=weeksLive(),weeks={};Object.keys(conf).forEach(function(w){weeks[w]=1});Object.keys(W).forEach(function(w){weeks[w]=1});
   var ks=Object.keys(weeks).sort().reverse();if(!ks.length){V.appendChild(el("p",{class:"empty",text:"아직 쌓인 기사가 없습니다."}));return}
