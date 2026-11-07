@@ -482,6 +482,16 @@ footer .src li{font-size:12px}
 .aitem details summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--hot);margin-top:6px}
 .aitem .av2{font-size:14.5px;line-height:1.75;white-space:pre-line;margin-top:4px}
 .aitem .btn-line{margin-top:8px;font-size:13px;padding:5px 10px}
+#submodal{border:0;padding:0;width:min(900px,calc(100vw - 24px));max-height:calc(100vh - 24px);background:var(--surface);color:var(--ink)}
+#submodal::backdrop{background:rgba(0,0,0,.45)}
+.subwrap{padding:18px}
+.subhd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.subhd h2{font-size:19px}
+.subbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.subtbl{overflow:auto;max-height:60vh;border:1px solid var(--line)}
+.subtbl table{width:100%;border-collapse:collapse;font-size:13px}
+.subtbl th,.subtbl td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+.subtbl th{background:var(--band);position:sticky;top:0}
 .readmore{display:inline-block;font-weight:700;font-size:14px;color:var(--accent);margin-block:4px}
 .colv h1{margin-bottom:8px}
 .colv .coldek{font-size:17px;color:var(--muted);margin-block:4px 14px}
@@ -1327,7 +1337,15 @@ function route(){var r=(location.hash||"#home").slice(1);var isArt=/^a\d+$/.test
  renderFocusBar();fillAds();if(ch)window.scrollTo(0,0)}
 window.addEventListener("hashchange",route);
 /* FORMS */
-async function send(kind,data,out){if(!CONFIG.formEndpoint){out.textContent="접수 기능 연결 전입니다. "+CONFIG.contactEmail+" 로 보내주세요.";return false}out.textContent="보내는 중…";
+async function subSave(d,out){var c=CONFIG.firebase,em=(d.email||"").trim().toLowerCase();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)||em.length>200){out.textContent="이메일 주소를 확인해 주세요.";return false}
+ out.textContent="등록 중…";var id="s_"+hk(em),base="projects/"+c.projectId+"/databases/(default)/documents";
+ var f={email:{stringValue:em},name:{stringValue:String(d.name||"").slice(0,100)},org:{stringValue:String(d.org||"").slice(0,100)},beta:{booleanValue:!!d.beta},src:{stringValue:d.name!==undefined?"구독 페이지":"홈 사이드"}};
+ try{var r=await fetch("https://firestore.googleapis.com/v1/"+base+":commit?key="+c.apiKey,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({writes:[{update:{name:base+"/subscribers/"+id,fields:f},currentDocument:{exists:false},updateTransforms:[{fieldPath:"at",setToServerValue:"REQUEST_TIME"}]}]})});
+  if(r.ok){out.textContent="구독 신청이 접수됐습니다. 감사합니다!";return true}
+  var j={};try{j=await r.json()}catch(e){}var st=(j.error&&j.error.status)||"";
+  if(st==="PERMISSION_DENIED"||st==="ALREADY_EXISTS"||st==="FAILED_PRECONDITION"){out.textContent="이미 구독 중인 이메일입니다.";return true}
+  throw 0}catch(e){out.textContent="등록하지 못했습니다. 잠시 후 다시 시도하거나 "+CONFIG.contactEmail+" 로 보내주세요.";return false}}
+async function send(kind,data,out){if(kind==="newsletter"&&fbOn())return subSave(data,out);if(!CONFIG.formEndpoint){out.textContent="접수 기능 연결 전입니다. "+CONFIG.contactEmail+" 로 보내주세요.";return false}out.textContent="보내는 중…";
  try{var r=await fetch(CONFIG.formEndpoint,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(Object.assign({_type:kind},data))});if(!r.ok)throw 0;out.textContent="접수했습니다. 확인 후 연락드리겠습니다.";return true}catch(e){out.textContent="보내지 못했습니다. "+CONFIG.contactEmail+" 로 보내주세요.";return false}}
 function v(id){return $(id).value.trim()}
 function bind(fid,kind,getter,out){var f=$(fid);f.addEventListener("submit",async function(e){e.preventDefault();if(await send(kind,getter(),$(out)))f.reset()})}
@@ -1361,7 +1379,7 @@ function fbReady(){if(!fbP)fbP=lsrc(FB+"firebase-app-compat.js").then(function()
 function edCheck(u){return firebase.firestore().collection("admin").doc("check").get().then(function(){ED.on=true;ED.user=u;try{localStorage.setItem("mo-ed","1")}catch(e){}edBar();return loadEdits().then(edRefresh).then(archFinalize)},function(){alert("편집자 계정이 아닙니다. 등록된 편집자 구글 계정으로 로그인해 주세요.");firebase.auth().signOut();try{localStorage.removeItem("mo-ed")}catch(e){}})}
 function edLogin(){fbReady().then(function(){var a=firebase.auth();if(a.currentUser)return edCheck(a.currentUser);return a.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(function(r){return edCheck(r.user)})}).catch(function(e){if(e&&e.code!=="auth/popup-closed-by-user"&&e.code!=="auth/cancelled-popup-request")alert("로그인하지 못했습니다: "+((e&&e.message)||e))})}
 function edLogout(){document.querySelectorAll(".edbtn").forEach(function(b){b.remove()});firebase.auth().signOut();ED.on=false;ED.user=null;try{localStorage.removeItem("mo-ed")}catch(e){}var b=$("edbar");if(b)b.remove();$("edlink").hidden=false;edRefresh()}
-function edBar(){$("edlink").hidden=true;if($("edbar"))return;document.body.appendChild(el("div",{class:"edbar",id:"edbar"},[el("b",{text:"✎ 편집자 모드"}),el("span",{text:(ED.user&&ED.user.email)||""}),el("button",{type:"button",text:"로그아웃",on:{click:edLogout}})]))}
+function edBar(){$("edlink").hidden=true;if($("edbar"))return;document.body.appendChild(el("div",{class:"edbar",id:"edbar"},[el("b",{text:"✎ 편집자 모드"}),el("span",{text:(ED.user&&ED.user.email)||""}),el("button",{type:"button",text:"구독자 명단",on:{click:subOpen}}),el("button",{type:"button",text:"로그아웃",on:{click:edLogout}})]))}
 function edBtn(type,x){return el("button",{type:"button",class:"edbtn",on:{click:function(){edOpen(type,x.k)}}},[type==="n"?"✎ Editor 수정":type==="o"?"✎ 견해 쓰기·수정":"✎ 이 글 수정"])}
 function edOpen(type,k){var x=merged(type,k);if(!x)return;var d=$("edmodal");if(d)d.remove();var ins={};
  var f=el("form",{method:"dialog"},[el("h2",{text:type==="n"?"Editor 수정 — "+x.t:"글 수정 — 편집자 전용"})]);
@@ -1409,6 +1427,17 @@ function renderArchive(){var V=$("archview");if(!fbOn()){V.textContent="";V.appe
  archLoad().then(function(){V.textContent="";var conf={};ARCH.forEach(function(a){(conf[a.week]=conf[a.week]||[]).push(a)});var W=weeksLive(),weeks={};Object.keys(conf).forEach(function(w){weeks[w]=1});Object.keys(W).forEach(function(w){weeks[w]=1});
   var ks=Object.keys(weeks).sort().reverse();if(!ks.length){V.appendChild(el("p",{class:"empty",text:"아직 쌓인 기사가 없습니다."}));return}
   ks.forEach(function(w){if(conf[w])V.appendChild(archWeek(w,conf[w],false));else V.appendChild(archWeek(w,topTen(W[w]),true))})})}
+/* SUBSCRIBERS — 편집자 전용 구독자 명단 */
+function subOpen(){var d=$("submodal");if(d)d.remove();var body=el("div",{class:"subbody"},[el("p",{text:"불러오는 중…"})]);
+ d=el("dialog",{id:"submodal"},[el("div",{class:"subwrap"},[el("div",{class:"subhd"},[el("h2",{text:"구독자 명단"}),el("button",{type:"button",class:"btn-line",text:"닫기",on:{click:function(){d.close()}}})]),body])]);document.body.appendChild(d);d.showModal();
+ firebase.firestore().collection("subscribers").get().then(function(q){var rows=[];q.forEach(function(doc){var x=doc.data(),t=x.at&&x.at.toDate?x.at.toDate():null;rows.push({id:doc.id,name:x.name||"",org:x.org||"",email:x.email||"",beta:x.beta?"예":"",src:x.src||"",at:t?t.toISOString().slice(0,16).replace("T"," "):""})});
+  rows.sort(function(a,b){return a.at<b.at?1:-1});body.textContent="";
+  var csv=function(){var h="신청일시,이름,소속,이메일,베타신청,경로\n"+rows.map(function(r){return [r.at,r.name,r.org,r.email,r.beta,r.src].map(function(v){return '"'+String(v).replace(/"/g,'""')+'"'}).join(",")}).join("\n");var b=new Blob(["﻿"+h],{type:"text/csv;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="mediaoutlook-subscribers-"+TODAY+".csv";a.click()};
+  body.appendChild(el("div",{class:"subbar"},[el("b",{text:"총 "+rows.length+"명"}),rows.length?el("button",{type:"button",class:"btn",text:"엑셀(CSV) 내려받기",on:{click:csv}}):null]));
+  if(!rows.length){body.appendChild(el("p",{class:"empty",text:"아직 구독 신청이 없습니다."}));return}
+  var tb=el("tbody");rows.forEach(function(r){tb.appendChild(el("tr",{},[el("td",{text:r.at}),el("td",{text:r.name}),el("td",{text:r.org}),el("td",{text:r.email}),el("td",{text:r.beta}),el("td",{text:r.src})]))});
+  body.appendChild(el("div",{class:"subtbl"},[el("table",{},[el("thead",{},[el("tr",{},["신청일시","이름","소속","이메일","베타","경로"].map(function(h){return el("th",{text:h})}))]),tb])]))},
+ function(e){body.textContent="";body.appendChild(el("p",{class:"empty",text:"불러오지 못했습니다. Firebase 규칙에 subscribers 항목이 있는지 확인해 주세요. ("+(e&&e.code||e)+")"}))})}
 /* INIT */
 $("utildate").textContent=BRIEF.dateLabel;
 $("privmail").textContent=CONFIG.contactEmail;
