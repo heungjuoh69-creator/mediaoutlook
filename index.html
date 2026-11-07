@@ -502,7 +502,7 @@ footer .src li{font-size:12px}
 .colv h2{font-family:var(--serif);font-size:21px;font-weight:800;margin-block:28px 8px}
 .colv p{font-size:16.5px;line-height:1.9;margin-block:10px;max-width:68ch}
 .colv .colnote{margin-top:22px}
-.edbtn{display:inline-flex;align-items:center;gap:4px;border:1.5px dashed var(--accent);color:var(--accent);background:var(--surface);font:700 12.5px var(--sans);padding:4px 10px;margin-top:8px;cursor:pointer}
+.edbtn{align-self:flex-start;width:auto;display:inline-flex;align-items:center;gap:4px;border:1.5px dashed var(--accent);color:var(--accent);background:var(--surface);font:700 12.5px var(--sans);padding:4px 10px;margin-top:8px;cursor:pointer}
 .edbtn:hover{background:var(--accent);color:var(--surface)}
 .edbar{position:fixed;left:12px;bottom:12px;z-index:60;background:var(--ink);color:var(--paper);font-size:12.5px;padding:8px 12px;display:flex;gap:10px;align-items:center;max-width:calc(100vw - 24px);box-shadow:0 4px 16px rgba(0,0,0,.25)}
 .edbar button{background:none;border:1px solid currentColor;color:inherit;padding:2px 8px;cursor:pointer;font:inherit}
@@ -1239,7 +1239,7 @@ function renderPostbuy(){var tb=$("postbuy");POSTBUY.forEach(function(r){var a=M
 /* LOUNGE */
 function renderLounge(){var lf=$("loungefilters");lf.querySelectorAll("button").forEach(function(b){b.remove()});lf.appendChild(el("button",{type:"button",class:"chip"+(!state.focus?" on":""),text:"전체",on:{click:function(){setFocus(null)}}}));HUBS.forEach(function(h){lf.appendChild(hubChip(h.id))});
  var f=$("feed");f.textContent="";var list=POSTS.filter(function(p){return matches(p.h)});if(!list.length)f.appendChild(el("p",{class:"empty",text:"이 허브에는 아직 대화가 없습니다. 오른쪽에서 첫 질문을 보내주세요."}));
- list.forEach(function(p){f.appendChild(el("article",{class:"post"},[el("div",{class:"head"},[el("span",{class:"kind",text:p.kind}),el("span",{text:p.who}),el("span",{text:p.when})]),el("h3",{text:p.title}),el("p",{text:p.body}),p.a?el("div",{class:"post-a"},[el("b",{text:"Editor 답변 · 오흥주"}),el("p",{text:p.a})]):null,chipsFor(p.h),ED.on?edBtn("p",p):null]))});
+ list.forEach(function(p){f.appendChild(el("article",{class:"post"},[el("div",{class:"head"},[el("span",{class:"kind",text:p.kind}),el("span",{text:p.who}),el("span",{text:p.when})]),el("h3",{text:p.title}),el("p",{text:p.body}),(p.a||ED.on)?el("div",{class:"post-a"},[el("b",{text:"Editor 답변 · 오흥주"}),el("p",{text:p.a||"(아직 답변이 없습니다)"}),ED.on?edBtn("p",p):null]):null,chipsFor(p.h)]))});
  var r=$("rooms");r.textContent="";HUBS.forEach(function(h){var n=POSTS.filter(function(p){return p.h.indexOf(h.id)>=0}).length,nn=NEWS.filter(function(x){return x.h.indexOf(h.id)>=0}).length;r.appendChild(el("button",{type:"button",on:{click:function(){setFocus(h.id)}}},[el("b",{style:"display:flex;align-items:center;gap:8px;font-weight:500"},[el("span",{class:"dot",style:"background:"+col(h.id)}),h.name]),el("span",{text:"대화 "+n+" · 뉴스 "+nn})]))})}
 /* SEARCH */
 function renderSearch(){var q=state.q.toLowerCase(),R=$("sresults");R.textContent="";$("sq-title").textContent="‘"+state.q+"’ 검색 결과";if(!q)return;
@@ -1382,7 +1382,7 @@ function edCheck(u){return firebase.firestore().collection("admin").doc("check")
 function edLogin(){fbReady().then(function(){var a=firebase.auth();if(a.currentUser)return edCheck(a.currentUser);return a.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(function(r){return edCheck(r.user)})}).catch(function(e){if(e&&e.code!=="auth/popup-closed-by-user"&&e.code!=="auth/cancelled-popup-request")alert("로그인하지 못했습니다: "+((e&&e.message)||e))})}
 function edLogout(){document.querySelectorAll(".edbtn").forEach(function(b){b.remove()});firebase.auth().signOut();ED.on=false;ED.user=null;try{localStorage.removeItem("mo-ed")}catch(e){}var b=$("edbar");if(b)b.remove();$("edlink").hidden=false;edRefresh()}
 function edBar(){$("edlink").hidden=true;if($("edbar"))return;document.body.appendChild(el("div",{class:"edbar",id:"edbar"},[el("b",{text:"✎ 편집자 모드"}),el("span",{text:(ED.user&&ED.user.email)||""}),el("button",{type:"button",text:"구독자 명단",on:{click:subOpen}}),el("button",{type:"button",text:"로그아웃",on:{click:edLogout}})]))}
-function edBtn(type,x){return el("button",{type:"button",class:"edbtn",on:{click:function(){edOpen(type,x.k)}}},[type==="n"?"✎ Editor 수정":type==="o"?"✎ 견해 쓰기·수정":type==="p"?"✎ 글·답변 수정":"✎ 이 글 수정"])}
+function edBtn(type,x){return el("button",{type:"button",class:"edbtn",on:{click:function(){edOpen(type,x.k)}}},[type==="n"?"✎ Editor 수정":type==="o"?"✎ 견해 쓰기·수정":type==="p"?"✎ Editor 수정":"✎ 이 글 수정"])}
 function edOpen(type,k){var x=merged(type,k);if(!x)return;var d=$("edmodal");if(d)d.remove();var ins={};
  var f=el("form",{method:"dialog"},[el("h2",{text:type==="n"?"Editor 수정 — "+x.t:"글 수정 — 편집자 전용"})]);
  EDF[type].forEach(function(fd){var i=fd[2]?el("textarea",{class:fd[2]==="big"?"big":""}):el("input",{type:"text"});i.value=x[fd[0]]||"";ins[fd[0]]=i;f.appendChild(el("label",{},[fd[1],i]))});
