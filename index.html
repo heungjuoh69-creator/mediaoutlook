@@ -577,6 +577,8 @@ footer.aw .legal{margin-top:24px;font-size:12px}
   footer.aw .cols{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 .adslot.adlive{display:block;border:0;background:none;padding:0;text-align:left}
+.adslot.adlive:has(ins[data-ad-status="unfilled"]){display:none}
+@media (min-width:821px){.mainrail>aside{align-self:stretch}.mainrail>aside>.ad-mpu:last-child{position:sticky;top:16px}}
 .adslot .adlab{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--faint);margin-bottom:4px}
 </style>
 </head>
@@ -962,7 +964,7 @@ var CONFIG={
   formEndpoint:"",                    // Formspree 등 폼 수신 주소 (비우면 이메일 안내)
   contactEmail:"contact@mediaoutlook.co.kr", // 문의 받을 이메일
   adsenseClient:"ca-pub-4989379274669737",                  // 구글 애드센스 게시자 ID (예: ca-pub-1234567890123456) — 비우면 기존 광고 자리 안내가 그대로 보입니다
-  adSlots:{rail:"9848043112",infeed:"1305327787"},       // 애드센스 광고 단위 ID — rail: 사이드 300×250, infeed: 피드 인라인
+  adSlots:{rail:"9848043112",infeed:"1305327787",article:"",multiplex:""},       // 애드센스 광고 단위 ID — rail: 사이드 300×250, infeed: 피드 인라인
   firebase:{apiKey:"AIzaSyDU0rIYx-MJ_TeLo6QS-WWulPt6Qjk0u-o",authDomain:"mediaoutlook-34a44.firebaseapp.com",projectId:"mediaoutlook-34a44",appId:"1:471192534116:web:2669a33189a5d634d6b371"} // 편집자 로그인(Firebase) — 비우면 편집 기능이 꺼집니다
 };
 
@@ -1206,7 +1208,7 @@ function renderQuiz(){var Q=BRIEF.quiz,box=$("quiz");box.textContent="";
 
 /* LATEST + VERTICAL */
 function renderLatest(){var hf=$("hubfilters");hf.querySelectorAll("button").forEach(function(b){b.remove()});hf.appendChild(el("button",{type:"button",class:"chip"+(!state.focus?" on":""),text:"전체",on:{click:function(){setFocus(null)}}}));HUBS.forEach(function(h){hf.appendChild(hubChip(h.id))});
- var L=$("latestfeed");L.textContent="";var list=NEWS.filter(function(n){return matches(n.h)});list.forEach(function(n,i){L.appendChild(feedItem(n));if(i===5)L.appendChild(el("div",{class:"adslot",style:"padding:16px;margin-block:12px"},[el("span",{class:"tag",text:"AD"}),"인피드 광고",el("a",{href:"#partner",text:"문의 →"})]))});
+ var L=$("latestfeed");L.textContent="";var list=NEWS.filter(function(n){return matches(n.h)});list.forEach(function(n,i){L.appendChild(feedItem(n));if(i%6===5&&i<list.length-1)L.appendChild(el("div",{class:"adslot",style:"padding:16px;margin-block:12px"},[el("span",{class:"tag",text:"AD"}),"인피드 광고",el("a",{href:"#partner",text:"문의 →"})]))});
  if(!list.length)L.appendChild(el("p",{class:"empty",text:"이 허브의 기사가 없습니다."}));renderMost($("most2"))}
 function renderVertical(id){var h=HUB[id];if(!h)return;var pm=pairs(),n=NEWS.filter(function(x){return x.h.indexOf(id)>=0});
  var V=$("vhead");V.textContent="";V.style.cssText="--vc:"+col(id);
@@ -1261,9 +1263,11 @@ function renderAll(){renderLooms();renderHome();renderLatest();if(HUB[state.rout
 var ADS_ON=/^ca-pub-\d{10,20}$/.test(CONFIG.adsenseClient||""),ADS_FAIL=false,ADS_LOADING=false;
 function restoreAds(){document.querySelectorAll(".adslot[data-ph]").forEach(function(d){d.innerHTML=d.getAttribute("data-ph");d.removeAttribute("data-ph");d.classList.remove("adlive")})}
 function loadAds(){if(ADS_LOADING)return;ADS_LOADING=true;if(document.querySelector('script[src*="adsbygoogle.js"]'))return;var s=document.createElement("script");s.async=true;s.crossOrigin="anonymous";s.src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client="+encodeURIComponent(CONFIG.adsenseClient);s.onerror=function(){ADS_FAIL=true;restoreAds()};document.head.appendChild(s)}
-function fillAds(){if(!ADS_ON||ADS_FAIL)return;var slots=CONFIG.adSlots||{};document.querySelectorAll(".adslot:not([data-ph])").forEach(function(d){var pg=d.closest("[data-page]");if(pg&&pg.hidden)return;var mpu=d.classList.contains("ad-mpu"),slot=mpu?slots.rail:slots.infeed;if(!slot)return;loadAds();
- d.setAttribute("data-ph",d.innerHTML);d.classList.add("adlive");d.textContent="";d.appendChild(el("span",{class:"adlab",text:"광고"}));
- d.appendChild(el("ins",{class:"adsbygoogle",style:"display:block;width:100%"+(mpu?";min-height:250px":""),"data-ad-client":CONFIG.adsenseClient,"data-ad-slot":slot,"data-ad-format":mpu?"rectangle":"auto","data-full-width-responsive":"true"}));
+function fillAds(){if(!ADS_ON||ADS_FAIL)return;var slots=CONFIG.adSlots||{};document.querySelectorAll(".adslot:not([data-ph])").forEach(function(d){var pg=d.closest("[data-page]");if(pg&&pg.hidden)return;
+ var mpu=d.classList.contains("ad-mpu"),k=d.getAttribute("data-k")||(mpu?"rail":"infeed"),own=slots[k],slot=own||(k==="article"||k==="multiplex"?slots.infeed:"");if(!slot)return;loadAds();
+ var a={class:"adsbygoogle",style:"display:block;width:100%"+(mpu?";min-height:250px":""),"data-ad-client":CONFIG.adsenseClient,"data-ad-slot":slot};
+ if(mpu){a["data-ad-format"]="rectangle"}else if(k==="article"&&own){a["data-ad-format"]="fluid";a["data-ad-layout"]="in-article";a.style="display:block;text-align:center"}else if(k==="multiplex"&&own){a["data-ad-format"]="autorelaxed"}else{a["data-ad-format"]="auto";a["data-full-width-responsive"]="true"}
+ d.setAttribute("data-ph",d.innerHTML);d.classList.add("adlive");d.textContent="";d.appendChild(el("span",{class:"adlab",text:"광고"}));d.appendChild(el("ins",a));
  try{(window.adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}})}
 
 /* ART — AI·수학 상징 일러스트 (기사마다 고정된 무늬) */
@@ -1307,7 +1311,9 @@ function renderArticle(i){var n=NEWS[i],V=$("artview"),R=$("artrel");V.textConte
    el("a",{href:naver,target:"_blank",rel:"noopener",class:n.u?"btn-line":"btn",text:"네이버 뉴스에서 찾기"}),
    el("a",{href:google,target:"_blank",rel:"noopener",class:"btn-line",text:"구글 뉴스에서 찾기"})]),
   el("p",{class:"note",text:"MEDIA OUTLOOK 브리핑은 원문을 요약한 것입니다. 자세한 내용과 수치는 원문 기사에서 확인하세요."})]);
+ V.appendChild(el("div",{class:"adslot ad-article","data-k":"article",style:"padding:16px;margin-block:20px"},[el("span",{class:"tag",text:"AD"}),"본문 광고",el("a",{href:"#partner",text:"문의 →"})]));
  V.appendChild(box);
+ V.appendChild(el("div",{class:"adslot ad-multiplex","data-k":"multiplex",style:"padding:16px;margin-block:20px"},[el("span",{class:"tag",text:"AD"}),"추천 콘텐츠형 광고",el("a",{href:"#partner",text:"문의 →"})]));
  var rel=NEWS.filter(function(x){return x!==n&&x.h.some(function(h){return n.h.indexOf(h)>=0})}).sort(function(a,b){var sa=a.h.filter(function(h){return n.h.indexOf(h)>=0}).length,sb=b.h.filter(function(h){return n.h.indexOf(h)>=0}).length;return sb-sa}).slice(0,6);
  rel.forEach(function(x){R.appendChild(el("a",{href:"#a"+x.i,class:"mini"},[el("b",{class:"hl",text:x.t}),el("span",{text:x.h.map(function(h){return HUB[h].name}).join(" × ")})]))});
  if(!rel.length)R.appendChild(el("p",{class:"empty",text:"연결된 기사가 없습니다."}))}
@@ -1320,8 +1326,9 @@ function renderColumn(i){var x=COLUMNS[i],V=$("colview"),R=$("colrel");V.textCon
  V.appendChild(el("p",{class:"coldek",text:x.d}));
  if(ED.on)V.appendChild(edBtn("c",x));
  V.appendChild(el("div",{class:"colby"},[el("b",{text:"오흥주"}),el("span",{text:"MEDIA OUTLOOK 편집인 · 광고·미디어 30년"+(x.date?" · "+x.date:"")})]));
- x.body.split(/\n\s*\n/).forEach(function(t){t=t.trim();if(!t)return;if(t.indexOf("## ")===0)V.appendChild(el("h2",{text:t.slice(3)}));else V.appendChild(el("p",{text:t}))});
+ var hc=0;x.body.split(/\n\s*\n/).forEach(function(t){t=t.trim();if(!t)return;if(t.indexOf("## ")===0){hc++;if(hc===3)V.appendChild(el("div",{class:"adslot ad-article","data-k":"article",style:"padding:16px;margin-block:20px"},[el("span",{class:"tag",text:"AD"}),"본문 광고",el("a",{href:"#partner",text:"문의 →"})]));V.appendChild(el("h2",{text:t.slice(3)}))}else V.appendChild(el("p",{text:t}))});
  V.appendChild(chipsFor(x.h));
+ V.appendChild(el("div",{class:"adslot ad-multiplex","data-k":"multiplex",style:"padding:16px;margin-block:20px"},[el("span",{class:"tag",text:"AD"}),"추천 콘텐츠형 광고",el("a",{href:"#partner",text:"문의 →"})]));
  V.appendChild(el("p",{class:"note colnote",text:"이 칼럼은 편집인의 현장 경험과 개인적 견해를 담은 글입니다. ‘편집인 추정·경험치·가정’으로 표시한 수치는 설명을 위한 추정이며, 출처를 밝힌 수치는 해당 기관의 공개 자료를 따릅니다."}));
  COLUMNS.forEach(function(y,j){if(j!==i&&y.body)R.appendChild(el("a",{href:"#c"+j,class:"mini"},[el("b",{class:"hl",text:y.t}),el("span",{text:y.d})]))});
  var rn=NEWS.filter(function(n){return n.h.some(function(h){return x.h.indexOf(h)>=0})}).slice(0,4);
@@ -1424,7 +1431,7 @@ function archFinalize(){if(!ED.on||!fbOn())return;return archLoad(true).then(fun
  if(n)return b.commit().then(function(){return archLoad(true)}).then(function(){if(state.route==="archive")renderArchive()})}).catch(function(){})}
 function archItem(x,rank){var b=el("article",{class:"aitem"},[el("div",{class:"arank",text:String(rank)}),el("div",{},[el("div",{class:"ameta"},[x.h&&x.h[0]&&HUB[x.h[0]]?el("span",{class:"acat",style:"--c:"+col(x.h[0])},[HUB[x.h[0]].name]):null,el("b",{class:"aviews",text:"조회 "+(x.views||0).toLocaleString()}),el("span",{text:md(x.date)+(x.cat?" · "+x.cat:"")})]),el("h3",{text:x.t}),el("p",{class:"ad",text:x.d||""}),x.v?el("details",{},[el("summary",{text:"Editor 코멘트"}),el("p",{class:"av2",text:x.v})]):null,x.u?el("a",{href:x.u,target:"_blank",rel:"noopener",class:"btn-line",text:"원문 기사 →"}):null])]);return b}
 function archWeek(w,items,live){var box=el("section",{class:"aweek"},[el("div",{class:"awhd"},[el("h2",{text:md(w)+" ~ "+md(wkEnd(w))}),el("span",{class:"abadge"+(live?" live":""),text:live?(Date.now()>=wkCut(w)?"집계 마감 · 확정 대기":"실시간 집계 중 · 다음 월요일 02:00 마감"):"확정 · 조회수 상위 10%"})])]);
- rankSort(items.slice()).forEach(function(x,i){box.appendChild(archItem(x,i+1))});return box}
+ var ri=rankSort(items.slice());ri.forEach(function(x,i){box.appendChild(archItem(x,i+1));if((i===2||(i>2&&(i-2)%8===0))&&i<ri.length-1)box.appendChild(el("div",{class:"adslot ad-infeed","data-k":"infeed",style:"padding:16px;margin-block:20px"},[el("span",{class:"tag",text:"AD"}),"인피드 광고",el("a",{href:"#partner",text:"문의 →"})]))});return box}
 function renderArchive(){var V=$("archview");if(!fbOn()){V.textContent="";V.appendChild(el("p",{class:"empty",text:"조회수 집계 설정 전입니다."}));return}
  archLoad().then(function(){V.textContent="";var conf={};ARCH.forEach(function(a){(conf[a.week]=conf[a.week]||[]).push(a)});var W=weeksLive(),weeks={};Object.keys(conf).forEach(function(w){weeks[w]=1});Object.keys(W).forEach(function(w){weeks[w]=1});
   var ks=Object.keys(weeks).sort().reverse();if(!ks.length){V.appendChild(el("p",{class:"empty",text:"아직 쌓인 기사가 없습니다."}));return}
