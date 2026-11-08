@@ -607,7 +607,7 @@ footer.aw .legal{margin-top:24px;font-size:12px}
 <body>
 <div class="topbar"><div class="wrap">
   <span class="eyebrow">Media News · Insight · Community</span>
-  <span class="sp"><a href="#subscribe">뉴스레터</a><a href="#partner">광고 문의</a><a href="#subscribe" class="subbtn">구독하기</a></span>
+  <span class="sp"><a href="#subscribe">뉴스레터</a><a href="#partner">광고 문의</a><a href="#" id="edtop" hidden>✎ 편집자 모드</a><a href="#subscribe" class="subbtn">구독하기</a></span>
 </div></div>
 <header class="mh"><div class="wrap">
   <div class="date" id="utildate"></div>
@@ -1475,8 +1475,8 @@ function lsrc(u){return new Promise(function(res,rej){var x=document.createEleme
 function fbReady(){if(!fbP)fbP=lsrc(FB+"firebase-app-compat.js").then(function(){return Promise.all([lsrc(FB+"firebase-auth-compat.js"),lsrc(FB+"firebase-firestore-compat.js")])}).then(function(){firebase.initializeApp(CONFIG.firebase)});return fbP}
 function edCheck(u){return firebase.firestore().collection("admin").doc("check").get().then(function(){ED.on=true;ED.user=u;try{localStorage.setItem("mo-ed","1")}catch(e){}edBar();return loadEdits().then(edRefresh).then(archFinalize)},function(){alert("편집자 계정이 아닙니다. 등록된 편집자 구글 계정으로 로그인해 주세요.");firebase.auth().signOut();try{localStorage.removeItem("mo-ed")}catch(e){}})}
 function edLogin(){fbReady().then(function(){var a=firebase.auth();if(a.currentUser)return edCheck(a.currentUser);return a.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(function(r){return edCheck(r.user)})}).catch(function(e){if(e&&e.code!=="auth/popup-closed-by-user"&&e.code!=="auth/cancelled-popup-request")alert("로그인하지 못했습니다: "+((e&&e.message)||e))})}
-function edLogout(){document.querySelectorAll(".edbtn").forEach(function(b){b.remove()});firebase.auth().signOut();ED.on=false;ED.user=null;try{localStorage.removeItem("mo-ed")}catch(e){}var b=$("edbar");if(b)b.remove();$("edlink").hidden=false;edRefresh()}
-function edBar(){$("edlink").hidden=true;if($("edbar"))return;document.body.appendChild(el("div",{class:"edbar",id:"edbar"},[el("b",{text:"✎ 편집자 모드"}),el("span",{text:(ED.user&&ED.user.email)||""}),el("button",{type:"button",text:"구독자 명단",on:{click:subOpen}}),el("button",{type:"button",text:"로그아웃",on:{click:edLogout}})]))}
+function edLogout(){document.querySelectorAll(".edbtn").forEach(function(b){b.remove()});firebase.auth().signOut();ED.on=false;ED.user=null;try{localStorage.removeItem("mo-ed")}catch(e){}var b=$("edbar");if(b)b.remove();$("edlink").hidden=false;var et=$("edtop");if(et)et.textContent="✎ 편집자 모드";edRefresh()}
+function edBar(){$("edlink").hidden=true;var et=$("edtop");if(et)et.textContent="✎ 편집자 모드 끄기";if($("edbar"))return;document.body.appendChild(el("div",{class:"edbar",id:"edbar"},[el("b",{text:"✎ 편집자 모드"}),el("span",{text:(ED.user&&ED.user.email)||""}),el("button",{type:"button",text:"구독자 명단",on:{click:subOpen}}),el("button",{type:"button",text:"로그아웃",on:{click:edLogout}})]))}
 function edBtn(type,x){return el("button",{type:"button",class:"edbtn",on:{click:function(){edOpen(type,x.k)}}},[type==="n"?"✎ Editor 수정":type==="o"?"✎ 견해 쓰기·수정":type==="p"?"✎ Editor 수정":"✎ 이 글 수정"])}
 function edOpen(type,k){var x=merged(type,k);if(!x)return;var d=$("edmodal");if(d)d.remove();var ins={};
  var f=el("form",{method:"dialog"},[el("h2",{text:(type==="n"||type==="q")?"Editor 수정 — "+x.t:"글 수정 — 편집자 전용"})]);
@@ -1491,7 +1491,7 @@ function edOpen(type,k){var x=merged(type,k);if(!x)return;var d=$("edmodal");if(
   sv.disabled=true;msg.textContent="저장 중…";var w=cl(o);w.at=firebase.firestore.FieldValue.serverTimestamp();
   firebase.firestore().collection("edits").doc(k).set(w).then(function(){ED.data[k]=o;d.close();edRefresh()},function(e){sv.disabled=false;msg.textContent="저장하지 못했습니다(편집자 권한 확인): "+e.message})});
  d=el("dialog",{id:"edmodal"},[f]);document.body.appendChild(d);d.showModal()}
-function edInit(){if(!fbOn())return;$("edlink").hidden=false;$("edlogin").addEventListener("click",function(e){e.preventDefault();edLogin()});loadEdits();
+function edInit(){if(!fbOn())return;$("edlink").hidden=false;var et=$("edtop");if(et){et.hidden=false;et.addEventListener("click",function(e){e.preventDefault();if(ED.on){edLogout()}else edLogin()})}$("edlogin").addEventListener("click",function(e){e.preventDefault();edLogin()});loadEdits();
  var was=false;try{was=localStorage.getItem("mo-ed")==="1"}catch(e){}
  if(was)fbReady().then(function(){var un=firebase.auth().onAuthStateChanged(function(u){un();if(u)edCheck(u)})}).catch(function(){})}
 /* ARCHIVE — 조회수 집계 + 주간 상위 10% 누적 */
