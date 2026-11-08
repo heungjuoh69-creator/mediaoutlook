@@ -1004,7 +1004,7 @@ footer.aw .legal{margin-top:24px;font-size:12px}
    SITE CONFIG — 배포 전에 여기만 바꾸면 됩니다
    ===================================================================== */
 var CONFIG={
-  formEndpoint:"",                    // Formspree 등 폼 수신 주소 (비우면 이메일 안내)
+  formEndpoint:"https://formsubmit.co/ajax/contact@mediaoutlook.co.kr", // 문의·라운지 글을 이메일로 받는 주소 (FormSubmit)
   contactEmail:"contact@mediaoutlook.co.kr", // 문의 받을 이메일
   adsenseClient:"ca-pub-4989379274669737",                  // 구글 애드센스 게시자 ID (예: ca-pub-1234567890123456) — 비우면 기존 광고 자리 안내가 그대로 보입니다
   adSlots:{rail:"9848043112",infeed:"1305327787",article:"",multiplex:""},       // 애드센스 광고 단위 ID — rail: 사이드 300×250, infeed: 피드 인라인
@@ -1442,7 +1442,7 @@ async function subSave(d,out){var c=CONFIG.firebase,em=(d.email||"").trim().toLo
   if(st==="PERMISSION_DENIED"||st==="ALREADY_EXISTS"||st==="FAILED_PRECONDITION"){out.textContent="이미 구독 중인 이메일입니다.";return true}
   throw 0}catch(e){out.textContent="등록하지 못했습니다. 잠시 후 다시 시도하거나 "+CONFIG.contactEmail+" 로 보내주세요.";return false}}
 async function send(kind,data,out){if(kind==="newsletter"&&fbOn())return subSave(data,out);if(!CONFIG.formEndpoint){out.textContent="접수 기능 연결 전입니다. "+CONFIG.contactEmail+" 로 보내주세요.";return false}out.textContent="보내는 중…";
- try{var r=await fetch(CONFIG.formEndpoint,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(Object.assign({_type:kind},data))});if(!r.ok)throw 0;out.textContent="접수했습니다. 확인 후 연락드리겠습니다.";return true}catch(e){out.textContent="보내지 못했습니다. "+CONFIG.contactEmail+" 로 보내주세요.";return false}}
+ try{var r=await fetch(CONFIG.formEndpoint,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(Object.assign({_type:kind,_subject:"[MEDIA OUTLOOK] "+({"ad-inquiry":"광고·제휴 문의","lounge":"라운지 글","newsletter":"뉴스레터 구독"}[kind]||kind)+(data.title?" — "+data.title:"")+(data.org?" — "+data.org:""),_template:"table",_captcha:"false",_replyto:data.email||"",_autoresponse:"MEDIA OUTLOOK에 보내주셔서 감사합니다. 편집인이 확인한 뒤 연락드리겠습니다. — MEDIA OUTLOOK 미디어아웃룩"},data))});if(!r.ok)throw 0;out.textContent="접수했습니다. 확인 후 연락드리겠습니다.";return true}catch(e){out.textContent="보내지 못했습니다. "+CONFIG.contactEmail+" 로 보내주세요.";return false}}
 function v(id){return $(id).value.trim()}
 function bind(fid,kind,getter,out){var f=$(fid);f.addEventListener("submit",async function(e){e.preventDefault();if(await send(kind,getter(),$(out)))f.reset()})}
 bind("nlform","newsletter",function(){return {email:v("nl-email")}},"nl-out");
