@@ -485,7 +485,26 @@ footer .src li{font-size:12px}
 .aitem .av2{font-size:14.5px;line-height:1.75;white-space:pre-line;margin-top:4px}
 .aitem .btn-line{margin-top:8px;font-size:13px;padding:5px 10px}
 #submodal{border:0;padding:0;width:min(900px,calc(100vw - 24px));max-height:calc(100vh - 24px);background:var(--surface);color:var(--ink)}
-#submodal::backdrop{background:rgba(0,0,0,.45)}
+#submodal::backdrop,#leadmodal::backdrop{background:rgba(0,0,0,.45)}
+#leadmodal{border:0;padding:0;width:min(900px,calc(100vw - 24px));max-height:calc(100vh - 24px);background:var(--surface);color:var(--ink)}
+.lchips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.lchip{border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:4px 10px;font-size:13px;cursor:pointer}
+.lchip.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.leadlist{display:flex;flex-direction:column;gap:12px;max-height:62vh;overflow:auto}
+.lead{border:1px solid var(--line);border-left:4px solid var(--accent);padding:12px;display:flex;flex-direction:column;gap:8px}
+.lead.st-0{border-left-color:var(--hot)}.lead.st-3,.lead.st-4{border-left-color:#1a7f4b}.lead.st-5,.lead.st-6{border-left-color:var(--faint)}
+.lhd{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}.lhd b{font-size:16px}.lhd small{color:var(--muted);font-family:var(--mono);font-size:12px;margin-left:auto}
+.lst{font-size:12px;font-weight:700;background:var(--band);padding:2px 8px}
+.lmeta{display:flex;gap:6px 14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}.lmeta a{color:var(--accent)}
+.lmsg{font-size:14px;background:var(--band);padding:8px 10px;margin:0;white-space:pre-wrap}
+.lform{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.lform label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted)}.lform .wide{grid-column:1/-1}
+.lform input,.lform select,.lform textarea{font:14px var(--sans);padding:6px 8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box}.lform textarea{min-height:56px}
+.lrow{display:flex;gap:10px;align-items:center}
+@media (max-width:560px){.lform{grid-template-columns:1fr}}
+.consents{display:flex;flex-direction:column;gap:6px;padding:10px 12px;background:var(--band)}
+.consents a,.check a{color:var(--accent)}
+.nlagree{display:flex;gap:6px;align-items:flex-start;font-size:12px;line-height:1.4;color:color-mix(in srgb,var(--paper) 80%,transparent);margin-bottom:6px}
+.railnl .nlagree input{width:auto;margin:2px 0 0;padding:0}
 .subwrap{padding:18px}
 .subhd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
 .subhd h2{font-size:19px}
@@ -638,7 +657,7 @@ footer.aw .legal{margin-top:24px;font-size:12px}
       <aside>
         <div class="railbox"><h2>가장 많이 연결된 뉴스 <small>허브 연결 수 기준</small></h2><ol class="most" id="most"></ol></div>
         <div class="adslot ad-mpu" style="margin-bottom:26px"><span class="tag">AD</span><span>300×250</span><a href="#partner">광고 문의 →</a></div>
-        <form class="railnl" id="nlform" autocomplete="off"><b>매주 월요일, 연결해서 읽는 미디어</b><p>한 주의 뉴스를 허브별로 묶어 보내드립니다.</p><input id="nl-name" maxlength="40" required placeholder="이름" aria-label="이름"><input id="nl-org" maxlength="60" required placeholder="소속 (광고주·대행사·매체사 등)" aria-label="소속"><input id="nl-email" type="email" required placeholder="이메일 주소" aria-label="이메일 주소"><button class="btn red" type="submit">무료 구독</button><p class="msg" id="nl-out"></p></form>
+        <form class="railnl" id="nlform" autocomplete="off"><b>매주 월요일, 연결해서 읽는 미디어</b><p>한 주의 뉴스를 허브별로 묶어 보내드립니다.</p><input id="nl-name" maxlength="40" required placeholder="이름" aria-label="이름"><input id="nl-org" maxlength="60" required placeholder="소속 (광고주·대행사·매체사 등)" aria-label="소속"><input id="nl-email" type="email" required placeholder="이메일 주소" aria-label="이메일 주소"><label class="nlagree"><input type="checkbox" id="nl-agree" required><span>[필수] <a href="#privacy" style="color:inherit" target="_blank">개인정보 수집·이용</a> 동의</span></label><label class="nlagree"><input type="checkbox" id="nl-event"><span>[선택] 설문·행사 안내 받기</span></label><button class="btn red" type="submit">무료 구독</button><p class="msg" id="nl-out"></p></form>
         <a class="railbox blograil" href="https://aviationmaniac.tistory.com/" target="_blank" rel="noopener"><h2>편집인 블로그 <small>개인 사이트 ↗</small></h2><b>WaitingforGodot</b><span>광고·미디어 분석과 문화·철학 이야기</span></a>
         <div class="railbox mapmini"><h2>오늘의 연결 지도 <small>허브를 눌러 따라가기</small></h2><svg class="loom" viewBox="-80 -30 580 480" role="img" aria-label="오늘의 미디어 연결 지도"></svg></div>
       </aside>
@@ -822,9 +841,13 @@ footer.aw .legal{margin-top:24px;font-size:12px}
         <b class="full" style="font-size:16px">광고·제휴 문의</b>
         <div class="field"><label for="a-name">이름</label><input id="a-name" maxlength="40" required></div>
         <div class="field"><label for="a-org">회사</label><input id="a-org" maxlength="60" required></div>
-        <div class="field full"><label for="a-email">이메일</label><input id="a-email" type="email" maxlength="80" required></div>
+        <div class="field"><label for="a-email">이메일</label><input id="a-email" type="email" maxlength="80" required></div>
+        <div class="field"><label for="a-phone">전화 (선택)</label><input id="a-phone" type="tel" maxlength="20" placeholder="010-0000-0000"></div>
+        <div class="field"><label for="a-ind">업종</label><select id="a-ind"><option>광고주(브랜드)</option><option>광고대행사·미디어렙</option><option>매체사·플랫폼</option><option>애드테크·데이터</option><option>공공·협회</option><option>기타</option></select></div>
+        <div class="field"><label for="a-bud">예산 범위</label><select id="a-bud"><option>미정·상담 후 결정</option><option>100만원 미만</option><option>100만~500만원</option><option>500만~1000만원</option><option>1000만~3000만원</option><option>3000만원 이상</option></select></div>
         <div class="field full"><label for="a-prod">관심 상품</label><select id="a-prod"><option>리더보드·렉탱글</option><option>뉴스레터 헤드라인</option><option>허브 스폰서십</option><option>세미나·리포트 협찬</option><option>기타·패키지</option></select></div>
         <div class="field full"><label for="a-msg">내용</label><textarea id="a-msg" maxlength="800" placeholder="기간, 목표, 예산 범위 등"></textarea></div>
+        <label class="check full"><input type="checkbox" id="a-agree" required><span>[필수] 문의 답변을 위한 <a href="#privacy" target="_blank">개인정보 수집·이용</a>에 동의합니다 (처리 완료 후 1년 보관)</span></label>
         <div class="full" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn" type="submit">문의 보내기</button><span class="msg" id="a-out"></span></div>
       </form>
       <aside class="box"><b style="font-size:16px">왜 MEDIA OUTLOOK인가</b>
@@ -874,6 +897,9 @@ footer.aw .legal{margin-top:24px;font-size:12px}
       <div class="field"><label for="s-org">소속</label><input id="s-org" maxlength="60" required placeholder="광고주 / 대행사 / 매체사"></div>
       <div class="field full"><label for="s-email">이메일</label><input id="s-email" type="email" maxlength="80" required></div>
       <label class="check full"><input type="checkbox" id="s-beta"> 올미디어 툴 베타 테스터로 신청</label>
+      <div class="consents full"><label class="check"><input type="checkbox" id="s-agree" required><span>[필수] 뉴스레터 발송을 위한 <a href="#privacy" target="_blank">개인정보 수집·이용</a>에 동의합니다 (이름·소속·이메일, 해지 시 즉시 파기)</span></label>
+      <label class="check"><input type="checkbox" id="s-event"><span>[선택] 실무자 설문·세미나·행사 안내를 받겠습니다</span></label>
+      <label class="check"><input type="checkbox" id="s-partner"><span>[선택] MEDIA OUTLOOK 제휴 파트너의 업계 정보·제안을 받겠습니다 (해당 파트너에게 이름·소속·이메일 제공)</span></label></div>
       <div class="full" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn" type="submit">구독하기</button><span class="msg" id="s-out"></span></div>
     </form>
   </section>
@@ -911,8 +937,10 @@ footer.aw .legal{margin-top:24px;font-size:12px}
     <div class="policy">
       <h2>1. 수집하는 개인정보와 이용 목적</h2>
       <table class="ptable"><thead><tr><th>구분</th><th>수집 항목</th><th>이용 목적</th></tr></thead><tbody>
-        <tr><td>뉴스레터 구독</td><td>이메일(필수), 이름·소속(선택)</td><td>주간 뉴스레터 발송, 베타 서비스 안내</td></tr>
-        <tr><td>광고·제휴 문의</td><td>이름, 회사명, 이메일, 문의 내용</td><td>문의 확인 및 답변, 광고·제휴 상담</td></tr>
+        <tr><td>뉴스레터 구독 (필수 동의)</td><td>이름, 소속, 이메일</td><td>주간 뉴스레터 발송, 베타 서비스 안내</td></tr>
+        <tr><td>설문·행사 안내 (선택 동의)</td><td>이름, 소속, 이메일</td><td>실무자 설문, 세미나·행사 안내</td></tr>
+        <tr><td>제휴 파트너 정보 (선택 동의)</td><td>이름, 소속, 이메일</td><td>제휴 파트너의 업계 정보·제안 전달</td></tr>
+        <tr><td>광고·제휴 문의</td><td>이름, 회사명, 이메일, 전화(선택), 업종, 예산 범위, 관심 상품, 문의 내용</td><td>문의 확인 및 답변, 광고·제휴 상담과 진행 관리</td></tr>
         <tr><td>라운지 글 보내기</td><td>이메일, 글 제목·내용</td><td>게재 여부 검토 및 답변</td></tr>
       </tbody></table>
       <p>사이트는 회원가입을 받지 않으며, 위 양식에 직접 입력한 정보 외에는 이름·연락처 같은 개인정보를 수집하지 않습니다.</p>
@@ -928,10 +956,13 @@ footer.aw .legal{margin-top:24px;font-size:12px}
       <p>보유 기간이 끝나거나 목적을 달성한 정보는 지체 없이 파기합니다. 전자 파일은 복구할 수 없는 방법으로 삭제하고, 출력물은 분쇄합니다.</p>
 
       <h2>4. 제3자 제공</h2>
-      <p>사이트는 이용자의 개인정보를 외부에 제공하지 않습니다. 다만 법령에 근거가 있거나 수사기관이 법에 따른 절차로 요청하는 경우는 예외로 합니다.</p>
+      <p>사이트는 이용자의 개인정보를 외부에 제공하지 않습니다. 다만 다음의 경우는 예외로 합니다.</p>
+      <ul><li>‘제휴 파트너 정보’에 별도로 동의한 이용자: 사전에 안내한 제휴 파트너에게 이름·소속·이메일을 제공하며, 제공받는 자·목적·보유 기간은 제공 전에 이메일로 알립니다. 동의는 언제든 철회할 수 있습니다.</li><li>법령에 근거가 있거나 수사기관이 법에 따른 절차로 요청하는 경우</li></ul>
+      <p>광고주에게는 개인을 알아볼 수 없는 집계 통계(예: 구독자 소속 구성 비율)만 제공합니다.</p>
 
       <h2>5. 처리 위탁</h2>
-      <p>양식 접수, 이메일 발송 등을 외부 서비스에 맡기는 경우 위탁받는 업체와 업무 내용을 이 방침에 공개하고, 개인정보가 안전하게 관리되도록 감독합니다.</p>
+      <p>사이트는 아래와 같이 개인정보 처리 업무를 위탁하며, 개인정보가 안전하게 관리되도록 감독합니다.</p>
+      <ul><li>Google LLC (Firebase): 구독 신청·광고문의 데이터 저장</li><li>FormSubmit: 양식 접수 알림 이메일 전달</li><li>ImprovMX: 사이트 이메일(contact@mediaoutlook.co.kr) 수신 전달</li></ul>
 
       <h2>6. 쿠키와 광고</h2>
       <ul>
@@ -1482,21 +1513,27 @@ function route(){var r=(location.hash||"#home").slice(1);var isArt=/^a\d+$/.test
  renderFocusBar();fillAds();trackPV(r);if(ch)window.scrollTo(0,0)}
 window.addEventListener("hashchange",route);
 /* FORMS */
-async function subSave(d,out){var c=CONFIG.firebase,em=(d.email||"").trim().toLowerCase();if(!String(d.name||"").trim()){out.textContent="이름을 입력해 주세요.";return false}if(!String(d.org||"").trim()){out.textContent="소속을 입력해 주세요.";return false}if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)||em.length>200){out.textContent="이메일 주소를 확인해 주세요.";return false}
+async function subSave(d,out){var c=CONFIG.firebase,em=(d.email||"").trim().toLowerCase();if(!d.agree){out.textContent="개인정보 수집·이용 동의(필수)에 체크해 주세요.";return false}if(!String(d.name||"").trim()){out.textContent="이름을 입력해 주세요.";return false}if(!String(d.org||"").trim()){out.textContent="소속을 입력해 주세요.";return false}if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)||em.length>200){out.textContent="이메일 주소를 확인해 주세요.";return false}
  out.textContent="등록 중…";var id="s_"+hk(em),base="projects/"+c.projectId+"/databases/(default)/documents";
- var f={email:{stringValue:em},name:{stringValue:String(d.name||"").slice(0,100)},org:{stringValue:String(d.org||"").slice(0,100)},beta:{booleanValue:!!d.beta},src:{stringValue:d.src||"구독 페이지"}};
+ var f={email:{stringValue:em},name:{stringValue:String(d.name||"").slice(0,100)},org:{stringValue:String(d.org||"").slice(0,100)},beta:{booleanValue:!!d.beta},src:{stringValue:d.src||"구독 페이지"},c_event:{booleanValue:!!d.c_event},c_partner:{booleanValue:!!d.c_partner},c_ver:{stringValue:"2026-11"}};
  try{var r=await fetch("https://firestore.googleapis.com/v1/"+base+":commit?key="+c.apiKey,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({writes:[{update:{name:base+"/subscribers/"+id,fields:f},currentDocument:{exists:false},updateTransforms:[{fieldPath:"at",setToServerValue:"REQUEST_TIME"}]}]})});
-  if(r.ok){out.textContent="구독 신청이 접수됐습니다. 감사합니다!";try{if(typeof gtag==="function")gtag("event","sign_up",{method:d.src==="홈 사이드"?"home_rail":"subscribe_page"})}catch(e){}try{if(CONFIG.formEndpoint)fetch(CONFIG.formEndpoint,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({_subject:"[MEDIA OUTLOOK] 새 구독자 — "+String(d.name).trim(),_template:"table",이름:String(d.name).trim(),소속:String(d.org).trim(),이메일:em,베타신청:d.beta?"예":"",경로:d.src||""})}).catch(function(){})}catch(e){}return true}
+  if(r.ok){out.textContent="구독 신청이 접수됐습니다. 감사합니다!";try{if(typeof gtag==="function")gtag("event","sign_up",{method:d.src==="홈 사이드"?"home_rail":"subscribe_page"})}catch(e){}try{if(CONFIG.formEndpoint)fetch(CONFIG.formEndpoint,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({_subject:"[MEDIA OUTLOOK] 새 구독자 — "+String(d.name).trim(),_template:"table",이름:String(d.name).trim(),소속:String(d.org).trim(),이메일:em,베타신청:d.beta?"예":"",설문행사:d.c_event?"동의":"",파트너:d.c_partner?"동의":"",경로:d.src||""})}).catch(function(){})}catch(e){}return true}
   var j={};try{j=await r.json()}catch(e){}var st=(j.error&&j.error.status)||"";
   if(st==="PERMISSION_DENIED"||st==="ALREADY_EXISTS"||st==="FAILED_PRECONDITION"){out.textContent="이미 구독 중인 이메일입니다.";return true}
   throw 0}catch(e){out.textContent="등록하지 못했습니다. 잠시 후 다시 시도하거나 "+CONFIG.contactEmail+" 로 보내주세요.";return false}}
-async function send(kind,data,out){if(kind==="newsletter"&&fbOn())return subSave(data,out);if(!CONFIG.formEndpoint){out.textContent="접수 기능 연결 전입니다. "+CONFIG.contactEmail+" 로 보내주세요.";return false}out.textContent="보내는 중…";
+async function leadSave(d){var c=CONFIG.firebase,base="projects/"+c.projectId+"/databases/(default)/documents",id="l_"+Date.now().toString(36)+Math.random().toString(36).slice(2,7),S=function(x,n){return {stringValue:String(x||"").slice(0,n||200)}};
+ var f={name:S(d.name,60),org:S(d.org,100),email:S(String(d.email||"").toLowerCase(),120),phone:S(d.phone,30),industry:S(d.industry,40),budget:S(d.budget,40),product:S(d.product,40),message:S(d.message,1000),src:S(document.referrer||"직접",200),status:S("신규"),memo:S(""),next:S(""),amount:S("")};
+ try{var r=await fetch("https://firestore.googleapis.com/v1/"+base+":commit?key="+c.apiKey,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({writes:[{update:{name:base+"/leads/"+id,fields:f},currentDocument:{exists:false},updateTransforms:[{fieldPath:"at",setToServerValue:"REQUEST_TIME"}]}]})});return r.ok}catch(e){return false}}
+async function send(kind,data,out){if(kind==="newsletter"&&fbOn())return subSave(data,out);
+ if(kind==="ad-inquiry"){if(!data.agree){out.textContent="개인정보 수집·이용 동의(필수)에 체크해 주세요.";return false}out.textContent="보내는 중…";var saved=fbOn()?await leadSave(data):false;delete data.agree;
+  try{if(CONFIG.formEndpoint)await fetch(CONFIG.formEndpoint,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({_subject:"[MEDIA OUTLOOK] 광고·제휴 문의 — "+data.org,_template:"table",_captcha:"false",_replyto:data.email||"",회사:data.org,담당자:data.name,이메일:data.email,전화:data.phone,업종:data.industry,예산:data.budget,관심상품:data.product,내용:data.message})}).then(function(r){if(r.ok)saved=true})}catch(e){}
+  out.textContent=saved?"접수했습니다. 확인 후 연락드리겠습니다.":"보내지 못했습니다. "+CONFIG.contactEmail+" 로 보내주세요.";try{if(saved&&typeof gtag==="function")gtag("event","generate_lead",{product:data.product})}catch(e){}return saved}if(!CONFIG.formEndpoint){out.textContent="접수 기능 연결 전입니다. "+CONFIG.contactEmail+" 로 보내주세요.";return false}out.textContent="보내는 중…";
  try{var r=await fetch(CONFIG.formEndpoint,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(Object.assign({_type:kind,_subject:"[MEDIA OUTLOOK] "+({"ad-inquiry":"광고·제휴 문의","lounge":"라운지 글","newsletter":"뉴스레터 구독"}[kind]||kind)+(data.title?" — "+data.title:"")+(data.org?" — "+data.org:""),_template:"table",_captcha:"false",_replyto:data.email||"",_autoresponse:"MEDIA OUTLOOK에 보내주셔서 감사합니다. 편집인이 확인한 뒤 연락드리겠습니다. — MEDIA OUTLOOK 미디어아웃룩"},data))});if(!r.ok)throw 0;out.textContent="접수했습니다. 확인 후 연락드리겠습니다.";return true}catch(e){out.textContent="보내지 못했습니다. "+CONFIG.contactEmail+" 로 보내주세요.";return false}}
 function v(id){return $(id).value.trim()}
 function bind(fid,kind,getter,out){var f=$(fid);f.addEventListener("submit",async function(e){e.preventDefault();if(await send(kind,getter(),$(out)))f.reset()})}
-bind("nlform","newsletter",function(){return {name:v("nl-name"),org:v("nl-org"),email:v("nl-email"),src:"홈 사이드"}},"nl-out");
-bind("subform","newsletter",function(){return {name:v("s-name"),org:v("s-org"),email:v("s-email"),beta:$("s-beta").checked,src:"구독 페이지"}},"s-out");
-bind("adform","ad-inquiry",function(){return {name:v("a-name"),org:v("a-org"),email:v("a-email"),product:$("a-prod").value,message:v("a-msg")}},"a-out");
+bind("nlform","newsletter",function(){return {name:v("nl-name"),org:v("nl-org"),email:v("nl-email"),src:"홈 사이드",agree:$("nl-agree").checked,c_event:$("nl-event").checked,c_partner:false}},"nl-out");
+bind("subform","newsletter",function(){return {name:v("s-name"),org:v("s-org"),email:v("s-email"),beta:$("s-beta").checked,src:"구독 페이지",agree:$("s-agree").checked,c_event:$("s-event").checked,c_partner:$("s-partner").checked}},"s-out");
+bind("adform","ad-inquiry",function(){return {name:v("a-name"),org:v("a-org"),email:v("a-email"),phone:v("a-phone"),industry:$("a-ind").value,budget:$("a-bud").value,product:$("a-prod").value,message:v("a-msg"),agree:$("a-agree").checked}},"a-out");
 bind("compose","lounge",function(){return {kind:$("p-kind").value,title:v("p-title"),body:v("p-body"),email:v("p-email"),hub:state.focus||""}},"p-msg");
 /* EDITOR — 편집자 전용 수정 (Firebase 구글 로그인 · 보안 규칙으로 편집자 계정만 저장 가능) */
 var ED={on:false,data:{},user:null};
@@ -1525,7 +1562,7 @@ function fbReady(){if(!fbP)fbP=lsrc(FB+"firebase-app-compat.js").then(function()
 function edCheck(u){return firebase.firestore().collection("admin").doc("check").get().then(function(){ED.on=true;ED.user=u;try{localStorage.setItem("mo-ed","1")}catch(e){}edBar();return loadEdits().then(edRefresh).then(archFinalize)},function(){alert("편집자 계정이 아닙니다. 등록된 편집자 구글 계정으로 로그인해 주세요.");firebase.auth().signOut();try{localStorage.removeItem("mo-ed")}catch(e){}})}
 function edLogin(){fbReady().then(function(){var a=firebase.auth();if(a.currentUser)return edCheck(a.currentUser);return a.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(function(r){return edCheck(r.user)})}).catch(function(e){if(e&&e.code!=="auth/popup-closed-by-user"&&e.code!=="auth/cancelled-popup-request")alert("로그인하지 못했습니다: "+((e&&e.message)||e))})}
 function edLogout(){document.querySelectorAll(".edbtn").forEach(function(b){b.remove()});firebase.auth().signOut();ED.on=false;ED.user=null;try{localStorage.removeItem("mo-ed")}catch(e){}var b=$("edbar");if(b)b.remove();$("edlink").hidden=false;var et=$("edtop");if(et)et.textContent="✎ 편집자 모드";edRefresh()}
-function edBar(){$("edlink").hidden=true;var et=$("edtop");if(et)et.textContent="✎ 편집자 모드 끄기";if($("edbar"))return;document.body.appendChild(el("div",{class:"edbar",id:"edbar"},[el("b",{text:"✎ 편집자 모드"}),el("span",{text:(ED.user&&ED.user.email)||""}),el("button",{type:"button",text:"구독자 명단",on:{click:subOpen}}),el("button",{type:"button",text:"로그아웃",on:{click:edLogout}})]))}
+function edBar(){$("edlink").hidden=true;var et=$("edtop");if(et)et.textContent="✎ 편집자 모드 끄기";if($("edbar"))return;document.body.appendChild(el("div",{class:"edbar",id:"edbar"},[el("b",{text:"✎ 편집자 모드"}),el("span",{text:(ED.user&&ED.user.email)||""}),el("button",{type:"button",text:"구독자 명단",on:{click:subOpen}}),el("button",{type:"button",text:"광고문의 관리",on:{click:leadsOpen}}),el("button",{type:"button",text:"로그아웃",on:{click:edLogout}})]))}
 function edBtn(type,x){return el("button",{type:"button",class:"edbtn",on:{click:function(){edOpen(type,x.k)}}},[type==="n"?"✎ 이 글 수정":type==="o"?"✎ 견해 쓰기·수정":type==="p"?"✎ Editor 수정":"✎ 이 글 수정"])}
 function edOpen(type,k){var x=merged(type,k);if(!x)return;var d=$("edmodal");if(d)d.remove();var ins={};
  var f=el("form",{method:"dialog"},[el("h2",{text:type==="q"?"Editor 수정 — "+x.t:type==="n"?"기사 수정 — 편집자 전용":"글 수정 — 편집자 전용"})]);
@@ -1574,15 +1611,38 @@ function renderArchive(){var V=$("archview");if(!fbOn()){V.textContent="";V.appe
   var ks=Object.keys(weeks).sort().reverse();if(!ks.length){V.appendChild(el("p",{class:"empty",text:"아직 쌓인 기사가 없습니다."}));return}
   ks.forEach(function(w){if(conf[w])V.appendChild(archWeek(w,conf[w],false));else V.appendChild(archWeek(w,topTen(W[w]),true))})})}
 /* SUBSCRIBERS — 편집자 전용 구독자 명단 */
+var LSTAGE=["신규","상담","제안","계약","집행","완료","보류"];
+function leadsOpen(){var d=$("leadmodal");if(d)d.remove();var body=el("div",{class:"subbody"},[el("p",{text:"불러오는 중…"})]),flt="전체",rows=[];
+ d=el("dialog",{id:"leadmodal",class:"submodal"},[el("div",{class:"subwrap"},[el("div",{class:"subhd"},[el("h2",{text:"광고문의 관리"}),el("button",{type:"button",class:"btn-line",text:"닫기",on:{click:function(){d.close()}}})]),body])]);document.body.appendChild(d);d.showModal();
+ function csv(){var H=["접수일시","단계","회사","담당자","이메일","전화","업종","예산","관심상품","계약금액","다음할일","메모","문의내용","유입"];var h=H.join(",")+"\n"+rows.map(function(r){return [r.at,r.status,r.org,r.name,r.email,r.phone,r.industry,r.budget,r.product,r.amount,r.next,r.memo,r.message,r.src].map(function(v){return '"'+String(v||"").replace(/"/g,'""')+'"'}).join(",")}).join("\n");var b=new Blob(["\ufeff"+h],{type:"text/csv;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="mediaoutlook-leads-"+TODAY+".csv";a.click()}
+ function draw(){body.textContent="";var cnt={전체:rows.length};LSTAGE.forEach(function(s){cnt[s]=0});rows.forEach(function(r){cnt[r.status]=(cnt[r.status]||0)+1});
+  var won=rows.filter(function(r){return r.status==="계약"||r.status==="집행"||r.status==="완료"}).reduce(function(a,r){return a+(parseInt(String(r.amount).replace(/[^0-9]/g,""),10)||0)},0);
+  body.appendChild(el("div",{class:"subbar"},[el("b",{text:"총 "+rows.length+"건 · 수주 "+won.toLocaleString("ko-KR")+"원"}),rows.length?el("button",{type:"button",class:"btn",text:"엑셀(CSV) 내려받기",on:{click:csv}}):null]));
+  body.appendChild(el("div",{class:"lchips"},["전체"].concat(LSTAGE).map(function(s){return el("button",{type:"button",class:"lchip"+(flt===s?" on":""),text:s+" "+(cnt[s]||0),on:{click:function(){flt=s;draw()}}})})));
+  var list=rows.filter(function(r){return flt==="전체"||r.status===flt});
+  if(!list.length){body.appendChild(el("p",{class:"empty",text:rows.length?"이 단계의 문의가 없습니다.":"아직 광고문의가 없습니다."}));return}
+  var L=el("div",{class:"leadlist"});list.forEach(function(r){
+   var st=el("select",{},LSTAGE.map(function(s){var o=el("option",{text:s});if(s===r.status)o.selected=true;return o})),nx=el("input",{type:"date"}),am=el("input",{type:"text",placeholder:"예: 3,000,000"}),me=el("textarea",{placeholder:"상담 메모"}),msg=el("span",{class:"msg"});nx.value=r.next||"";am.value=r.amount||"";me.value=r.memo||"";
+   var sv=el("button",{type:"button",class:"btn",text:"저장",on:{click:function(){sv.disabled=true;msg.textContent="저장 중…";var u={status:st.value,next:nx.value,amount:am.value.trim(),memo:me.value.trim(),upd:firebase.firestore.FieldValue.serverTimestamp()};
+    firebase.firestore().collection("leads").doc(r.id).update(u).then(function(){r.status=u.status;r.next=u.next;r.amount=u.amount;r.memo=u.memo;msg.textContent="저장됨";sv.disabled=false;setTimeout(draw,500)},function(e){sv.disabled=false;msg.textContent="실패: "+(e.code||e.message)})}}});
+   L.appendChild(el("article",{class:"lead st-"+LSTAGE.indexOf(r.status)},[
+    el("div",{class:"lhd"},[el("span",{class:"lst",text:r.status}),el("b",{text:r.org||"(회사 미기재)"}),el("small",{text:r.at})]),
+    el("div",{class:"lmeta"},[el("span",{text:r.name}),el("a",{href:"mailto:"+r.email,text:r.email}),r.phone?el("a",{href:"tel:"+r.phone,text:r.phone}):null,el("span",{text:r.industry}),el("span",{text:"예산 "+r.budget}),el("span",{text:"상품 "+r.product})]),
+    r.message?el("p",{class:"lmsg",text:r.message}):null,
+    el("div",{class:"lform"},[el("label",{},["단계",st]),el("label",{},["다음 할 일",nx]),el("label",{},["계약 금액(원)",am]),el("label",{class:"wide"},["메모",me])]),
+    el("div",{class:"lrow"},[sv,msg])]))});body.appendChild(L)}
+ firebase.firestore().collection("leads").get().then(function(q){q.forEach(function(doc){var x=doc.data(),t=x.at&&x.at.toDate?x.at.toDate():null;x.id=doc.id;x.at=t?t.toISOString().slice(0,16).replace("T"," "):"";if(LSTAGE.indexOf(x.status)<0)x.status="신규";rows.push(x)});
+  rows.sort(function(a,b){return a.at<b.at?1:-1});draw()},
+ function(e){body.textContent="";body.appendChild(el("p",{class:"empty",text:"불러오지 못했습니다. Firebase 규칙에 leads 항목이 있는지 확인해 주세요. ("+(e&&e.code||e)+")"}))})}
 function subOpen(){var d=$("submodal");if(d)d.remove();var body=el("div",{class:"subbody"},[el("p",{text:"불러오는 중…"})]);
  d=el("dialog",{id:"submodal"},[el("div",{class:"subwrap"},[el("div",{class:"subhd"},[el("h2",{text:"구독자 명단"}),el("button",{type:"button",class:"btn-line",text:"닫기",on:{click:function(){d.close()}}})]),body])]);document.body.appendChild(d);d.showModal();
- firebase.firestore().collection("subscribers").get().then(function(q){var rows=[];q.forEach(function(doc){var x=doc.data(),t=x.at&&x.at.toDate?x.at.toDate():null;rows.push({id:doc.id,name:x.name||"",org:x.org||"",email:x.email||"",beta:x.beta?"예":"",src:x.src||"",at:t?t.toISOString().slice(0,16).replace("T"," "):""})});
+ firebase.firestore().collection("subscribers").get().then(function(q){var rows=[];q.forEach(function(doc){var x=doc.data(),t=x.at&&x.at.toDate?x.at.toDate():null;rows.push({id:doc.id,name:x.name||"",org:x.org||"",email:x.email||"",beta:x.beta?"예":"",ev:x.c_event?"동의":"",pt:x.c_partner?"동의":"",src:x.src||"",at:t?t.toISOString().slice(0,16).replace("T"," "):""})});
   rows.sort(function(a,b){return a.at<b.at?1:-1});body.textContent="";
-  var csv=function(){var h="신청일시,이름,소속,이메일,베타신청,경로\n"+rows.map(function(r){return [r.at,r.name,r.org,r.email,r.beta,r.src].map(function(v){return '"'+String(v).replace(/"/g,'""')+'"'}).join(",")}).join("\n");var b=new Blob(["﻿"+h],{type:"text/csv;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="mediaoutlook-subscribers-"+TODAY+".csv";a.click()};
+  var csv=function(){var h="신청일시,이름,소속,이메일,베타신청,설문·행사,파트너정보,경로\n"+rows.map(function(r){return [r.at,r.name,r.org,r.email,r.beta,r.ev,r.pt,r.src].map(function(v){return '"'+String(v).replace(/"/g,'""')+'"'}).join(",")}).join("\n");var b=new Blob(["﻿"+h],{type:"text/csv;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="mediaoutlook-subscribers-"+TODAY+".csv";a.click()};
   body.appendChild(el("div",{class:"subbar"},[el("b",{text:"총 "+rows.length+"명"}),rows.length?el("button",{type:"button",class:"btn",text:"엑셀(CSV) 내려받기",on:{click:csv}}):null]));
   if(!rows.length){body.appendChild(el("p",{class:"empty",text:"아직 구독 신청이 없습니다."}));return}
-  var tb=el("tbody");rows.forEach(function(r){tb.appendChild(el("tr",{},[el("td",{text:r.at}),el("td",{text:r.name}),el("td",{text:r.org}),el("td",{text:r.email}),el("td",{text:r.beta}),el("td",{text:r.src})]))});
-  body.appendChild(el("div",{class:"subtbl"},[el("table",{},[el("thead",{},[el("tr",{},["신청일시","이름","소속","이메일","베타","경로"].map(function(h){return el("th",{text:h})}))]),tb])]))},
+  var tb=el("tbody");rows.forEach(function(r){tb.appendChild(el("tr",{},[el("td",{text:r.at}),el("td",{text:r.name}),el("td",{text:r.org}),el("td",{text:r.email}),el("td",{text:r.beta}),el("td",{text:r.ev}),el("td",{text:r.pt}),el("td",{text:r.src})]))});
+  body.appendChild(el("div",{class:"subtbl"},[el("table",{},[el("thead",{},[el("tr",{},["신청일시","이름","소속","이메일","베타","설문·행사","파트너","경로"].map(function(h){return el("th",{text:h})}))]),tb])]))},
  function(e){body.textContent="";body.appendChild(el("p",{class:"empty",text:"불러오지 못했습니다. Firebase 규칙에 subscribers 항목이 있는지 확인해 주세요. ("+(e&&e.code||e)+")"}))})}
 /* LIBRARY — 미디어 지식센터 */
 var LIB={items:[],sug:[],type:"",loaded:false};
