@@ -1244,7 +1244,7 @@ function hubCount(id){return items().filter(function(hs){return hs.indexOf(id)>=
 function kick(n){var h=HUB[n.h[0]];return el("a",{href:"#"+h.id,class:"kicker",style:"color:"+col(h.id)},[h.nav+(n.b?" · "+n.b:"")])}
 function art(n,sm){return el("a",{href:"#a"+n.i,class:"art"+(sm?" sm":""),style:"--c:"+col(n.h[0])+";--ang:"+(95+(n.i*23)%70)+"deg","aria-hidden":"true",tabindex:"-1"},[el("div",{class:"al"},n.h.map(function(h){return el("span",{text:HUB[h].name})})),artFig(n)])}
 function byline(n){return el("div",{class:"byline"},[el("b",{text:BYLINE}),el("span",{text:BRIEF.dateLabel.replace(/ \S+요일$/,"")}),el("span",{text:"· 연결 허브 "+n.h.length+"개"})])}
-function feedItem(n,nd){return el("article",{class:"fi"+(nd||matches(n.h)?"":" dim")},[art(n,true),el("div",{},[kick(n),el("h3",{class:"hl"},[el("a",{href:"#a"+n.i,text:n.t})]),el("p",{text:n.d}),byline(n),el("div",{style:"margin-top:8px"},[chipsFor(n.h)])])])}
+function feedItem(n,nd){return el("article",{class:"fi"+(nd||matches(n.h)?"":" dim")},[art(n,true),el("div",{},[kick(n),el("h3",{class:"hl"},[el("a",{href:"#a"+n.i,text:n.t})]),el("p",{text:n.d}),byline(n),el("div",{style:"margin-top:8px"},[chipsFor(n.h)]),ED.on?edBtn("n",n):null])])}
 function hotList(){return NEWS.filter(function(n){return n.hot}).sort(function(a,b){return a.hot-b.hot})}
 
 /* NAV */
@@ -1282,17 +1282,17 @@ function drawLoom(svg,nav){svg.textContent="";var cx=210,cy=210,R=160,P={},pm=pa
 function renderMost(ol){ol.textContent="";NEWS.slice().sort(function(a,b){return b.h.length-a.h.length||(a.hot||9)-(b.hot||9)||a.i-b.i}).filter(function(n){return matches(n.h)}).slice(0,6).forEach(function(n,i){
  ol.appendChild(el("li",{},[el("span",{class:"n",text:String(i+1)}),el("div",{},[el("a",{href:"#a"+n.i},[el("b",{class:"hl",text:n.t})]),el("small",{text:n.h.map(function(h){return HUB[h].name}).join(" × ")})])]))});
  if(!ol.children.length)ol.appendChild(el("li",{},[el("span"),el("small",{text:"이 허브의 기사가 없습니다."})]))}
-function card3(n,withDesc){return el("article",{class:"card3"+(matches(n.h)?"":" dim")},[art(n),kick(n),el("h3",{class:"hl"},[el("a",{href:"#a"+n.i,text:n.t})]),withDesc?el("p",{text:n.d}):null])}
+function card3(n,withDesc){return el("article",{class:"card3"+(matches(n.h)?"":" dim")},[art(n),kick(n),el("h3",{class:"hl"},[el("a",{href:"#a"+n.i,text:n.t})]),withDesc?el("p",{text:n.d}):null,ED.on?edBtn("n",n):null])}
 function renderHome(){
  var hot=hotList(),h1=hot[0],H=$("hero");H.textContent="";H.className="hero"+(matches(h1.h)?"":" dim");
- H.appendChild(art(h1));H.appendChild(el("div",{},[el("span",{class:"kicker",style:"color:var(--hot)",text:"TOP STORY · "+(h1.b||h1.cat)}),el("h1",{class:"hl"},[el("a",{href:"#a"+h1.i,text:h1.t})]),el("p",{text:h1.d}),byline(h1),chipsFor(h1.h)]));
+ H.appendChild(art(h1));H.appendChild(el("div",{},[el("span",{class:"kicker",style:"color:var(--hot)",text:"TOP STORY · "+(h1.b||h1.cat)}),el("h1",{class:"hl"},[el("a",{href:"#a"+h1.i,text:h1.t})]),el("p",{text:h1.d}),byline(h1),chipsFor(h1.h),ED.on?edBtn("n",h1):null]));
  var used={};used[h1.i]=1;var h2=hot[1];used[h2.i]=1;
  var F=$("homefeed");F.textContent="";var list=NEWS.filter(function(n){return !used[n.i]&&matches(n.h)});
  list.slice(0,state.homeN).forEach(function(n,i){F.appendChild(feedItem(n));if(i===3)F.appendChild(el("div",{class:"adslot",style:"padding:16px;margin-block:12px"},[el("span",{class:"tag",text:"AD"}),"피드 인라인 광고 728×90",el("a",{href:"#partner",text:"문의 →"})]))});
  if(!list.length)F.appendChild(el("p",{class:"empty",text:"이 허브의 기사가 없습니다."}));
  $("homemore").hidden=list.length<=state.homeN;
  renderMost($("most"));
- var FE=$("feature");FE.textContent="";FE.appendChild(el("div",{class:"wrap"},[el("div",{},[el("span",{class:"tag",text:"FEATURE"}),el("h2",{},[el("a",{href:"#a"+h2.i,text:h2.t})]),el("p",{text:h2.d}),byline(h2),el("div",{style:"margin-top:12px"},[chipsFor(h2.h)])]),art(h2)]));
+ var FE=$("feature");FE.textContent="";FE.appendChild(el("div",{class:"wrap"},[el("div",{},[el("span",{class:"tag",text:"FEATURE"}),el("h2",{},[el("a",{href:"#a"+h2.i,text:h2.t})]),el("p",{text:h2.d}),byline(h2),el("div",{style:"margin-top:12px"},[chipsFor(h2.h)]),ED.on?edBtn("n",h2):null]),art(h2)]));
  var A=$("aisec");A.textContent="";NEWS.filter(function(n){return n.h.indexOf("ai")>=0}).slice(0,3).forEach(function(n){A.appendChild(card3(n,true))});
  var W=$("week");W.textContent="";var cm=NEWS.filter(function(n){return n.h[0]==="commerce"||(!n.hot&&n.h.indexOf("commerce")>=0)}).slice(0,5);
  cm.forEach(function(n,i){var c=card3(n,i===0);if(i===0)c.classList.add("big");W.appendChild(c)});
@@ -1505,7 +1505,7 @@ function hk(t){var h=0;for(var i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))|0;ret
 function cl(o){return JSON.parse(JSON.stringify(o))}
 var ORIG={n:NEWS.map(cl),c:COLUMNS.map(cl),p:POSTS.map(cl),o:NOTES.map(cl)};ORIG.o.forEach(function(x){x.k="o_"+hk(x.t)});
 ORIG.n.forEach(function(x){x.k="n_"+hk(x.t)});ORIG.c.forEach(function(x){x.k="c_"+hk(x.t)});ORIG.p.forEach(function(x){x.k="p_"+hk(x.title)});
-var EDF={n:[["v","Editor 코멘트 (빈 줄로 문단 구분)","big"]],
+var EDF={n:[["t","제목"],["d","요약(본문)","big"],["v","Editor 코멘트 (빈 줄로 문단 구분)","big"]],
  c:[["t","제목"],["d","소개","t"],["body","칼럼 본문 (빈 줄로 문단 구분 · ## 로 시작하면 소제목)","big"]],
  q:[["v","Editor 코멘트 (빈 줄로 문단 구분)","big"]],
  p:[["title","제목"],["body","내용","big"],["a","Editor 답변 (빈 줄로 문단 구분)","big"]],
@@ -1526,17 +1526,17 @@ function edCheck(u){return firebase.firestore().collection("admin").doc("check")
 function edLogin(){fbReady().then(function(){var a=firebase.auth();if(a.currentUser)return edCheck(a.currentUser);return a.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(function(r){return edCheck(r.user)})}).catch(function(e){if(e&&e.code!=="auth/popup-closed-by-user"&&e.code!=="auth/cancelled-popup-request")alert("로그인하지 못했습니다: "+((e&&e.message)||e))})}
 function edLogout(){document.querySelectorAll(".edbtn").forEach(function(b){b.remove()});firebase.auth().signOut();ED.on=false;ED.user=null;try{localStorage.removeItem("mo-ed")}catch(e){}var b=$("edbar");if(b)b.remove();$("edlink").hidden=false;var et=$("edtop");if(et)et.textContent="✎ 편집자 모드";edRefresh()}
 function edBar(){$("edlink").hidden=true;var et=$("edtop");if(et)et.textContent="✎ 편집자 모드 끄기";if($("edbar"))return;document.body.appendChild(el("div",{class:"edbar",id:"edbar"},[el("b",{text:"✎ 편집자 모드"}),el("span",{text:(ED.user&&ED.user.email)||""}),el("button",{type:"button",text:"구독자 명단",on:{click:subOpen}}),el("button",{type:"button",text:"로그아웃",on:{click:edLogout}})]))}
-function edBtn(type,x){return el("button",{type:"button",class:"edbtn",on:{click:function(){edOpen(type,x.k)}}},[type==="n"?"✎ Editor 수정":type==="o"?"✎ 견해 쓰기·수정":type==="p"?"✎ Editor 수정":"✎ 이 글 수정"])}
+function edBtn(type,x){return el("button",{type:"button",class:"edbtn",on:{click:function(){edOpen(type,x.k)}}},[type==="n"?"✎ 이 글 수정":type==="o"?"✎ 견해 쓰기·수정":type==="p"?"✎ Editor 수정":"✎ 이 글 수정"])}
 function edOpen(type,k){var x=merged(type,k);if(!x)return;var d=$("edmodal");if(d)d.remove();var ins={};
- var f=el("form",{method:"dialog"},[el("h2",{text:(type==="n"||type==="q")?"Editor 수정 — "+x.t:"글 수정 — 편집자 전용"})]);
+ var f=el("form",{method:"dialog"},[el("h2",{text:type==="q"?"Editor 수정 — "+x.t:type==="n"?"기사 수정 — 편집자 전용":"글 수정 — 편집자 전용"})]);
  EDF[type].forEach(function(fd){var i=fd[2]?el("textarea",{class:fd[2]==="big"?"big":""}):el("input",{type:"text"});i.value=x[fd[0]]||"";ins[fd[0]]=i;f.appendChild(el("label",{},[fd[1],i]))});
- var hide=el("input",{type:"checkbox"});hide.checked=x.hide;if(type!=="n"&&type!=="q")f.appendChild(el("label",{class:"ck"},[hide,"이 글 숨기기 (방문자에게 보이지 않음)"]));
+ var hide=el("input",{type:"checkbox"});hide.checked=x.hide;if(type!=="q")f.appendChild(el("label",{class:"ck"},[hide,"이 글 숨기기 (방문자에게 보이지 않음)"]));
  var msg=el("p",{class:"msg"}),sv=el("button",{type:"submit",class:"btn",text:"저장"});
  var rs=el("button",{type:"button",class:"btn-line",text:"원래대로",on:{click:function(){if(!confirm("수정 내용을 지우고 원래 글로 되돌릴까요?"))return;msg.textContent="되돌리는 중…";firebase.firestore().collection("edits").doc(k).delete().then(function(){delete ED.data[k];d.close();edRefresh()},function(e){msg.textContent="실패: "+e.message})}}});
  f.appendChild(msg);f.appendChild(el("div",{class:"row"},[rs,el("button",{type:"button",class:"btn-line",text:"취소",on:{click:function(){d.close()}}}),sv]));
  f.addEventListener("submit",function(e){e.preventDefault();var o={hide:hide.checked};for(var key in ins)o[key]=ins[key].value.trim();
   if(o.u&&!/^https?:\/\//i.test(o.u)){msg.textContent="원문 URL은 http:// 또는 https:// 로 시작해야 합니다.";return}
-  if(type!=="n"&&type!=="q"&&!(o.t||o.title)){msg.textContent="제목을 비울 수 없습니다.";return}
+  if(type!=="q"&&!(o.t||o.title)){msg.textContent="제목을 비울 수 없습니다.";return}
   sv.disabled=true;msg.textContent="저장 중…";var w=cl(o);w.at=firebase.firestore.FieldValue.serverTimestamp();
   firebase.firestore().collection("edits").doc(k).set(w).then(function(){ED.data[k]=o;d.close();edRefresh()},function(e){sv.disabled=false;msg.textContent="저장하지 못했습니다(편집자 권한 확인): "+e.message})});
  d=el("dialog",{id:"edmodal"},[f]);document.body.appendChild(d);d.showModal()}
