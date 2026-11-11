@@ -524,6 +524,7 @@ footer .src li{font-size:12px}
 .libtype.t0{background:#2446C9}.libtype.t1{background:#6B3FA0}.libtype.t2{background:#C8371D}.libtype.t3{background:#0F7B6C}.libtype.t4{background:#B5791B}
 .libsum{font-size:14.5px;line-height:1.7;color:var(--muted)}
 .libnote{font-size:14.5px;line-height:1.7;background:var(--band);border-left:3px solid var(--hot);padding:8px 10px}.libnote b{color:var(--hot)}
+.libnote-ed{display:block;width:100%;text-align:left;font:inherit;font-size:14.5px;color:var(--ink);border:1.5px dashed var(--accent);border-left:3px solid var(--hot);cursor:pointer}.libnote-ed:hover{background:color-mix(in srgb,var(--accent) 8%,var(--band))}
 .libitem .row2{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.libitem .btn-line{font-size:13px;padding:5px 10px}
 .libsug{display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
 .libsug input,.libsug select,.libsug textarea{font:14px var(--sans);padding:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);width:100%}
@@ -1648,15 +1649,17 @@ function subOpen(){var d=$("submodal");if(d)d.remove();var body=el("div",{class:
 var LIB={items:[],sug:[],type:"",loaded:false};
 function libLoad(force){if(LIB.loaded&&!force)return Promise.resolve();if(!fbOn()){LIB.loaded=true;return Promise.resolve()}
  return fsList("library").then(function(a){LIB.items=a;LIB.loaded=true}).catch(function(){LIB.loaded=true})}
-function libAll(){var fb=LIB.items.map(function(x){return {id:x._id,t:x.t,type:x.type,h:x.h||[],src:x.src||"",date:x.date||"",u:x.u||"",s:x.s||"",n:x.n||""}});return fb.concat(LIB_SEED).sort(function(a,b){return (b.date||"")>(a.date||"")?1:-1})}
+function libAll(){var ids={};var fb=LIB.items.map(function(x){ids[x._id]=1;return {id:x._id,t:x.t,type:x.type,h:x.h||[],src:x.src||"",date:x.date||"",u:x.u||"",s:x.s||"",n:x.n||"",hidden:!!x.hidden}}).filter(function(x){return ED.on||!x.hidden});var sd=LIB_SEED.map(function(x){var y=cl(x);y.id="seed_"+hk(x.t);return y}).filter(function(y){return !ids[y.id]});return fb.concat(sd).sort(function(a,b){return (b.date||"")>(a.date||"")?1:-1})}
 function libCard(x){var tc=LIB_TYPES.indexOf(x.type);return el("article",{class:"libitem"},[
  el("div",{class:"libmeta"},[el("span",{class:"libtype t"+(tc<0?0:tc),text:x.type||"자료"}),x.h&&x.h[0]&&HUB[x.h[0]]?el("span",{class:"acat",style:"--c:"+col(x.h[0])},[HUB[x.h[0]].name]):null,el("span",{text:(x.date||"")+(x.src?" · "+x.src:"")})]),
  el("h3",{},[x.u?el("a",{href:x.u,target:"_blank",rel:"noopener",text:x.t}):x.t]),
  x.s?el("p",{class:"libsum",text:x.s}):null,
- x.n?el("p",{class:"libnote"},[el("b",{text:"Editor · "}),x.n]):null,
- el("div",{class:"row2"},[x.u?el("a",{href:x.u,target:"_blank",rel:"noopener",class:"btn-line",text:/\.pdf($|\?)/i.test(x.u)||/drive\.google/.test(x.u)?"자료 열기 (PDF·파일) ↗":"원문 보기 ↗"}):null,
-  ED.on&&x.id?el("button",{type:"button",class:"edbtn",on:{click:function(){libForm(x)}}},["✎ 수정"]):null,
-  ED.on&&x.id?el("button",{type:"button",class:"edbtn",on:{click:function(){if(confirm("이 자료를 삭제할까요?"))firebase.firestore().collection("library").doc(x.id).delete().then(function(){return libLoad(true)}).then(renderLibrary)}}},["삭제"]):null])])}
+ ED.on?el("button",{type:"button",class:"libnote libnote-ed",title:"클릭해서 Editor 노트 수정",on:{click:function(){libForm(x,null,"n")}}},[el("b",{text:"Editor ✎ "}),x.n||"(Editor 노트 쓰기)"]):x.n?el("p",{class:"libnote"},[el("b",{text:"Editor · "}),x.n]):null,
+ (x.u&&(/\.pdf($|\?)/i.test(x.u)||/drive\.google/.test(x.u)))||ED.on?el("div",{class:"row2"},[x.u&&(/\.pdf($|\?)/i.test(x.u)||/drive\.google/.test(x.u))?el("a",{href:x.u,target:"_blank",rel:"noopener",class:"btn-line",text:"자료 열기 (PDF·파일) ↗"}):null,
+  ED.on?el("button",{type:"button",class:"edbtn",on:{click:function(){libForm(x)}}},[x.hidden?"✎ 수정 (숨김 상태)":"✎ 수정"]):null,
+  ED.on?el("button",{type:"button",class:"edbtn",on:{click:function(){var c=firebase.firestore().collection("library").doc(x.id);
+   if(x.hidden){c.update({hidden:false}).then(function(){return libLoad(true)}).then(renderLibrary);return}
+   if(!confirm("이 자료를 방문자에게 숨길까요? (다시 보이게 할 수 있습니다)"))return;var o=cl(x);delete o.id;o.hidden=true;c.set(o).then(function(){return libLoad(true)}).then(renderLibrary)}}},[x.hidden?"다시 보이기":"숨기기"]):null]):null])}
 function renderLibrary(){$("libdrive").href=LIB_DRIVE;var T=$("libtypes");T.textContent="";
  [""].concat(LIB_TYPES).forEach(function(t){T.appendChild(el("button",{type:"button",class:"chip"+(LIB.type===t?" on":""),text:t||"전체",on:{click:function(){LIB.type=t;renderLibrary()}}}))});
  var sel=$("ls-type");if(!sel.children.length)LIB_TYPES.forEach(function(t){sel.appendChild(el("option",{value:t,text:t}))});
@@ -1666,7 +1669,7 @@ function renderLibrary(){$("libdrive").href=LIB_DRIVE;var T=$("libtypes");T.text
   L.appendChild(el("p",{class:"libcount",text:"자료 "+list.length+"건"}));
   if(!list.length)L.appendChild(el("p",{class:"empty",text:"조건에 맞는 자료가 없습니다."}));
   list.forEach(function(x,i){L.appendChild(libCard(x));if(i===3&&list.length>5)L.appendChild(el("div",{class:"adslot","data-k":"infeed",style:"padding:16px;margin-block:20px"},[el("span",{class:"tag",text:"AD"}),"인피드 광고"]))});fillAds()})}
-function libForm(x,fromSug){var d=$("libmodal");if(d)d.remove();x=x||{};var F=[["t","제목"],["type","분류","sel"],["h","섹션 (예: tv, ctv, data — 쉼표로 구분)"],["u","링크 (구글 드라이브 공유 링크 또는 원문 주소)"],["src","출처 (기관·매체)"],["date","날짜 (YYYY-MM-DD)"],["s","요약","ta"],["n","Editor 한 줄 노트","ta"]],ins={};
+function libForm(x,fromSug,focus){var d=$("libmodal");if(d)d.remove();x=x||{};var F=[["t","제목"],["type","분류","sel"],["h","섹션 (예: tv, ctv, data — 쉼표로 구분)"],["u","링크 (구글 드라이브 공유 링크 또는 원문 주소)"],["src","출처 (기관·매체)"],["date","날짜 (YYYY-MM-DD)"],["s","요약","ta"],["n","Editor 한 줄 노트","ta"]],ins={};
  var f=el("form",{method:"dialog"},[el("h2",{text:x.id?"자료 수정":"자료 등록"})]);
  F.forEach(function(fd){var i;if(fd[2]==="sel"){i=el("select");LIB_TYPES.forEach(function(t){i.appendChild(el("option",{value:t,text:t}))})}else if(fd[2]==="ta"){i=el("textarea")}else{i=el("input",{type:"text"})}
   var v=x[fd[0]];if(fd[0]==="h"&&Array.isArray(v))v=v.join(", ");if(fd[0]==="date"&&!v)v=TODAY;i.value=v||(fd[0]==="type"?LIB_TYPES[0]:"");ins[fd[0]]=i;f.appendChild(el("label",{},[fd[1],i]))});
@@ -1675,9 +1678,9 @@ function libForm(x,fromSug){var d=$("libmodal");if(d)d.remove();x=x||{};var F=[[
  f.appendChild(msg);f.appendChild(el("div",{class:"row"},[el("button",{type:"button",class:"btn-line",text:"취소",on:{click:function(){d.close()}}}),sv]));
  f.addEventListener("submit",function(e){e.preventDefault();var o={};for(var k in ins)o[k]=ins[k].value.trim();o.h=o.h?o.h.split(/[,\s]+/).filter(function(h){return HUB[h]}):[];
   if(!o.t){msg.textContent="제목을 입력해 주세요.";return}if(o.u&&!/^https?:\/\//i.test(o.u)){msg.textContent="링크는 https:// 로 시작해야 합니다.";return}
-  sv.disabled=true;msg.textContent="저장 중…";o.at=firebase.firestore.FieldValue.serverTimestamp();var col=firebase.firestore().collection("library");
+  sv.disabled=true;msg.textContent="저장 중…";o.hidden=!!x.hidden;o.at=firebase.firestore.FieldValue.serverTimestamp();var col=firebase.firestore().collection("library");
   (x.id?col.doc(x.id).set(o):col.add(o)).then(function(){if(fromSug)return firebase.firestore().collection("library_suggest").doc(fromSug).delete()}).then(function(){d.close();return libLoad(true)}).then(renderLibrary).catch(function(er){sv.disabled=false;msg.textContent="저장하지 못했습니다: "+(er&&er.message||er)})});
- d=el("dialog",{id:"libmodal"},[f]);document.body.appendChild(d);d.showModal()}
+ d=el("dialog",{id:"libmodal"},[f]);document.body.appendChild(d);d.showModal();if(focus&&ins[focus])setTimeout(function(){ins[focus].focus()},50)}
 function libSugOpen(){var d=$("submodal");if(d)d.remove();var body=el("div",{class:"subbody"},[el("p",{text:"불러오는 중…"})]);
  d=el("dialog",{id:"submodal"},[el("div",{class:"subwrap"},[el("div",{class:"subhd"},[el("h2",{text:"자료 제안 목록"}),el("button",{type:"button",class:"btn-line",text:"닫기",on:{click:function(){d.close()}}})]),body])]);document.body.appendChild(d);d.showModal();
  firebase.firestore().collection("library_suggest").get().then(function(q){body.textContent="";var n=0;q.forEach(function(doc){n++;var x=doc.data();
