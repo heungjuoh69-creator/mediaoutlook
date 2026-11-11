@@ -1592,11 +1592,11 @@ function md(iso){var p=iso.split("-");return (+p[1])+"월 "+(+p[2])+"일"}
 function nkey(x){return x.k||("n_"+hk(x.t))}
 function fsBase(){var c=CONFIG.firebase;return "https://firestore.googleapis.com/v1/projects/"+c.projectId+"/databases/(default)/documents"}
 function fsVal(v){if("stringValue" in v)return v.stringValue;if("integerValue" in v)return +v.integerValue;if("doubleValue" in v)return v.doubleValue;if("booleanValue" in v)return v.booleanValue;if("arrayValue" in v)return (v.arrayValue.values||[]).map(fsVal);return null}
-function fsList(col,mask){var out=[],c=CONFIG.firebase;function pg(tok){return fetch(fsBase()+"/"+col+"?pageSize=1000"+(mask||"")+"&key="+c.apiKey+(tok?"&pageToken="+encodeURIComponent(tok):"")).then(function(r){return r.json()}).then(function(j){(j.documents||[]).forEach(function(d){var o={_id:d.name.split("/").pop()},f=d.fields||{};for(var k in f)o[k]=fsVal(f[k]);out.push(o)});return j.nextPageToken?pg(j.nextPageToken):out})}return pg()}
+function fsList(col,mask){var out=[],c=CONFIG.firebase;function pg(tok){return fetch(fsBase()+"/"+col+"?pageSize=1000"+(mask||"")+"&key="+c.apiKey+(tok?"&pageToken="+encodeURIComponent(tok):"")).then(function(r){return r.json()}).then(function(j){if(j&&j.error)throw new Error(j.error.status||"READ_DENIED");(j.documents||[]).forEach(function(d){var o={_id:d.name.split("/").pop()},f=d.fields||{};for(var k in f)o[k]=fsVal(f[k]);out.push(o)});return j.nextPageToken?pg(j.nextPageToken):out})}return pg()}
 function countView(n){if(!fbOn()||!n)return;if(Date.now()>=wkCut(weekOf(n.date||TODAY)))return;var k=nkey(n),lk="mo-v-"+k+"-"+TODAY;try{if(localStorage.getItem(lk))return;localStorage.setItem(lk,"1")}catch(e){}
  var c=CONFIG.firebase;fetch("https://firestore.googleapis.com/v1/projects/"+c.projectId+"/databases/(default)/documents:commit?key="+c.apiKey,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({writes:[{transform:{document:"projects/"+c.projectId+"/databases/(default)/documents/views/"+k,fieldTransforms:[{fieldPath:"n",increment:{integerValue:"1"}}]}}]})}).then(function(){VIEWS[k]=(VIEWS[k]||0)+1}).catch(function(){})}
 function archLoad(force){if(!fbOn())return Promise.resolve();if(archP&&!force)return archP;
- archP=Promise.all([fsList("views","&mask.fieldPaths=n").then(function(a){VIEWS={};a.forEach(function(o){VIEWS[o._id]=o.n||0})}),fsList("archive").then(function(a){ARCH=a})]).catch(function(){});return archP}
+ archP=Promise.all([fsList("views","&mask.fieldPaths=n").then(function(a){VIEWS={};a.forEach(function(o){VIEWS[o._id]=o.n||0})}).catch(function(){}),fsList("archive").then(function(a){ARCH=a}).catch(function(){})]);return archP}
 function candidates(){var seen={},out=[];POOL.concat(NEWS.map(function(n){var x=cl(n);x.date=x.date||TODAY;return x})).forEach(function(x){if(!x||!x.t)return;var k=nkey(x);if(seen[k])return;seen[k]=1;var e=ED.data[k]||{};if(e.hide)return;var y=cl(x);for(var f in e)if(f!=="hide")y[f]=e[f];y.k=k;y.date=y.date||TODAY;y.views=VIEWS[k]||0;out.push(y)});return out}
 function rankSort(a){return a.sort(function(p,q){return (q.views||0)-(p.views||0)||(p.hot||9)-(q.hot||9)||(q.date>p.date?1:q.date<p.date?-1:0)})}
 function topTen(items){var a=rankSort(items.slice());return a.slice(0,Math.max(1,Math.ceil(a.length*0.1)))}
@@ -1648,18 +1648,17 @@ function subOpen(){var d=$("submodal");if(d)d.remove();var body=el("div",{class:
 /* LIBRARY — 미디어 지식센터 */
 var LIB={items:[],sug:[],type:"",loaded:false};
 function libLoad(force){if(LIB.loaded&&!force)return Promise.resolve();if(!fbOn()){LIB.loaded=true;return Promise.resolve()}
- return fsList("library").then(function(a){LIB.items=a;LIB.loaded=true}).catch(function(){LIB.loaded=true})}
+ var viaSdk=function(){return firebase.firestore().collection("library").get().then(function(q){var a=[];q.forEach(function(d){var o=d.data();o._id=d.id;delete o.at;a.push(o)});LIB.items=a;LIB.loaded=true})};
+ if(ED.on&&window.firebase&&firebase.firestore)return viaSdk().catch(function(e){LIB.loaded=true;LIB.err=e&&(e.code||e.message)});
+ return fsList("library").then(function(a){LIB.items=a;LIB.loaded=true}).catch(function(e){LIB.loaded=true;LIB.err=e&&e.message})}
 function libAll(){var ids={};var fb=LIB.items.map(function(x){ids[x._id]=1;return {id:x._id,t:x.t,type:x.type,h:x.h||[],src:x.src||"",date:x.date||"",u:x.u||"",s:x.s||"",n:x.n||"",hidden:!!x.hidden}}).filter(function(x){return ED.on||!x.hidden});var sd=LIB_SEED.map(function(x){var y=cl(x);y.id="seed_"+hk(x.t);return y}).filter(function(y){return !ids[y.id]});return fb.concat(sd).sort(function(a,b){return (b.date||"")>(a.date||"")?1:-1})}
 function libCard(x){var tc=LIB_TYPES.indexOf(x.type);return el("article",{class:"libitem"},[
  el("div",{class:"libmeta"},[el("span",{class:"libtype t"+(tc<0?0:tc),text:x.type||"자료"}),x.h&&x.h[0]&&HUB[x.h[0]]?el("span",{class:"acat",style:"--c:"+col(x.h[0])},[HUB[x.h[0]].name]):null,el("span",{text:(x.date||"")+(x.src?" · "+x.src:"")})]),
  el("h3",{},[x.u?el("a",{href:x.u,target:"_blank",rel:"noopener",text:x.t}):x.t]),
  x.s?el("p",{class:"libsum",text:x.s}):null,
  ED.on?el("button",{type:"button",class:"libnote libnote-ed",title:"클릭해서 Editor 노트 수정",on:{click:function(){libForm(x,null,"n")}}},[el("b",{text:"Editor ✎ "}),x.n||"(Editor 노트 쓰기)"]):x.n?el("p",{class:"libnote"},[el("b",{text:"Editor · "}),x.n]):null,
- (x.u&&(/\.pdf($|\?)/i.test(x.u)||/drive\.google/.test(x.u)))||ED.on?el("div",{class:"row2"},[x.u&&(/\.pdf($|\?)/i.test(x.u)||/drive\.google/.test(x.u))?el("a",{href:x.u,target:"_blank",rel:"noopener",class:"btn-line",text:"자료 열기 (PDF·파일) ↗"}):null,
-  ED.on?el("button",{type:"button",class:"edbtn",on:{click:function(){libForm(x)}}},[x.hidden?"✎ 수정 (숨김 상태)":"✎ 수정"]):null,
-  ED.on?el("button",{type:"button",class:"edbtn",on:{click:function(){var c=firebase.firestore().collection("library").doc(x.id);
-   if(x.hidden){c.update({hidden:false}).then(function(){return libLoad(true)}).then(renderLibrary);return}
-   if(!confirm("이 자료를 방문자에게 숨길까요? (다시 보이게 할 수 있습니다)"))return;var o=cl(x);delete o.id;o.hidden=true;c.set(o).then(function(){return libLoad(true)}).then(renderLibrary)}}},[x.hidden?"다시 보이기":"숨기기"]):null]):null])}
+ x.u&&(/\.pdf($|\?)/i.test(x.u)||/drive\.google/.test(x.u))?el("div",{class:"row2"},[el("a",{href:x.u,target:"_blank",rel:"noopener",class:"btn-line",text:"자료 열기 (PDF·파일) ↗"})]):null,
+ x.hidden?el("p",{class:"muted",style:"font-size:12.5px;margin:0",text:"[숨김] 방문자에게 보이지 않는 자료입니다."}):null])}
 function renderLibrary(){$("libdrive").href=LIB_DRIVE;var T=$("libtypes");T.textContent="";
  [""].concat(LIB_TYPES).forEach(function(t){T.appendChild(el("button",{type:"button",class:"chip"+(LIB.type===t?" on":""),text:t||"전체",on:{click:function(){LIB.type=t;renderLibrary()}}}))});
  var sel=$("ls-type");if(!sel.children.length)LIB_TYPES.forEach(function(t){sel.appendChild(el("option",{value:t,text:t}))});
@@ -1674,12 +1673,13 @@ function libForm(x,fromSug,focus){var d=$("libmodal");if(d)d.remove();x=x||{};va
  F.forEach(function(fd){var i;if(fd[2]==="sel"){i=el("select");LIB_TYPES.forEach(function(t){i.appendChild(el("option",{value:t,text:t}))})}else if(fd[2]==="ta"){i=el("textarea")}else{i=el("input",{type:"text"})}
   var v=x[fd[0]];if(fd[0]==="h"&&Array.isArray(v))v=v.join(", ");if(fd[0]==="date"&&!v)v=TODAY;i.value=v||(fd[0]==="type"?LIB_TYPES[0]:"");ins[fd[0]]=i;f.appendChild(el("label",{},[fd[1],i]))});
  var msg=el("p",{class:"msg"}),sv=el("button",{type:"submit",class:"btn",text:"저장"});
+ var hid=el("input",{type:"checkbox"});hid.checked=!!x.hidden;if(x.id)f.appendChild(el("label",{class:"ck"},[hid,"이 자료 숨기기 (방문자에게 보이지 않음)"]));
  f.appendChild(el("p",{class:"muted",style:"font-size:12.5px",text:"PDF는 구글 드라이브 'MEDIA OUTLOOK 지식센터' 폴더에 올린 뒤, 파일 공유 링크를 붙여넣으세요."}));
  f.appendChild(msg);f.appendChild(el("div",{class:"row"},[el("button",{type:"button",class:"btn-line",text:"취소",on:{click:function(){d.close()}}}),sv]));
  f.addEventListener("submit",function(e){e.preventDefault();var o={};for(var k in ins)o[k]=ins[k].value.trim();o.h=o.h?o.h.split(/[,\s]+/).filter(function(h){return HUB[h]}):[];
   if(!o.t){msg.textContent="제목을 입력해 주세요.";return}if(o.u&&!/^https?:\/\//i.test(o.u)){msg.textContent="링크는 https:// 로 시작해야 합니다.";return}
-  sv.disabled=true;msg.textContent="저장 중…";o.hidden=!!x.hidden;o.at=firebase.firestore.FieldValue.serverTimestamp();var col=firebase.firestore().collection("library");
-  (x.id?col.doc(x.id).set(o):col.add(o)).then(function(){if(fromSug)return firebase.firestore().collection("library_suggest").doc(fromSug).delete()}).then(function(){d.close();return libLoad(true)}).then(renderLibrary).catch(function(er){sv.disabled=false;msg.textContent="저장하지 못했습니다: "+(er&&er.message||er)})});
+  sv.disabled=true;msg.textContent="저장 중…";o.hidden=!!(hid&&hid.checked);o.at=firebase.firestore.FieldValue.serverTimestamp();var col=firebase.firestore().collection("library");
+  (x.id?col.doc(x.id).set(o).then(function(){return {id:x.id}}):col.add(o)).then(function(ref){var lo=cl(o);delete lo.at;lo._id=ref.id;LIB.items=LIB.items.filter(function(y){return y._id!==ref.id}).concat([lo]);if(fromSug)return firebase.firestore().collection("library_suggest").doc(fromSug).delete()}).then(function(){d.close();var keep=LIB.items.slice();return libLoad(true).then(function(){if(!LIB.items.some(function(y){return keep.some(function(k){return k._id===y._id})})&&keep.length)LIB.items=keep})}).then(renderLibrary).catch(function(er){sv.disabled=false;var c=er&&(er.code||er.message)||er;msg.textContent=/permission/i.test(String(c))?"저장 권한이 없습니다. Firebase 규칙에 library 항목을 추가해 주세요. ("+c+")":"저장하지 못했습니다: "+c})});
  d=el("dialog",{id:"libmodal"},[f]);document.body.appendChild(d);d.showModal();if(focus&&ins[focus])setTimeout(function(){ins[focus].focus()},50)}
 function libSugOpen(){var d=$("submodal");if(d)d.remove();var body=el("div",{class:"subbody"},[el("p",{text:"불러오는 중…"})]);
  d=el("dialog",{id:"submodal"},[el("div",{class:"subwrap"},[el("div",{class:"subhd"},[el("h2",{text:"자료 제안 목록"}),el("button",{type:"button",class:"btn-line",text:"닫기",on:{click:function(){d.close()}}})]),body])]);document.body.appendChild(d);d.showModal();
