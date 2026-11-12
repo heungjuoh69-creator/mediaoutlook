@@ -530,7 +530,11 @@ footer .src li{font-size:12px}
 .libattach{border:1.5px dashed var(--accent);background:var(--surface);color:var(--accent);font:700 12.5px var(--sans);padding:5px 10px;cursor:pointer}
 .attlist{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);padding:10px;max-height:220px;overflow:auto}
 .attrow{display:flex;gap:8px;align-items:center;font-size:13.5px}.attrow a{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--accent)}.attrow .btn-line{font-size:12px;padding:3px 8px}
-.attsteps{font-size:13px;line-height:1.7;padding-left:18px;margin:0;color:var(--muted)}
+.libtitle{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap}.libtitle h3{flex:0 1 auto;min-width:0;margin:0}.libtitle{align-items:center}
+.libtitle .libattach{flex:none;padding:3px 9px;font-size:12px}
+.libclip{flex:none;font-size:12.5px;font-weight:700;color:var(--muted);border:1px solid var(--line);padding:2px 8px}
+.attup{display:flex;flex-direction:column;gap:6px;background:var(--band);padding:12px}.attup p{font-size:12.5px;margin:0}.attup .btn{align-self:flex-start}
+.attlink summary{cursor:pointer;font-weight:700;font-size:14px}.attlinkbody{display:flex;flex-direction:column;gap:8px;margin-top:8px}
 .libnote{font-size:14.5px;line-height:1.7;background:var(--band);border-left:3px solid var(--hot);padding:8px 10px}.libnote b{color:var(--hot)}
 .libnote-ed{display:block;width:100%;text-align:left;font:inherit;font-size:14.5px;color:var(--ink);border:1.5px dashed var(--accent);border-left:3px solid var(--hot);cursor:pointer}.libnote-ed:hover{background:color-mix(in srgb,var(--accent) 8%,var(--band))}
 .libitem .row2{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.libitem .btn-line{font-size:13px;padding:5px 10px}
@@ -2041,13 +2045,26 @@ function libLoad(force){if(LIB.loaded&&!force)return Promise.resolve();if(!fbOn(
 function libAll(){var ids={};var fb=LIB.items.map(function(x){ids[x._id]=1;return {id:x._id,t:x.t,type:x.type,h:x.h||[],src:x.src||"",date:x.date||"",u:x.u||"",s:x.s||"",n:x.n||"",hidden:!!x.hidden,files:Array.isArray(x.files)?x.files.filter(function(f){return f&&f.url}):[]}}).filter(function(x){return ED.on||!x.hidden});var sd=LIB_SEED.map(function(x){var y=cl(x);y.id="seed_"+hk(x.t);return y}).filter(function(y){return !ids[y.id]});return fb.concat(sd).sort(function(a,b){return (b.date||"")>(a.date||"")?1:-1})}
 function libCard(x){var tc=LIB_TYPES.indexOf(x.type);return el("article",{class:"libitem"},[
  el("div",{class:"libmeta"},[el("span",{class:"libtype t"+(tc<0?0:tc),text:x.type||"자료"}),x.h&&x.h[0]&&HUB[x.h[0]]?el("span",{class:"acat",style:"--c:"+col(x.h[0])},[HUB[x.h[0]].name]):null,el("span",{text:(x.date||"")+(x.src?" · "+x.src:"")})]),
- el("h3",{},[x.u?el("a",{href:x.u,target:"_blank",rel:"noopener",text:x.t}):x.t]),
+ el("div",{class:"libtitle"},[el("h3",{},[x.u?el("a",{href:x.u,target:"_blank",rel:"noopener",text:x.t}):x.t]),
+  ED.on?el("button",{type:"button",class:"libattach",title:"이 자료에 파일 첨부",on:{click:function(){libAttach(x)}}},["📎 첨부"+(x.files&&x.files.length?" "+x.files.length:"")]):(x.files&&x.files.length?el("span",{class:"libclip",title:"첨부파일 "+x.files.length+"개",text:"📎 "+x.files.length}):null)]),
  x.s?el("p",{class:"libsum",text:x.s}):null,
  ED.on?el("button",{type:"button",class:"libnote libnote-ed",title:"클릭해서 Editor 노트 수정",on:{click:function(){libForm(x,null,"n")}}},[el("b",{text:"Editor ✎ "}),x.n||"(Editor 노트 쓰기)"]):x.n?el("p",{class:"libnote"},[el("b",{text:"Editor · "}),x.n]):null,
  x.u&&(/\.pdf($|\?)/i.test(x.u)||/drive\.google/.test(x.u))?el("div",{class:"row2"},[el("a",{href:x.u,target:"_blank",rel:"noopener",class:"btn-line",text:"자료 열기 (PDF·파일) ↗"})]):null,
- (x.files&&x.files.length)||ED.on?el("div",{class:"libfiles"},(x.files||[]).map(function(f){return el("a",{href:f.url,target:"_blank",rel:"noopener",class:"libfile",title:f.url},[el("span",{class:"fic",text:fext(f)}),f.name||"첨부파일"])}).concat(ED.on?[el("button",{type:"button",class:"libattach",on:{click:function(){libAttach(x)}}},["📎 파일 첨부"+(x.files&&x.files.length?" ("+x.files.length+")":"")])]:[])):null,
+ (x.files&&x.files.length)?el("div",{class:"libfiles"},x.files.map(function(f){return el("a",{href:f.url,target:"_blank",rel:"noopener",class:"libfile",title:f.url},[el("span",{class:"fic",text:fext(f)}),f.name||"첨부파일"])})):null,
  x.hidden?el("p",{class:"muted",style:"font-size:12.5px;margin:0",text:"[숨김] 방문자에게 보이지 않는 자료입니다."}):null])}
 function fext(f){var m=String(f.name||"").match(/\.([a-z0-9]{2,5})$/i)||String(f.url||"").match(/\.([a-z0-9]{2,5})(\?|$)/i);var e=m?m[1].toUpperCase():"";if(!e&&/drive\.google|docs\.google/.test(f.url||""))e="DRIVE";return e||"FILE"}
+var DRV={tok:null,exp:0,folder:null};
+function drvToken(){if(DRV.tok&&Date.now()<DRV.exp)return Promise.resolve(DRV.tok);var p=new firebase.auth.GoogleAuthProvider();p.addScope("https://www.googleapis.com/auth/drive.file");var a=firebase.auth();
+ return (a.currentUser?a.currentUser.reauthenticateWithPopup(p):a.signInWithPopup(p)).then(function(r){var t=r&&r.credential&&r.credential.accessToken;if(!t)throw new Error("드라이브 권한을 받지 못했습니다.");DRV.tok=t;DRV.exp=Date.now()+50*60*1000;return t})}
+function drvFetch(url,opt,t){opt=opt||{};opt.headers=Object.assign({Authorization:"Bearer "+t},opt.headers||{});return fetch(url,opt).then(function(r){if(!r.ok)return r.text().then(function(x){var m=x;try{m=JSON.parse(x).error.message}catch(e){}if(r.status===401)DRV.tok=null;throw new Error(r.status+" "+m)});return r.json()})}
+function drvFolder(t){if(DRV.folder)return Promise.resolve(DRV.folder);var nm="MEDIA OUTLOOK 지식센터 첨부";
+ return drvFetch("https://www.googleapis.com/drive/v3/files?fields=files(id)&q="+encodeURIComponent("name='"+nm+"' and mimeType='application/vnd.google-apps.folder' and trashed=false"),{},t).then(function(j){if(j.files&&j.files[0])return j.files[0].id;
+  return drvFetch("https://www.googleapis.com/drive/v3/files?fields=id",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:nm,mimeType:"application/vnd.google-apps.folder"})},t).then(function(f){return f.id})}).then(function(id){DRV.folder=id;return id})}
+function drvUpload(file,onp){return drvToken().then(function(t){return drvFolder(t).then(function(fid){
+ var meta={name:file.name,parents:[fid]},b="mo"+Date.now().toString(36),body=new Blob(["--"+b+"\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n"+JSON.stringify(meta)+"\r\n--"+b+"\r\nContent-Type: "+(file.type||"application/octet-stream")+"\r\n\r\n",file,"\r\n--"+b+"--"]);
+ if(onp)onp("올리는 중… "+file.name);
+ return drvFetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name,webViewLink",{method:"POST",headers:{"Content-Type":"multipart/related; boundary="+b},body:body},t)}).then(function(f){
+ return drvFetch("https://www.googleapis.com/drive/v3/files/"+f.id+"/permissions",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({role:"reader",type:"anyone"})},t).then(function(){return {name:f.name||file.name,url:f.webViewLink||("https://drive.google.com/file/d/"+f.id+"/view")}})})})}
 function libAttach(x){var d=$("libmodal");if(d)d.remove();var files=(x.files||[]).map(function(f){return {name:f.name||"",url:f.url||""}}),list=el("div",{class:"attlist"}),msg=el("p",{class:"msg"});
  function draw(){list.textContent="";if(!files.length)list.appendChild(el("p",{class:"muted",style:"font-size:13px",text:"첨부된 파일이 없습니다."}));
   files.forEach(function(f,i){list.appendChild(el("div",{class:"attrow"},[el("span",{class:"fic",text:fext(f)}),el("a",{href:f.url,target:"_blank",rel:"noopener",text:f.name||f.url}),
@@ -2056,10 +2073,16 @@ function libAttach(x){var d=$("libmodal");if(d)d.remove();var files=(x.files||[]
  var nm=el("input",{type:"text",placeholder:"파일 이름 (예: 2025 하반기 유료방송 가입자 현황.pdf)"}),ur=el("input",{type:"url",placeholder:"https://drive.google.com/file/d/…  (공유 링크)"});
  var add=el("button",{type:"button",class:"btn-line",text:"+ 목록에 추가",on:{click:function(){var u=ur.value.trim(),n=nm.value.trim();if(!/^https?:\/\//i.test(u)){msg.textContent="링크는 https:// 로 시작해야 합니다.";return}if(!n){n=decodeURIComponent((u.split("?")[0].split("/").pop())||"첨부파일")}files.push({name:n.slice(0,120),url:u});nm.value="";ur.value="";msg.textContent="";draw()}}});
  var sv=el("button",{type:"submit",class:"btn",text:"저장"});
+ var fin=el("input",{type:"file",multiple:true,style:"display:none",on:{change:function(){var fs=[].slice.call(fin.files||[]);fin.value="";if(!fs.length)return;upBtn.disabled=true;sv.disabled=true;
+  var big=fs.filter(function(f){return f.size>4.5*1024*1024});if(big.length){msg.textContent="4.5MB가 넘는 파일은 드라이브에 직접 올린 뒤 ②번(링크)으로 첨부해 주세요: "+big.map(function(f){return f.name}).join(", ");fs=fs.filter(function(f){return big.indexOf(f)<0})}
+  var chain=Promise.resolve(),ok=0;fs.forEach(function(file){chain=chain.then(function(){return drvUpload(file,function(t){msg.textContent=t}).then(function(r){files.push(r);ok++;draw()})})});
+  chain.then(function(){msg.textContent=ok?ok+"개 파일을 올렸습니다. '저장'을 눌러 마무리하세요.":msg.textContent},function(e){var m=e&&e.message||String(e);msg.textContent="올리지 못했습니다: "+m+(/403|disabled|not been used/i.test(m)?" — Google Cloud에서 'Google Drive API'를 사용 설정해 주세요.":"")}).then(function(){upBtn.disabled=false;sv.disabled=false})}}});
+ var upBtn=el("button",{type:"button",class:"btn",text:"📁 파일 선택해서 올리기",on:{click:function(){fin.click()}}});
  var f=el("form",{method:"dialog"},[el("h2",{text:"📎 파일 첨부 — "+x.t}),
-  el("ol",{class:"attsteps"},[el("li",{},["아래 버튼으로 ",el("b",{text:"지식센터 드라이브 폴더"}),"를 열고 파일을 올립니다."]),el("li",{},["올린 파일에서 ",el("b",{text:"공유 → 링크 복사"}),"를 누릅니다. (일반 액세스: 링크가 있는 모든 사용자)"]),el("li",{text:"파일 이름과 링크를 붙여넣고 '목록에 추가' → '저장'을 누릅니다."})]),
-  el("a",{href:LIB_DRIVE,target:"_blank",rel:"noopener",class:"btn-line",style:"align-self:flex-start",text:"구글 드라이브 폴더 열기 ↗"}),
-  list,el("label",{},["파일 이름",nm]),el("label",{},["파일 링크",ur]),add,msg,
+  el("div",{class:"attup"},[el("b",{text:"① 내 컴퓨터에서 바로 올리기"}),el("p",{class:"muted",text:"파일을 고르면 편집자 구글 드라이브('MEDIA OUTLOOK 지식센터 첨부' 폴더)에 올라가고, 누구나 볼 수 있는 링크로 자동 첨부됩니다. 처음 한 번은 구글 드라이브 권한을 묻습니다."}),upBtn,fin]),
+  list,
+  el("details",{class:"attlink"},[el("summary",{text:"② 이미 있는 파일 링크로 첨부하기"}),el("div",{class:"attlinkbody"},[el("a",{href:LIB_DRIVE,target:"_blank",rel:"noopener",class:"btn-line",style:"align-self:flex-start",text:"지식센터 드라이브 폴더 열기 ↗"}),el("label",{},["파일 이름",nm]),el("label",{},["파일 링크 (공유: 링크가 있는 모든 사용자)",ur]),add])]),
+  msg,
   el("div",{class:"row"},[el("button",{type:"button",class:"btn-line",text:"취소",on:{click:function(){d.close()}}}),sv])]);
  f.addEventListener("submit",function(e){e.preventDefault();if(ur.value.trim()){add.click();if(msg.textContent)return}
   sv.disabled=true;msg.textContent="저장 중…";var o=cl(x);delete o.id;o.files=files;o.hidden=!!x.hidden;o.at=firebase.firestore.FieldValue.serverTimestamp();
