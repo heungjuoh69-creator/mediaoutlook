@@ -1,4 +1,9 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>MEDIA OUTLOOK 미디어아웃룩</title>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MEDIA OUTLOOK 미디어아웃룩</title>
 <meta name="description" content="MEDIA OUTLOOK(미디어아웃룩) — 광고·마케팅·미디어·테크 뉴스를 하나의 연결로 읽는 미디어 인사이트 & 업계 커뮤니티">
 <meta name="google-adsense-account" content="ca-pub-4989379274669737">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4989379274669737" crossorigin="anonymous"></script>
@@ -520,7 +525,7 @@ footer .src li{font-size:12px}
 .libtype.t0{background:#2446C9}.libtype.t1{background:#6B3FA0}.libtype.t2{background:#C8371D}.libtype.t3{background:#0F7B6C}.libtype.t4{background:#B5791B}
 .libsum{font-size:14.5px;line-height:1.7;color:var(--muted)}
 .libfiles{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.edpblock{margin-bottom:26px;border-top:3px solid var(--hot);padding-top:4px}.edpblock .sechd{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.edpblock .sechd small{font-size:14px;color:var(--muted);font-weight:600}
+.edpblock{margin-bottom:26px;margin-top:6px;border-top:3px solid var(--hot);padding-top:4px}.edpblock .sechd{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.edpblock .sechd small{font-size:14px;color:var(--muted);font-weight:600}
 .edplist{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
 .edpcard{border:1px solid var(--line);background:var(--surface);padding:14px;display:flex;flex-direction:column;gap:6px}.edpcard h3{font-size:17px;line-height:1.4;margin:0}.edpcard h3 a:hover{text-decoration:underline}.edpcard p{font-size:14px;color:var(--muted);margin:0;line-height:1.6}
 .edpmeta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--muted)}.edptag{background:var(--hot);color:#fff;font-weight:700;padding:1px 7px}
@@ -638,7 +643,7 @@ footer.aw .legal{margin-top:24px;font-size:12px}
 .adslot.adlive:has(ins[data-ad-status="unfilled"]){display:none}
 @media (min-width:821px){.mainrail>aside{align-self:stretch}.mainrail>aside>.ad-mpu:last-child{position:sticky;top:16px}}
 .adslot .adlab{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--faint);margin-bottom:4px}
-</style></head><body>
+</style>
 <div class="topbar"><div class="wrap">
   <span class="eyebrow">Media News · Insight · Community</span>
   <span class="sp"><a href="#subscribe">뉴스레터</a><a href="#partner">광고 문의</a><a href="#" id="edtop" hidden>✎ 편집자 모드</a><a href="#subscribe" class="subbtn">구독하기</a></span>
@@ -2007,23 +2012,23 @@ function renderColumn(i){var x=COLUMNS[i],V=$("colview"),R=$("colrel");V.textCon
 /* EDITOR POSTS — 카테고리별 Editor 직접 작성 글 (Firestore: edposts) */
 var EDP={items:[],loaded:false,p:null};
 var EDP_PAGES={opinion:"오피니언",archive:"주간 인기",datacenter:"데이터센터",glossary:"용어사전",lounge:"라운지",library:"지식센터"};
-function edpLabel(k){return HUB[k]?HUB[k].name:(EDP_PAGES[k]||k)}
+function edpLabel(k){return k==="home"?"전체 메뉴":HUB[k]?HUB[k].name:(EDP_PAGES[k]||k)}
 function edpKeys(){return HUBS.map(function(h){return h.id}).concat(Object.keys(EDP_PAGES))}
 function edpLoad(force){if(EDP.p&&!force)return EDP.p;if(!fbOn()){EDP.loaded=true;return EDP.p=Promise.resolve()}
  var norm=function(a){EDP.items=a.map(function(x){x.id=x.id||x._id;x.cats=Array.isArray(x.cats)?x.cats:[];x.files=Array.isArray(x.files)?x.files.filter(function(f){return f&&f.url}):[];return x});EDP.loaded=true};
  var sdk=function(){return firebase.firestore().collection("edposts").get().then(function(q){var a=[];q.forEach(function(d){var o=d.data();o.id=d.id;delete o.at;a.push(o)});norm(a)})};
  EDP.p=(ED.on&&window.firebase&&firebase.firestore?sdk():fsList("edposts").then(norm)).catch(function(){EDP.loaded=true});return EDP.p}
-function edpFor(k){return EDP.items.filter(function(x){return x.cats.indexOf(k)>=0&&(ED.on||!x.hidden)}).sort(function(a,b){return (b.date||"")>(a.date||"")?1:(b.date||"")<(a.date||"")?-1:0})}
+function edpFor(k){return EDP.items.filter(function(x){return (k==="home"||x.cats.indexOf(k)>=0)&&(ED.on||!x.hidden)}).sort(function(a,b){return (b.date||"")>(a.date||"")?1:(b.date||"")<(a.date||"")?-1:0})}
 function edpCard(x){return el("article",{class:"edpcard"+(x.hidden?" dim":"")},[
  el("div",{class:"edpmeta"},[el("span",{class:"edptag",text:"Editor 작성"}),el("span",{text:(x.date||"")+" · "+x.cats.map(edpLabel).join(" · ")}),x.files.length?el("span",{text:"📎 "+x.files.length}):null,x.hidden?el("span",{text:"[숨김]"}):null]),
  el("h3",{class:"hl"},[el("a",{href:"#ep-"+x.id,text:x.t})]),x.s?el("p",{text:x.s}):null,
  ED.on?el("button",{type:"button",class:"edbtn",on:{click:function(){edpForm(x)}}},["✎ 이 글 수정"]):null])}
 function edpBlock(k){var list=edpFor(k);if(!list.length&&!ED.on)return null;
- return el("div",{class:"edpblock",id:"edp-"+k},[el("div",{class:"sechd"},[el("h2",{},["Editor 글 ",el("small",{text:"· "+edpLabel(k)})]),ED.on?el("button",{type:"button",class:"btn",text:"+ Editor 글쓰기",on:{click:function(){edpForm(null,k)}}}):null]),
-  list.length?el("div",{class:"edplist"},list.slice(0,6).map(edpCard)):el("p",{class:"empty",text:"아직 이 카테고리에 올린 Editor 글이 없습니다. '+ Editor 글쓰기'로 첫 글을 올려 보세요."})])}
-function edpMount(k){var sec,anchor;if(HUB[k]){sec=$("vfeed");anchor=sec.firstChild}else{sec=document.querySelector('[data-page="'+k+'"]');if(!sec)return;var pt=sec.querySelector(".pagetitle");anchor=pt?pt.nextSibling:sec.firstChild}
+ return el("div",{class:"edpblock",id:"edp-"+k},[el("div",{class:"sechd"},[el("h2",{},["Editor 글 ",el("small",{text:"· "+edpLabel(k)})]),ED.on?el("button",{type:"button",class:"btn",text:"+ Editor 글쓰기",on:{click:function(){edpForm(null,k==="home"?"tv":k)}}}):null]),
+  list.length?el("div",{class:"edplist"},list.slice(0,k==="home"?3:6).map(edpCard)):el("p",{class:"empty",text:k==="home"?"아직 Editor 글이 없습니다. '+ Editor 글쓰기'를 누르고 카테고리(TV·스트리밍 등)를 골라 첫 글을 올려 보세요.":"아직 이 카테고리에 올린 Editor 글이 없습니다. '+ Editor 글쓰기'로 첫 글을 올려 보세요."})])}
+function edpMount(k){var sec,anchor,old0=document.getElementById("edp-"+k);if(old0)old0.remove();if(k==="home"){sec=document.querySelector('[data-page="home"]');anchor=$("hero").nextSibling}else if(HUB[k]){sec=$("vfeed");anchor=sec.firstChild}else{sec=document.querySelector('[data-page="'+k+'"]');if(!sec)return;var pt=sec.querySelector(".pagetitle");anchor=pt?pt.nextSibling:sec.firstChild}
  var old=document.getElementById("edp-"+k);if(old)old.remove();var b=edpBlock(k);if(!b)return;if(HUB[k])sec.insertBefore(b,sec.firstChild);else(anchor?anchor.parentNode.insertBefore(b,anchor):sec.appendChild(b))}
-function edpRoute(r){if(!(HUB[r]||EDP_PAGES[r]))return;edpLoad().then(function(){if(state.route===r)edpMount(r)})}
+function edpRoute(r){if(!(r==="home"||HUB[r]||EDP_PAGES[r]))return;edpLoad().then(function(){if(state.route===r)edpMount(r)})}
 function renderEdPost(id){var V=$("edpview"),R=$("edprel");V.textContent="";R.textContent="";V.appendChild(el("p",{class:"empty",text:"불러오는 중…"}));
  edpLoad().then(function(){V.textContent="";var x=EDP.items.filter(function(y){return y.id===id})[0];
   if(!x||(x.hidden&&!ED.on)){V.appendChild(el("p",{class:"empty",text:"글을 찾을 수 없습니다."}));V.appendChild(el("a",{href:"#home",class:"btn",text:"홈으로"}));return}
@@ -2129,7 +2134,7 @@ function fbReady(){if(!fbP)fbP=lsrc(FB+"firebase-app-compat.js").then(function()
 function edCheck(u){return firebase.firestore().collection("admin").doc("check").get().then(function(){ED.on=true;ED.user=u;try{localStorage.setItem("mo-ed","1")}catch(e){}edBar();return loadEdits().then(edRefresh).then(archFinalize)},function(){alert("편집자 계정이 아닙니다. 등록된 편집자 구글 계정으로 로그인해 주세요.");firebase.auth().signOut();try{localStorage.removeItem("mo-ed")}catch(e){}})}
 function edLogin(){fbReady().then(function(){var a=firebase.auth();if(a.currentUser)return edCheck(a.currentUser);return a.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(function(r){return edCheck(r.user)})}).catch(function(e){if(e&&e.code!=="auth/popup-closed-by-user"&&e.code!=="auth/cancelled-popup-request")alert("로그인하지 못했습니다: "+((e&&e.message)||e))})}
 function edLogout(){document.querySelectorAll(".edbtn").forEach(function(b){b.remove()});firebase.auth().signOut();ED.on=false;ED.user=null;try{localStorage.removeItem("mo-ed")}catch(e){}var b=$("edbar");if(b)b.remove();$("edlink").hidden=false;var et=$("edtop");if(et)et.textContent="✎ 편집자 모드";edRefresh()}
-function edBar(){$("edlink").hidden=true;var et=$("edtop");if(et)et.textContent="✎ 편집자 모드 끄기";if($("edbar"))return;document.body.appendChild(el("div",{class:"edbar",id:"edbar"},[el("b",{text:"✎ 편집자 모드"}),el("span",{text:(ED.user&&ED.user.email)||""}),el("button",{type:"button",text:"구독자 명단",on:{click:subOpen}}),el("button",{type:"button",text:"광고문의 관리",on:{click:leadsOpen}}),el("button",{type:"button",text:"로그아웃",on:{click:edLogout}})]))}
+function edBar(){$("edlink").hidden=true;var et=$("edtop");if(et)et.textContent="✎ 편집자 모드 끄기";if($("edbar"))return;document.body.appendChild(el("div",{class:"edbar",id:"edbar"},[el("b",{text:"✎ 편집자 모드"}),el("span",{text:(ED.user&&ED.user.email)||""}),el("button",{type:"button",text:"✍ 새 글쓰기",on:{click:function(){var r=state.route;edpForm(null,(HUB[r]||EDP_PAGES[r])?r:"tv")}}}),el("button",{type:"button",text:"구독자 명단",on:{click:subOpen}}),el("button",{type:"button",text:"광고문의 관리",on:{click:leadsOpen}}),el("button",{type:"button",text:"로그아웃",on:{click:edLogout}})]))}
 function edBtn(type,x){return el("button",{type:"button",class:"edbtn",on:{click:function(){edOpen(type,x.k)}}},[type==="n"?"✎ 이 글 수정":type==="o"?"✎ 견해 쓰기·수정":type==="p"?"✎ Editor 수정":"✎ 이 글 수정"])}
 function edOpen(type,k,focus){var x=merged(type,k);if(!x)return;var d=$("edmodal");if(d)d.remove();var ins={};
  var f=el("form",{method:"dialog"},[el("h2",{text:type==="q"?"Editor 수정 — "+x.t:type==="n"?"기사 수정 — 편집자 전용":"글 수정 — 편집자 전용"})]);
@@ -2313,4 +2318,6 @@ $("budget").addEventListener("input",updateMix);
 $("libsug").addEventListener("submit",libSuggest);$("libq").addEventListener("input",function(){renderLibrary()});
 buildNav();renderMix();renderPostbuy();renderQuiz();renderAll();route();edInit();
 })();
-</script></body></html>
+</script>
+</body>
+</html>
