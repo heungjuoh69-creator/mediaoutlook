@@ -1773,7 +1773,7 @@ var TERMS=[
 "use strict";
 var HUBS=[
  {id:"tv",name:"TV·지상파",nav:"TV",c:"--tv",d:"지상파·케이블·종편 방송과 방송광고 시장"},
- {id:"ctv",name:"CTV·OTT",nav:"스트리밍",c:"--ctv",d:"CTV·OTT·FAST 스트리밍과 그 광고"},
+ {id:"ctv",name:"CTV·OTT",nav:"스트리밍·OTT",c:"--ctv",d:"CTV·OTT·FAST 스트리밍과 그 광고"},
  {id:"social",name:"소셜·스트리밍",nav:"소셜·크리에이터",c:"--social",d:"유튜브·치지직·인스타그램 등 소셜 플랫폼과 크리에이터 경제"},
  {id:"ooh",name:"OOH·DOOH",nav:"옥외",c:"--ooh",d:"옥외·디지털 옥외(DOOH) 매체"},
  {id:"data",name:"데이터·퍼포먼스",nav:"데이터",c:"--data",d:"시청률·측정·퍼포먼스 지표와 데이터"},
@@ -1808,8 +1808,7 @@ function hotList(){return NEWS.filter(function(n){return n.hot}).sort(function(a
 
 /* NAV */
 function buildNav(){var nv=$("navlinks");nv.appendChild(el("a",{href:"#home","data-r":"home",text:"홈"}));nv.appendChild(el("a",{href:"#latest","data-r":"latest",text:"최신"}));
- HUBS.forEach(function(h){nv.appendChild(el("a",{href:"#"+h.id,"data-r":h.id},[el("span",{class:"dot",style:"background:"+col(h.id)}),h.nav]))});
- nv.appendChild(el("a",{href:"#nexttv","data-r":"nexttv",class:"navnew"},[el("span",{class:"dot",style:"background:#e8b400"}),"CTV·FAST·어드레서블"]));
+ HUBS.forEach(function(h){nv.appendChild(el("a",{href:"#"+h.id,"data-r":h.id},[el("span",{class:"dot",style:"background:"+col(h.id)}),h.nav]));if(h.id==="tv")nv.appendChild(el("a",{href:"#nexttv","data-r":"nexttv",class:"navnew"},[el("span",{class:"dot",style:"background:#e8b400"}),"CTV·FAST·어드레서블"]))});
  nv.appendChild(el("span",{class:"sep"}));
  [["opinion","오피니언"],["archive","주간 인기"],["datacenter","데이터센터"],["glossary","용어사전"],["lounge","라운지"],["library","지식센터"],["events","이벤트"],["tools","올미디어 툴"],["partner","광고·제휴"],["about","편집인"]].forEach(function(x){nv.appendChild(el("a",{href:"#"+x[0],"data-r":x[0],text:x[1]}))});
  nv.appendChild(el("a",{href:"https://aviationmaniac.tistory.com/",target:"_blank",rel:"noopener",text:"편집인 블로그 ↗"}));
