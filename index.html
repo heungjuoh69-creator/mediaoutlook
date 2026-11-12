@@ -465,6 +465,7 @@ footer .src li{font-size:12px}
 .note-e{white-space:pre-line;font-size:14px;line-height:1.7;border-top:1px dashed var(--line);padding-top:8px;margin-top:8px}
 .note-e b{color:var(--hot)}
 .post-a{background:var(--band);border-left:3px solid var(--hot);padding:10px 12px;margin-block:8px}
+.post-a-ed{cursor:pointer;outline:1.5px dashed var(--accent);outline-offset:-1.5px}.post-a-ed:hover,.post-a-ed:focus{background:color-mix(in srgb,var(--accent) 8%,var(--band))}.post-a-ed b{color:var(--hot)}
 .post-a b{font-size:12.5px;color:var(--hot)}
 .post-a p{font-size:14.5px;line-height:1.75;margin-top:4px;white-space:pre-line}
 .sg .sv{display:block;grid-column:1/-1;font-size:12.5px;line-height:1.6;color:var(--muted);margin-top:4px}
@@ -1777,7 +1778,7 @@ function renderPostbuy(){var tb=$("postbuy");POSTBUY.forEach(function(r){var a=M
 /* LOUNGE */
 function renderLounge(){var lf=$("loungefilters");lf.querySelectorAll("button").forEach(function(b){b.remove()});lf.appendChild(el("button",{type:"button",class:"chip"+(!state.focus?" on":""),text:"전체",on:{click:function(){setFocus(null)}}}));HUBS.forEach(function(h){lf.appendChild(hubChip(h.id))});
  var f=$("feed");f.textContent="";var list=POSTS.filter(function(p){return matches(p.h)});if(!list.length)f.appendChild(el("p",{class:"empty",text:"이 허브에는 아직 대화가 없습니다. 오른쪽에서 첫 질문을 보내주세요."}));
- list.forEach(function(p){f.appendChild(el("article",{class:"post"},[el("div",{class:"head"},[el("span",{class:"kind",text:p.kind}),el("span",{text:p.who}),el("span",{text:p.when})]),el("h3",{text:p.title}),el("p",{text:p.body}),(p.a||ED.on)?el("div",{class:"post-a"},[el("b",{text:"Editor 답변"}),el("p",{text:p.a||"(아직 답변이 없습니다)"}),ED.on?edBtn("p",p):null]):null,chipsFor(p.h)]))});
+ list.forEach(function(p){f.appendChild(el("article",{class:"post"},[el("div",{class:"head"},[el("span",{class:"kind",text:p.kind}),el("span",{text:p.who}),el("span",{text:p.when})]),el("h3",{text:p.title}),el("p",{text:p.body}),ED.on?el("div",{class:"post-a post-a-ed",role:"button",tabindex:"0",title:"클릭해서 Editor 답변 수정",on:{click:function(){edOpen("p",p.k,"a")},keydown:function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();edOpen("p",p.k,"a")}}}},[el("b",{text:"Editor 답변 ✎"}),paras(p.a||"(Editor 답변 쓰기)").length>1?el("div",{},paras(p.a).map(function(t){return el("p",{text:t})})):el("p",{text:p.a||"(Editor 답변 쓰기)"})]):p.a?el("div",{class:"post-a"},[el("b",{text:"Editor 답변"})].concat(paras(p.a).map(function(t){return el("p",{text:t})}))):null,chipsFor(p.h)]))});
  var r=$("rooms");r.textContent="";HUBS.forEach(function(h){var n=POSTS.filter(function(p){return p.h.indexOf(h.id)>=0}).length,nn=NEWS.filter(function(x){return x.h.indexOf(h.id)>=0}).length;r.appendChild(el("button",{type:"button",on:{click:function(){setFocus(h.id)}}},[el("b",{style:"display:flex;align-items:center;gap:8px;font-weight:500"},[el("span",{class:"dot",style:"background:"+col(h.id)}),h.name]),el("span",{text:"대화 "+n+" · 뉴스 "+nn})]))})}
 /* SEARCH */
 function renderSearch(){var q=state.q.toLowerCase(),R=$("sresults");R.textContent="";$("sq-title").textContent="‘"+state.q+"’ 검색 결과";if(!q)return;
@@ -1956,7 +1957,7 @@ function edLogin(){fbReady().then(function(){var a=firebase.auth();if(a.currentU
 function edLogout(){document.querySelectorAll(".edbtn").forEach(function(b){b.remove()});firebase.auth().signOut();ED.on=false;ED.user=null;try{localStorage.removeItem("mo-ed")}catch(e){}var b=$("edbar");if(b)b.remove();$("edlink").hidden=false;var et=$("edtop");if(et)et.textContent="✎ 편집자 모드";edRefresh()}
 function edBar(){$("edlink").hidden=true;var et=$("edtop");if(et)et.textContent="✎ 편집자 모드 끄기";if($("edbar"))return;document.body.appendChild(el("div",{class:"edbar",id:"edbar"},[el("b",{text:"✎ 편집자 모드"}),el("span",{text:(ED.user&&ED.user.email)||""}),el("button",{type:"button",text:"구독자 명단",on:{click:subOpen}}),el("button",{type:"button",text:"광고문의 관리",on:{click:leadsOpen}}),el("button",{type:"button",text:"로그아웃",on:{click:edLogout}})]))}
 function edBtn(type,x){return el("button",{type:"button",class:"edbtn",on:{click:function(){edOpen(type,x.k)}}},[type==="n"?"✎ 이 글 수정":type==="o"?"✎ 견해 쓰기·수정":type==="p"?"✎ Editor 수정":"✎ 이 글 수정"])}
-function edOpen(type,k){var x=merged(type,k);if(!x)return;var d=$("edmodal");if(d)d.remove();var ins={};
+function edOpen(type,k,focus){var x=merged(type,k);if(!x)return;var d=$("edmodal");if(d)d.remove();var ins={};
  var f=el("form",{method:"dialog"},[el("h2",{text:type==="q"?"Editor 수정 — "+x.t:type==="n"?"기사 수정 — 편집자 전용":"글 수정 — 편집자 전용"})]);
  EDF[type].forEach(function(fd){var i=fd[2]?el("textarea",{class:fd[2]==="big"?"big":""}):el("input",{type:"text"});i.value=x[fd[0]]||"";ins[fd[0]]=i;f.appendChild(el("label",{},[fd[1],i]))});
  var hide=el("input",{type:"checkbox"});hide.checked=x.hide;if(type!=="q")f.appendChild(el("label",{class:"ck"},[hide,"이 글 숨기기 (방문자에게 보이지 않음)"]));
@@ -1968,7 +1969,7 @@ function edOpen(type,k){var x=merged(type,k);if(!x)return;var d=$("edmodal");if(
   if(type!=="q"&&!(o.t||o.title)){msg.textContent="제목을 비울 수 없습니다.";return}
   sv.disabled=true;msg.textContent="저장 중…";var w=cl(o);w.at=firebase.firestore.FieldValue.serverTimestamp();
   firebase.firestore().collection("edits").doc(k).set(w).then(function(){ED.data[k]=o;d.close();edRefresh()},function(e){sv.disabled=false;msg.textContent="저장하지 못했습니다(편집자 권한 확인): "+e.message})});
- d=el("dialog",{id:"edmodal"},[f]);document.body.appendChild(d);d.showModal()}
+ d=el("dialog",{id:"edmodal"},[f]);document.body.appendChild(d);d.showModal();if(focus&&ins[focus])setTimeout(function(){ins[focus].focus();ins[focus].scrollIntoView({block:"center"})},50)}
 function edInit(){if(!fbOn())return;$("edlink").hidden=false;var et=$("edtop");if(et){et.hidden=false;et.addEventListener("click",function(e){e.preventDefault();if(ED.on){edLogout()}else edLogin()})}$("edlogin").addEventListener("click",function(e){e.preventDefault();edLogin()});loadEdits();
  var was=false;try{was=localStorage.getItem("mo-ed")==="1"}catch(e){}
  if(was)fbReady().then(function(){var un=firebase.auth().onAuthStateChanged(function(u){un();if(u)edCheck(u)})}).catch(function(){})}
