@@ -1,4 +1,9 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>MEDIA OUTLOOK 미디어아웃룩</title>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MEDIA OUTLOOK 미디어아웃룩</title>
 <meta name="description" content="MEDIA OUTLOOK(미디어아웃룩) — 광고·마케팅·미디어·테크 뉴스를 하나의 연결로 읽는 미디어 인사이트 & 업계 커뮤니티">
 <meta name="google-adsense-account" content="ca-pub-4989379274669737">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4989379274669737" crossorigin="anonymous"></script>
@@ -531,6 +536,10 @@ footer .src li{font-size:12px}
 .libfiles{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .edpblock{margin-bottom:26px;margin-top:6px;border-top:3px solid var(--hot);padding-top:4px}.edpblock .sechd{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.edpblock .sechd small{font-size:14px;color:var(--muted);font-weight:600}
 .edplist{display:flex;flex-direction:column;gap:12px}
+.edpcard.hasimg{flex-direction:row!important;gap:16px!important;align-items:flex-start}.edpthumb{flex:none;width:200px;aspect-ratio:16/10;overflow:hidden;background:var(--band)}.edpthumb img{width:100%;height:100%;object-fit:cover;display:block}.edpbody{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
+@media (max-width:560px){.edpcard.hasimg{flex-direction:column!important}.edpthumb{width:100%}}
+.edpfig{margin:18px 0}.edpfig img{max-width:100%;height:auto;display:block;border:1px solid var(--line)}.edpfig figcaption{font-size:13px;color:var(--muted);margin-top:6px}
+.imglist{display:flex;flex-direction:column;gap:8px}.imgrow{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);padding:8px;background:var(--surface)}.imgrow img{width:110px;height:70px;object-fit:cover;flex:none;background:var(--band)}.imgmeta{display:flex;flex-direction:column;gap:5px;flex:1;min-width:0}.imgmeta input{width:100%;box-sizing:border-box}
 .edpcard{border-left:4px solid var(--hot)!important}.edpcard h3{font-size:19px!important}.edpcard p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;max-width:none}.edpcard .edbtn{align-self:flex-start}
 .edpcard{border:1px solid var(--line);background:var(--surface);padding:14px;display:flex;flex-direction:column;gap:6px}.edpcard h3{font-size:17px;line-height:1.4;margin:0}.edpcard h3 a:hover{text-decoration:underline}.edpcard p{font-size:14px;color:var(--muted);margin:0;line-height:1.6}
 .edpmeta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--muted)}.edptag{background:var(--hot);color:#fff;font-weight:700;padding:1px 7px}
@@ -648,7 +657,7 @@ footer.aw .legal{margin-top:24px;font-size:12px}
 .adslot.adlive:has(ins[data-ad-status="unfilled"]){display:none}
 @media (min-width:821px){.mainrail>aside{align-self:stretch}.mainrail>aside>.ad-mpu:last-child{position:sticky;top:16px}}
 .adslot .adlab{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--faint);margin-bottom:4px}
-</style></head><body>
+</style>
 <div class="topbar"><div class="wrap">
   <span class="eyebrow">Media News · Insight · Community</span>
   <span class="sp"><a href="#subscribe">뉴스레터</a><a href="#partner">광고 문의</a><a href="#" id="edtop" hidden>✎ 편집자 모드</a><a href="#subscribe" class="subbtn">구독하기</a></span>
@@ -2007,14 +2016,15 @@ var EDP_PAGES={nexttv:"CTV·FAST·어드레서블",opinion:"오피니언",archiv
 function edpLabel(k){return k==="home"?"전체 메뉴":HUB[k]?HUB[k].name:(EDP_PAGES[k]||k)}
 function edpKeys(){return HUBS.map(function(h){return h.id}).concat(Object.keys(EDP_PAGES))}
 function edpLoad(force){if(EDP.p&&!force)return EDP.p;if(!fbOn()){EDP.loaded=true;return EDP.p=Promise.resolve()}
- var norm=function(a){EDP.items=a.map(function(x){x.id=x.id||x._id;x.cats=Array.isArray(x.cats)?x.cats:[];x.files=Array.isArray(x.files)?x.files.filter(function(f){return f&&f.url}):[];return x});EDP.loaded=true};
+ var norm=function(a){EDP.items=a.map(function(x){x.id=x.id||x._id;x.cats=Array.isArray(x.cats)?x.cats:[];x.files=Array.isArray(x.files)?x.files.filter(function(f){return f&&f.url}):[];x.imgs=Array.isArray(x.imgs)?x.imgs.filter(function(m){return m&&m.src}):[];return x});EDP.loaded=true};
  var sdk=function(){return firebase.firestore().collection("edposts").get().then(function(q){var a=[];q.forEach(function(d){var o=d.data();o.id=d.id;delete o.at;a.push(o)});norm(a)})};
  EDP.p=(ED.on&&window.firebase&&firebase.firestore?sdk():fsList("edposts").then(norm)).catch(function(){EDP.loaded=true});return EDP.p}
 function edpFor(k){return EDP.items.filter(function(x){return (k==="home"||x.cats.indexOf(k)>=0)&&(ED.on||!x.hidden)}).sort(function(a,b){return (b.date||"")>(a.date||"")?1:(b.date||"")<(a.date||"")?-1:0})}
-function edpCard(x){return el("article",{class:"edpcard"+(x.hidden?" dim":"")},[
+function edpCard(x){var im=x.imgs&&x.imgs[0];return el("article",{class:"edpcard"+(x.hidden?" dim":"")+(im?" hasimg":"")},[im?el("a",{href:"#ep-"+x.id,class:"edpthumb"},[el("img",{src:im.src,alt:im.cap||x.t,loading:"lazy"})]):null,el("div",{class:"edpbody"},[
  el("div",{class:"edpmeta"},[el("span",{class:"edptag",text:"Editor 작성"}),el("span",{text:(x.date||"")+" · "+x.cats.map(edpLabel).join(" · ")}),x.files.length?el("span",{text:"📎 "+x.files.length}):null,x.hidden?el("span",{text:"[숨김]"}):null]),
  el("h3",{class:"hl"},[el("a",{href:"#ep-"+x.id,text:x.t})]),x.s?el("p",{text:x.s}):null,
- ED.on?el("button",{type:"button",class:"edbtn",on:{click:function(){edpForm(x)}}},["✎ 이 글 수정"]):null])}
+ ED.on?el("button",{type:"button",class:"edbtn",on:{click:function(){edpForm(x)}}},["✎ 이 글 수정"]):null])])}
+function edpFig(m){return el("figure",{class:"edpfig"},[el("img",{src:m.src,alt:m.cap||"",loading:"lazy"}),m.cap?el("figcaption",{text:m.cap}):null])}
 function edpBlock(k){var list=edpFor(k);if(!list.length&&!ED.on)return null;
  return el("div",{class:"edpblock"+(k==="home"?" sec":""),id:"edp-"+k},[el("div",{class:"sechd"},[el("h2",{},["Editor 글 ",el("small",{text:"· "+edpLabel(k)})]),ED.on?el("button",{type:"button",class:"btn",text:"+ Editor 글쓰기",on:{click:function(){edpForm(null,k==="home"?"tv":k)}}}):null]),
   list.length?el("div",{class:"edplist"},list.slice(0,k==="home"?3:6).map(edpCard)):el("p",{class:"empty",text:k==="home"?"아직 Editor 글이 없습니다. '+ Editor 글쓰기'를 누르고 카테고리(TV·스트리밍 등)를 골라 첫 글을 올려 보세요.":"아직 이 카테고리에 올린 Editor 글이 없습니다. '+ Editor 글쓰기'로 첫 글을 올려 보세요."})])}
@@ -2029,7 +2039,8 @@ function renderEdPost(id){var V=$("edpview"),R=$("edprel");V.textContent="";R.te
   V.appendChild(el("h1",{text:x.t}));if(x.s)V.appendChild(el("p",{class:"coldek",text:x.s}));
   V.appendChild(el("div",{class:"colby"},[el("b",{text:"MEDIA OUTLOOK Editor"}),el("span",{text:"광고·미디어 30년"+(x.date?" · "+x.date:"")})]));
   if(ED.on)V.appendChild(el("button",{type:"button",class:"edbtn",on:{click:function(){edpForm(x)}}},["✎ 이 글 수정"]));
-  var hc=0;String(x.body||"").split(/\n\s*\n/).forEach(function(t){t=t.trim();if(!t)return;if(t.indexOf("## ")===0){hc++;if(hc===2)V.appendChild(el("div",{class:"adslot ad-article","data-k":"article",style:"padding:16px;margin-block:20px"},[el("span",{class:"tag",text:"AD"}),"본문 광고"]));V.appendChild(el("h2",{text:t.slice(3)}))}else V.appendChild(el("p",{text:t}))});
+  var used={},imgs=x.imgs||[];String(x.body||"").replace(/\[그림\s*(\d+)\]/g,function(a,n){used[+n-1]=1});imgs.forEach(function(m,i){if(!used[i])V.appendChild(edpFig(m))});
+  var hc=0;String(x.body||"").split(/\n\s*\n/).forEach(function(t){t=t.trim();if(!t)return;var mk=t.match(/^\[그림\s*(\d+)\]$/);if(mk){var m=imgs[+mk[1]-1];if(m)V.appendChild(edpFig(m));return}if(t.indexOf("## ")===0){hc++;if(hc===2)V.appendChild(el("div",{class:"adslot ad-article","data-k":"article",style:"padding:16px;margin-block:20px"},[el("span",{class:"tag",text:"AD"}),"본문 광고"]));V.appendChild(el("h2",{text:t.slice(3)}))}else V.appendChild(el("p",{text:t}))});
   if(x.files.length)V.appendChild(el("div",{class:"libfiles",style:"margin-block:16px"},x.files.map(function(f){return el("a",{href:f.url,target:"_blank",rel:"noopener",class:"libfile"},[el("span",{class:"fic",text:fext(f)}),f.name||"첨부파일"])})));
   if(x.u)V.appendChild(el("p",{},[el("a",{href:x.u,target:"_blank",rel:"noopener",class:"btn-line",text:"참고 자료 보기 ↗"})]));
   var hubs=x.cats.filter(function(c){return HUB[c]});if(hubs.length)V.appendChild(chipsFor(hubs));
@@ -2042,6 +2053,13 @@ function edpForm(x,k){var d=$("libmodal");if(d)d.remove();x=x||{cats:[k],files:[
  var prim=el("select");edpKeys().forEach(function(c){var o=el("option",{value:c,text:edpLabel(c)});if(c===(x.cats[0]||k))o.selected=true;prim.appendChild(o)});
  var extra=el("div",{class:"edpcats"});edpKeys().forEach(function(c){var cb=el("input",{type:"checkbox",value:c});cb.checked=x.cats.indexOf(c)>0;extra.appendChild(el("label",{class:"ck"},[cb,edpLabel(c)]))});
  var flist=el("div",{class:"attlist"}),msg=el("p",{class:"msg"});
+ var imgs=(x.imgs||[]).map(function(m){return {src:m.src,cap:m.cap||""}}),ilist=el("div",{class:"imglist"});
+ function idraw(){ilist.textContent="";if(!imgs.length)ilist.appendChild(el("p",{class:"muted",style:"font-size:13px;margin:0",text:"그림 없음 — 본문에 [그림1]처럼 쓰면 그 자리에 들어갑니다. 안 쓰면 제목 아래에 차례로 나옵니다."}));
+  imgs.forEach(function(m,i){var cap=el("input",{type:"text",placeholder:"그림 설명 (선택)"});cap.value=m.cap;cap.addEventListener("input",function(){m.cap=cap.value});
+   ilist.appendChild(el("div",{class:"imgrow"},[el("img",{src:m.src,alt:""}),el("div",{class:"imgmeta"},[el("b",{text:"[그림"+(i+1)+"]"}),cap,el("div",{style:"display:flex;gap:6px"},[el("button",{type:"button",class:"btn-line",text:"↑",on:{click:function(){if(i>0){var t=imgs[i-1];imgs[i-1]=imgs[i];imgs[i]=t;idraw()}}}}),el("button",{type:"button",class:"btn-line",text:"삭제",on:{click:function(){imgs.splice(i,1);idraw()}}})])])]))})}
+ function shrink(file){return new Promise(function(res,rej){var fr=new FileReader();fr.onerror=rej;fr.onload=function(){var im=new Image();im.onerror=function(){rej(new Error("그림을 읽지 못했습니다: "+file.name))};im.onload=function(){var W=1280,sc=Math.min(1,W/im.width),c=document.createElement("canvas");c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);var g=c.getContext("2d");g.fillStyle="#fff";g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);var q=.82,u=c.toDataURL("image/jpeg",q);while(u.length>260000&&q>.4){q-=.12;u=c.toDataURL("image/jpeg",q)}res(u)};im.src=fr.result};fr.readAsDataURL(file)})}
+ var iin=el("input",{type:"file",accept:"image/*",multiple:true,style:"display:none",on:{change:function(){var fs=[].slice.call(iin.files||[]);iin.value="";var ch=Promise.resolve();fs.forEach(function(file){ch=ch.then(function(){msg.textContent="그림 줄이는 중… "+file.name;return shrink(file).then(function(u){imgs.push({src:u,cap:""});idraw();msg.textContent=""})})});ch.catch(function(e){msg.textContent=e.message||String(e)})}}});
+ var iurl=el("input",{type:"url",placeholder:"그림 주소 https://… (선택)"});
  function draw(){flist.textContent="";if(!files.length)flist.appendChild(el("p",{class:"muted",style:"font-size:13px;margin:0",text:"첨부파일 없음"}));files.forEach(function(f,i){flist.appendChild(el("div",{class:"attrow"},[el("span",{class:"fic",text:fext(f)}),el("a",{href:f.url,target:"_blank",rel:"noopener",text:f.name||f.url}),el("button",{type:"button",class:"btn-line",text:"삭제",on:{click:function(){files.splice(i,1);draw()}}})]))})}
  var fin=el("input",{type:"file",multiple:true,style:"display:none",on:{change:function(){var fs=[].slice.call(fin.files||[]);fin.value="";var chain=Promise.resolve();fs.forEach(function(file){chain=chain.then(function(){if(file.size>4.5*1024*1024){msg.textContent="4.5MB가 넘는 파일은 드라이브에 올린 뒤 링크로 넣어 주세요: "+file.name;return}return drvUpload(file,function(m){msg.textContent=m}).then(function(r){files.push(r);draw();msg.textContent="올렸습니다: "+r.name})})});chain.catch(function(e){var m=e&&e.message||String(e);msg.textContent="올리지 못했습니다: "+m+(/403|disabled|not been used/i.test(m)?" — Google Drive API 사용 설정이 필요합니다.":"")})}}});
  var lnN=I("","파일 이름"),lnU=I("","파일 링크 https://…");
@@ -2050,17 +2068,19 @@ function edpForm(x,k){var d=$("libmodal");if(d)d.remove();x=x||{cats:[k],files:[
   el("label",{},["제목",t]),el("label",{},["카테고리 (이 글이 올라갈 메뉴)",prim]),el("details",{class:"attlink"},[el("summary",{text:"다른 카테고리에도 함께 보이기 (선택)"}),extra]),
   el("label",{},["요약 (목록에 보이는 1~2문장)",s]),el("label",{},["본문 (빈 줄로 문단 구분 · ## 로 시작하면 소제목)",body]),
   el("label",{},["참고 링크",u]),el("label",{},["날짜",dt]),
+  el("div",{class:"attup"},[el("b",{text:"🖼 그림"}),ilist,el("div",{style:"display:flex;gap:6px;flex-wrap:wrap;align-items:center"},[el("button",{type:"button",class:"btn-line",text:"📷 내 컴퓨터에서 그림 올리기",on:{click:function(){iin.click()}}}),iin,iurl,el("button",{type:"button",class:"btn-line",text:"주소로 추가",on:{click:function(){var u=iurl.value.trim();if(!/^https?:\/\//i.test(u)){msg.textContent="그림 주소는 https:// 로 시작해야 합니다.";return}var dm=u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=)([\w-]+)/);if(dm)u="https://drive.google.com/thumbnail?id="+dm[1]+"&sz=w1600";imgs.push({src:u,cap:""});iurl.value="";idraw()}}})])]),
   el("div",{class:"attup"},[el("b",{text:"📎 첨부파일"}),flist,el("div",{class:"row2",style:"display:flex;gap:8px;flex-wrap:wrap"},[el("button",{type:"button",class:"btn-line",text:"📁 내 컴퓨터에서 올리기",on:{click:function(){fin.click()}}}),fin]),
    el("div",{style:"display:flex;gap:6px;flex-wrap:wrap"},[lnN,lnU,el("button",{type:"button",class:"btn-line",text:"링크 추가",on:{click:function(){var uu=lnU.value.trim();if(!/^https?:\/\//i.test(uu)){msg.textContent="링크는 https:// 로 시작해야 합니다.";return}files.push({name:lnN.value.trim()||uu.split("/").pop(),url:uu});lnN.value="";lnU.value="";draw()}}})])]),
   el("label",{class:"ck"},[hid,"이 글 숨기기 (방문자에게 보이지 않음)"]),msg,
   el("div",{class:"row"},[x.id?el("button",{type:"button",class:"btn-line",text:"삭제",on:{click:function(){if(!confirm("이 글을 완전히 삭제할까요? 되돌릴 수 없습니다."))return;firebase.firestore().collection("edposts").doc(x.id).delete().then(function(){EDP.items=EDP.items.filter(function(y){return y.id!==x.id});d.close();if(/^ep-/.test(state.route))location.hash="#"+(x.cats[0]||"home");else edpMount(state.route)},function(e){msg.textContent="삭제하지 못했습니다: "+(e.code||e.message)})}}}):null,el("button",{type:"button",class:"btn-line",text:"취소",on:{click:function(){d.close()}}}),sv])]);
- f.addEventListener("submit",function(e){e.preventDefault();var o={t:t.value.trim(),s:s.value.trim(),body:body.value.trim(),u:u.value.trim(),date:dt.value.trim()||TODAY,hidden:hid.checked,files:files};
+ f.addEventListener("submit",function(e){e.preventDefault();var o={t:t.value.trim(),s:s.value.trim(),body:body.value.trim(),u:u.value.trim(),date:dt.value.trim()||TODAY,hidden:hid.checked,files:files,imgs:imgs.map(function(m){return {src:m.src,cap:(m.cap||"").trim()}})};
+  var sz=JSON.stringify(o).length;if(sz>950000){msg.textContent="그림 용량이 너무 큽니다("+Math.round(sz/1024)+"KB). 그림 수를 줄여 주세요. (한 글에 약 3~4장까지)";return}
   if(!o.t){msg.textContent="제목을 입력해 주세요.";return}if(o.u&&!/^https?:\/\//i.test(o.u)){msg.textContent="참고 링크는 https:// 로 시작해야 합니다.";return}
   var cats=[prim.value];extra.querySelectorAll("input:checked").forEach(function(cb){if(cats.indexOf(cb.value)<0)cats.push(cb.value)});o.cats=cats;if(cats.indexOf("nexttv")<0&&ntKinds({t:o.t,d:o.s+" "+o.body}).length)o.cats.push("nexttv");
   sv.disabled=true;msg.textContent="저장 중…";var w=cl(o);w.at=firebase.firestore.FieldValue.serverTimestamp();var col=firebase.firestore().collection("edposts");
   (x.id?col.doc(x.id).set(w).then(function(){return {id:x.id}}):col.add(w)).then(function(ref){o.id=ref.id;EDP.items=EDP.items.filter(function(y){return y.id!==ref.id}).concat([o]);d.close();
    if(/^ep-/.test(state.route))renderEdPost(o.id);else edpMount(state.route)}).catch(function(er){sv.disabled=false;var c=er&&(er.code||er.message)||er;msg.textContent=/permission/i.test(String(c))?"저장 권한이 없습니다. Firebase 규칙에 edposts 항목을 추가해 주세요. ("+c+")":"저장하지 못했습니다: "+c})});
- draw();d=el("dialog",{id:"libmodal"},[f]);document.body.appendChild(d);d.showModal();setTimeout(function(){t.focus()},50)}
+ draw();idraw();d=el("dialog",{id:"libmodal"},[f]);document.body.appendChild(d);d.showModal();setTimeout(function(){t.focus()},50)}
 /* NEXT TV — CTV·FAST·어드레서블 모아보기 */
 var NT={f:""};
 function ntKinds(x){var s=[x.b||"",x.t||"",x.d||""].join(" "),k=[];
@@ -2329,4 +2349,6 @@ $("budget").addEventListener("input",updateMix);
 $("libsug").addEventListener("submit",libSuggest);$("libq").addEventListener("input",function(){renderLibrary()});
 buildNav();renderMix();renderPostbuy();renderQuiz();renderAll();route();edInit();
 })();
-</script></body></html>
+</script>
+</body>
+</html>
