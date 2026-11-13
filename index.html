@@ -538,6 +538,11 @@ footer .src li{font-size:12px}
 .edplist{display:flex;flex-direction:column;gap:12px}
 .edpcard.hasimg{flex-direction:row!important;gap:16px!important;align-items:flex-start}.edpthumb{flex:none;width:200px;aspect-ratio:16/10;overflow:hidden;background:var(--band)}.edpthumb img{width:100%;height:100%;object-fit:cover;display:block}.edpbody{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
 @media (max-width:560px){.edpcard.hasimg{flex-direction:column!important}.edpthumb{width:100%}}
+.artv.colv.edpwide{max-width:none}.artv.colv.edpwide p,.artv.colv.edpwide li{font-size:17px;line-height:1.9;max-width:none}.artv.colv.edpwide .coldek{max-width:none;font-size:18px}.artv.colv.edpwide h1{max-width:none}
+.edpwide h3{font-size:18px;font-weight:800;margin-block:22px 6px}.mdlist{padding-left:22px;margin-block:10px}.mdlist li{margin-block:4px}.mdq{border-left:4px solid var(--hot);background:var(--band);padding:12px 16px;margin:16px 0;font-size:17px;line-height:1.8}
+.mdtbl{overflow-x:auto;margin:16px 0}.mdtbl table{border-collapse:collapse;width:100%;font-size:15px}.mdtbl th,.mdtbl td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}.mdtbl th{background:var(--band);font-weight:700}
+.edpmore{display:grid;grid-template-columns:1fr 300px;gap:24px;margin-top:30px;align-items:start}.edprelgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:4px 18px}
+@media (max-width:820px){.edpmore{grid-template-columns:1fr}}
 .edpfig{margin:18px 0}.edpfig img{max-width:100%;height:auto;display:block;border:1px solid var(--line)}.edpfig figcaption{font-size:13px;color:var(--muted);margin-top:6px}
 .inlinepic{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:-4px}.inlinepic small{font-size:12px;color:var(--muted)}.inlinepic .btn-line{font-size:12.5px;padding:5px 10px}
 .imglist{display:flex;flex-direction:column;gap:8px}.imgrow{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);padding:8px;background:var(--surface)}.imgrow img{width:110px;height:70px;object-fit:cover;flex:none;background:var(--band)}.imgmeta{display:flex;flex-direction:column;gap:5px;flex:1;min-width:0}.imgmeta input{width:100%;box-sizing:border-box}
@@ -1042,12 +1047,10 @@ footer.aw .legal{margin-top:24px;font-size:12px}
   </section>
 
   <section class="page" data-page="edpost" hidden>
-    <div class="mainrail">
-      <article class="artv colv" id="edpview"></article>
-      <aside>
-        <div class="railbox"><h2>Editor 글 <small>같은 카테고리</small></h2><div id="edprel"></div></div>
-        <div class="adslot ad-mpu"><span class="tag">AD</span><span>300×250</span><a href="#partner">문의 →</a></div>
-      </aside>
+    <article class="artv colv edpwide" id="edpview"></article>
+    <div class="edpmore">
+      <div class="railbox"><h2>Editor 글 <small>같은 카테고리</small></h2><div id="edprel" class="edprelgrid"></div></div>
+      <div class="adslot ad-mpu"><span class="tag">AD</span><span>300×250</span><a href="#partner">문의 →</a></div>
     </div>
   </section>
 
@@ -2025,6 +2028,19 @@ function edpCard(x){var im=x.imgs&&x.imgs[0];return el("article",{class:"edpcard
  el("div",{class:"edpmeta"},[el("span",{class:"edptag",text:"Editor 작성"}),el("span",{text:(x.date||"")+" · "+x.cats.map(edpLabel).join(" · ")}),x.files.length?el("span",{text:"📎 "+x.files.length}):null,x.hidden?el("span",{text:"[숨김]"}):null]),
  el("h3",{class:"hl"},[el("a",{href:"#ep-"+x.id,text:x.t})]),x.s?el("p",{text:x.s}):null,
  ED.on?el("button",{type:"button",class:"edbtn",on:{click:function(){edpForm(x)}}},["✎ 이 글 수정"]):null])])}
+function mdInline(t){var out=[],re=/\*\*([^*]+)\*\*/g,last=0,m;t=String(t);while((m=re.exec(t))){if(m.index>last)out.push(t.slice(last,m.index));out.push(el("b",{text:m[1]}));last=re.lastIndex}if(last<t.length)out.push(t.slice(last));return out}
+function mdBlock(t){var L=t.split("\n").map(function(x){return x.replace(/\s+$/,"")}).filter(function(x){return x.trim()}),out=[],i=0;
+ var isT=function(x){return /^\s*\|.*\|\s*$/.test(x)},isL=function(x){return /^\s*([-•*]|\d+[.)])\s+/.test(x)};
+ while(i<L.length){var x=L[i];
+  if(isT(x)){var g=[];while(i<L.length&&isT(L[i]))g.push(L[i++]);var rows=g.filter(function(r){return !/^\s*\|[\s:|-]+\|\s*$/.test(r)}).map(function(r){return r.trim().replace(/^\||\|$/g,"").split("|").map(function(c){return c.trim()})});var th=rows.shift()||[];
+   out.push(el("div",{class:"mdtbl"},[el("table",{},[el("thead",{},[el("tr",{},th.map(function(c){return el("th",{},mdInline(c))}))]),el("tbody",{},rows.map(function(r){return el("tr",{},r.map(function(c){return el("td",{},mdInline(c))}))}))])]));continue}
+  if(isL(x)){var g2=[];while(i<L.length&&isL(L[i]))g2.push(L[i++]);var ol=/^\s*\d/.test(g2[0]);out.push(el(ol?"ol":"ul",{class:"mdlist"},g2.map(function(y){return el("li",{},mdInline(y.replace(/^\s*([-•*]|\d+[.)])\s+/,"")))})));continue}
+  var hm=x.match(/^(#{1,4})\s+(.*)$/);if(hm){out.push(el(hm[1].length<=2?"h2":"h3",{},mdInline(hm[2])));i++;continue}
+  if(/^-{3,}$/.test(x.trim())){out.push(el("hr"));i++;continue}
+  if(/^\s*>\s?/.test(x)){var q=[];while(i<L.length&&/^\s*>\s?/.test(L[i]))q.push(L[i++].replace(/^\s*>\s?/,""));out.push(el("blockquote",{class:"mdq"},mdInline(q.join(" "))));continue}
+  var pg=[];while(i<L.length&&!isT(L[i])&&!isL(L[i])&&!/^(#{1,4})\s+/.test(L[i])&&!/^\s*>/.test(L[i])&&!/^-{3,}$/.test(L[i].trim()))pg.push(L[i++]);
+  if(pg.length)out.push(el("p",{},mdInline(pg.join(" "))))}
+ return out}
 function edpFig(m){return el("figure",{class:"edpfig"},[el("img",{src:m.src,alt:m.cap||"",loading:"lazy"}),m.cap?el("figcaption",{text:m.cap}):null])}
 function edpBlock(k){var list=edpFor(k);if(!list.length&&!ED.on)return null;
  return el("div",{class:"edpblock"+(k==="home"?" sec":""),id:"edp-"+k},[el("div",{class:"sechd"},[el("h2",{},["Editor 글 ",el("small",{text:"· "+edpLabel(k)})]),ED.on?el("button",{type:"button",class:"btn",text:"+ Editor 글쓰기",on:{click:function(){edpForm(null,k==="home"?"tv":k)}}}):null]),
@@ -2041,7 +2057,7 @@ function renderEdPost(id){var V=$("edpview"),R=$("edprel");V.textContent="";R.te
   V.appendChild(el("div",{class:"colby"},[el("b",{text:"MEDIA OUTLOOK Editor"}),el("span",{text:"광고·미디어 30년"+(x.date?" · "+x.date:"")})]));
   if(ED.on)V.appendChild(el("button",{type:"button",class:"edbtn",on:{click:function(){edpForm(x)}}},["✎ 이 글 수정"]));
   var used={},imgs=x.imgs||[];String(x.body||"").replace(/\[그림\s*(\d+)\]/g,function(a,n){used[+n-1]=1});imgs.forEach(function(m,i){if(!used[i])V.appendChild(edpFig(m))});
-  var hc=0;String(x.body||"").split(/\n\s*\n/).forEach(function(t){t=t.trim();if(!t)return;var mk=t.match(/^\[그림\s*(\d+)\]$/);if(mk){var m=imgs[+mk[1]-1];if(m)V.appendChild(edpFig(m));return}if(t.indexOf("## ")===0){hc++;if(hc===2)V.appendChild(el("div",{class:"adslot ad-article","data-k":"article",style:"padding:16px;margin-block:20px"},[el("span",{class:"tag",text:"AD"}),"본문 광고"]));V.appendChild(el("h2",{text:t.slice(3)}))}else V.appendChild(el("p",{text:t}))});
+  var hc=0;String(x.body||"").split(/\n\s*\n/).forEach(function(t){t=t.trim();if(!t)return;var mk=t.match(/^\[그림\s*(\d+)\]$/);if(mk){var m=imgs[+mk[1]-1];if(m)V.appendChild(edpFig(m));return}mdBlock(t).forEach(function(bl){if(bl.tagName==="H2"){hc++;if(hc===2)V.appendChild(el("div",{class:"adslot ad-article","data-k":"article",style:"padding:16px;margin-block:20px"},[el("span",{class:"tag",text:"AD"}),"본문 광고"]))}V.appendChild(bl)})});
   if(x.files.length)V.appendChild(el("div",{class:"libfiles",style:"margin-block:16px"},x.files.map(function(f){return el("a",{href:f.url,target:"_blank",rel:"noopener",class:"libfile"},[el("span",{class:"fic",text:fext(f)}),f.name||"첨부파일"])})));
   if(x.u)V.appendChild(el("p",{},[el("a",{href:x.u,target:"_blank",rel:"noopener",class:"btn-line",text:"참고 자료 보기 ↗"})]));
   var hubs=x.cats.filter(function(c){return HUB[c]});if(hubs.length)V.appendChild(chipsFor(hubs));
