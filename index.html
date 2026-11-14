@@ -473,8 +473,8 @@ footer .src li{font-size:12px}
 .vhead .meta{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:12px;font-size:13px;color:var(--muted)}
 .vhead .meta b{font-family:var(--mono);color:var(--ink)}
 
-.edview{border-left:4px solid var(--hot);background:var(--band);padding:14px 16px;margin-block:18px;max-width:72ch}
-.edview p{font-size:16px;line-height:1.8;margin-block:6px 8px;white-space:pre-line}
+.edview{border-left:4px solid var(--hot);background:var(--band);padding:16px 20px;margin-block:18px;max-width:none}
+.edview p{font-size:16.5px;line-height:1.85;margin-block:6px 10px;max-width:none}.edview .mdlist{margin-block:6px 10px}.edview h2,.edview h3{font-size:17px;margin-block:14px 6px}
 .edview .who{font-size:12.5px;color:var(--muted);text-decoration:underline}
 .voice .vq{white-space:pre-line;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
 .note-e{white-space:pre-line;font-size:14px;line-height:1.7;border-top:1px dashed var(--line);padding-top:8px;margin-top:8px}
@@ -606,7 +606,7 @@ footer .src li{font-size:12px}
 #edmodal textarea.big{min-height:220px}
 #edmodal .row{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 #edmodal .msg{font-size:13px;color:var(--muted);min-height:1em}
-.edbody{border-left:3px solid var(--accent);padding-left:16px;margin-block:18px;max-width:68ch}
+.edbody{border-left:3px solid var(--accent);padding-left:16px;margin-block:18px;max-width:none}
 .edbody p{font-size:16px;line-height:1.8;margin-block:8px}
 .colbody summary{cursor:pointer;font-weight:700;color:var(--accent);font-size:14px;margin-top:6px}
 .colbody p{font-size:15px;line-height:1.8;margin-block:8px}
@@ -625,7 +625,7 @@ footer .src li{font-size:12px}
 .artv{padding-top:18px}
 .artv .back{font-size:13px;color:var(--accent)}
 .artv h1{font-family:var(--serif);font-weight:800;font-size:clamp(28px,4vw,44px);line-height:1.2;letter-spacing:-.02em;margin-block:10px 12px}
-.artv .lede{font-size:18px;line-height:1.75;margin-block:18px;max-width:68ch}
+.artv .lede{font-size:18px;line-height:1.75;margin-block:18px;max-width:none}
 .artv .art{margin-top:16px;aspect-ratio:21/5}
 .artv .srcbox{border:1px solid var(--line);background:var(--band);padding:16px;margin-top:18px;display:flex;flex-direction:column;gap:10px}
 .artv .srcbox .row2{display:flex;gap:8px;flex-wrap:wrap}
@@ -2001,7 +2001,7 @@ function renderArticle(i){var n=NEWS[i],V=$("artview"),R=$("artrel");V.textConte
  V.appendChild(el("h1",{text:n.t}));V.appendChild(byline(n));
  var a=art(n);a.removeAttribute("href");V.appendChild(a);
  V.appendChild(el("p",{class:"lede",text:n.d}));
- if(n.v||ED.on)V.appendChild(el("div",{class:"edview"},[el("div",{class:"eyebrow",text:"Editor"}),el("p",{text:n.v||"(아직 Editor 코멘트가 없습니다)"}),ED.on?edBtn("n",n):null]));
+ if(n.v||ED.on){var evb=el("div",{class:"edview"},[el("div",{class:"eyebrow",text:"Editor"})]);if(n.v)String(n.v).split(/\n\s*\n/).forEach(function(t){if(t.trim())mdBlock(t).forEach(function(b){evb.appendChild(b)})});else evb.appendChild(el("p",{text:"(아직 Editor 코멘트가 없습니다)"}));if(ED.on)evb.appendChild(edBtn("n",n));V.appendChild(evb)}
  if(n.body){var bx=el("div",{class:"edbody"},[el("div",{class:"eyebrow",text:"편집인 추가 노트"})]);paras(n.body).forEach(function(t){bx.appendChild(el("p",{text:t}))});V.appendChild(bx)}
  V.appendChild(chipsFor(n.h));
  var box=el("div",{class:"srcbox"},[el("b",{text:"원문 기사"+(src?" · "+src:"")}),
