@@ -383,6 +383,12 @@ footer .src li{font-size:12px}
 .navdrop{position:absolute;top:100%;z-index:40;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-top:3px solid var(--hot);box-shadow:0 10px 28px rgba(0,0,0,.18);display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:8px;width:380px}
 .navdrop[hidden]{display:none}
 .vnav .navdrop a{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:9px 12px;border-bottom:0;text-decoration:none;color:var(--ink);white-space:normal;font-weight:400}.vnav .navdrop a:hover{background:var(--band)}.navdrop b{font-size:14px}.navdrop small{font-size:12px;color:var(--muted)}
+.amkpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:18px 0 28px}
+.amkpi{border:1px solid var(--line);border-top:4px solid var(--ink);background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:4px}.amkpi.est{border-top-color:var(--hot)}.amkpi small{font-size:12.5px;color:var(--muted);font-weight:700}.amkpi b{font-family:var(--serif);font-size:24px;line-height:1.25}.amkpi span{font-size:12px;color:var(--muted)}
+.ambars{display:flex;flex-direction:column;gap:12px;margin:8px 0 10px}.ambar{display:grid;grid-template-columns:52px 1fr 190px;gap:10px;align-items:center;font-size:14px}.ambar .y{font-weight:700}.ambar .track{position:relative;height:26px;background:var(--band)}.ambar .fill{position:absolute;left:0;top:0;bottom:0;background:var(--ink)}.ambar .fill.est{background:var(--hot)}.ambar .range{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(45deg,var(--hot),var(--hot) 4px,transparent 4px,transparent 8px);opacity:.6}.ambar .v{font-size:13px;color:var(--muted)}
+@media (max-width:560px){.ambar{grid-template-columns:44px 1fr}.ambar .v{grid-column:2}}
+.amside{border-bottom:1px solid var(--line);padding:10px 0;display:flex;flex-direction:column;gap:2px}.amside small{font-size:12.5px;color:var(--muted);font-weight:700}.amside b{font-size:19px}.amside span{font-size:12px;color:var(--muted)}
+.amsrc{display:flex;flex-direction:column;gap:8px;font-size:13.5px}.amsrc a{color:var(--accent)}
 .dcmenu{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:16px}
 .dcmenu a{border:1px solid var(--line);background:var(--surface);padding:10px 12px;display:flex;flex-direction:column;text-decoration:none;color:var(--ink)}.dcmenu a:hover{border-color:var(--accent)}.dcmenu b{font-size:14.5px}.dcmenu small{font-size:12px;color:var(--muted)}
 .vnav.ovf::after{content:"›";position:absolute;right:0;top:0;bottom:0;width:34px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:20px;font-weight:700;color:var(--paper);background:linear-gradient(90deg,transparent,var(--ink) 60%);pointer-events:none}
@@ -1031,6 +1037,32 @@ footer.aw .legal{margin-top:24px;font-size:12px}
   </section>
 
   <!-- ================= NOTE ================= -->
+  <section class="page" data-page="admarket" hidden>
+    <div class="pagetitle"><div class="eyebrow">Korea Ad-Market</div><h1>한국 광고 시장</h1><p>국내 총광고비와 매체별 흐름, 방송·유료방송 지표를 공개 자료 기준으로 한곳에 모았습니다. 공식 수치는 출처를 달고, Editor 추정치는 따로 표시합니다.</p></div>
+    <div class="amkpis" id="amkpis"></div>
+    <div class="mainrail">
+      <div>
+        <div class="sechd"><h2>국내 총광고비 추이</h2></div>
+        <div class="ambars" id="ambars"></div>
+        <p class="note" style="font-size:12.5px;color:var(--muted)">2025년 결산·2026년 전망: KOBACO 「2025 광고시장 결산 및 2026 전망」(2026.2). 2027년은 Editor 추정 범위입니다.</p>
+        <div class="sechd" style="margin-top:26px"><h2>매체별 흐름</h2></div>
+        <div class="mdtbl"><table><thead><tr><th>매체</th><th>2025년 흐름</th><th>2027년 방향 <small>(Editor 전망)</small></th></tr></thead><tbody id="ammix"></tbody></table></div>
+        <div class="sechd" style="margin-top:26px"><h2>광고 시장 관련 기사</h2><a href="#archive">주간 인기 →</a></div>
+        <div class="feed" id="amfeed"></div>
+      </div>
+      <aside>
+        <div class="railbox"><h2>방송·유료방송 지표</h2><div id="amside"></div></div>
+        <div class="railbox"><h2>자료 출처</h2><div class="amsrc">
+          <a href="https://www.kobaco.co.kr/site/adstat/content/broadcastprice_stat" target="_blank" rel="noopener">KOBACO 방송통신광고비조사 ↗</a>
+          <a href="https://v.daum.net/v/20260205095329576" target="_blank" rel="noopener">2025 광고시장 결산·2026 전망 보도 ↗</a>
+          <a href="https://eiec.kdi.re.kr/policy/materialView.do?num=281862" target="_blank" rel="noopener">방미통위 유료방송 가입자 현황 ↗</a>
+          <a href="#library">미디어 지식센터 자료 →</a>
+        </div></div>
+        <div class="adslot ad-mpu"><span class="tag">AD</span><span>300×250</span><a href="#partner">문의 →</a></div>
+      </aside>
+    </div>
+  </section>
+
   <section class="page" data-page="nexttv" hidden>
     <div class="pagetitle"><div class="eyebrow">Next TV</div><h1>CTV · FAST · 어드레서블</h1><p>TV 화면의 주인이 바뀌는 곳. 커넥티드TV 광고, 무료 광고형 스트리밍 채널(FAST), 가구 단위로 타깃하는 어드레서블 TV 소식과 Editor의 해석을 한곳에 모았습니다.</p></div>
     <div class="mainrail">
@@ -1783,7 +1815,7 @@ function feedItem(n,nd){return el("article",{class:"fi"+(nd||matches(n.h)?"":" d
 function hotList(){return NEWS.filter(function(n){return n.hot}).sort(function(a,b){return a.hot-b.hot})}
 
 /* NAV */
-var NAVSUB=[["glossary","용어사전","플래너·바이어 필수 용어"],["lounge","라운지","실무자 Q&A"],["library","지식센터","리포트·논문·자료"],["events","이벤트","세미나·행사"],["tools","올미디어 툴","통합 플래닝 도구"],["partner","광고·제휴","광고 문의"],["about","편집인","Editor 소개"],["https://aviationmaniac.tistory.com/","편집인 블로그 ↗","개인 블로그"]];
+var NAVSUB=[["glossary","용어사전","플래너·바이어 필수 용어"],["lounge","라운지","실무자 Q&A"],["library","지식센터","리포트·논문·자료"],["events","이벤트","세미나·행사"],["tools","올미디어 툴","통합 플래닝 도구"],["partner","광고·제휴","광고 문의"],["about","편집인","Editor 소개"],["https://aviationmaniac.tistory.com/","편집인 블로그 ↗","개인 블로그"],["admarket","Korea Ad-Market","국내 광고비 시장 한눈에"]];
 var NAVSUBR=NAVSUB.map(function(x){return x[0]});
 function navOvf(){var n=$("navlinks");if(!n)return;var v=n.parentNode;v.classList.toggle("ovf",n.scrollWidth>n.clientWidth+2&&n.scrollLeft+n.clientWidth<n.scrollWidth-4)}
 window.addEventListener("resize",navOvf);
@@ -2016,7 +2048,7 @@ function renderColumn(i){var x=COLUMNS[i],V=$("colview"),R=$("colrel");V.textCon
  if(rn.length){R.appendChild(el("h2",{style:"margin-top:18px",text:"관련 뉴스"}));rn.forEach(function(n){R.appendChild(el("a",{href:"#a"+n.i,class:"mini"},[el("b",{class:"hl",text:n.t})]))})}}
 /* EDITOR POSTS — 카테고리별 Editor 직접 작성 글 (Firestore: edposts) */
 var EDP={items:[],loaded:false,p:null};
-var EDP_PAGES={nexttv:"CTV·FAST·어드레서블",opinion:"오피니언",archive:"주간 인기",datacenter:"데이터센터",glossary:"용어사전",lounge:"라운지",library:"지식센터"};
+var EDP_PAGES={nexttv:"CTV·FAST·어드레서블",admarket:"Korea Ad-Market",opinion:"오피니언",archive:"주간 인기",datacenter:"데이터센터",glossary:"용어사전",lounge:"라운지",library:"지식센터"};
 function edpLabel(k){return k==="home"?"전체 메뉴":HUB[k]?HUB[k].name:(EDP_PAGES[k]||k)}
 function edpKeys(){return HUBS.map(function(h){return h.id}).concat(Object.keys(EDP_PAGES))}
 function edpLoad(force){if(EDP.p&&!force)return EDP.p;if(!fbOn()){EDP.loaded=true;return EDP.p=Promise.resolve()}
@@ -2126,8 +2158,22 @@ function renderNextTV(){var C=$("ntchips"),F=$("ntfeed");C.textContent="";F.text
  if(p2.length){F.appendChild(el("div",{class:"sechd",style:"margin-top:26px"},[el("h2",{text:"최근 2주 기사"})]));p2.slice(0,30).forEach(function(o,i){F.appendChild(poolCard(o.x));if(i===5&&p2.length>8)F.appendChild(el("div",{class:"adslot","data-k":"infeed",style:"padding:16px;margin-block:20px"},[el("span",{class:"tag",text:"AD"}),"인피드 광고"]))})}
  if(!t2.length&&!p2.length)F.appendChild(el("p",{class:"empty",text:"이 분류의 기사가 아직 없습니다. 매일 새벽 업데이트 때 채워집니다."}));
  fillAds()}
+/* KOREA AD-MARKET */
+var ADM={kpi:[["2025년 총광고비","약 17조2700억원","결산 · KOBACO"],["2026년 총광고비","약 17조9400억원","전망 · KOBACO"],["2027년 총광고비","18조3000억~18조6000억원","Editor 추정 (+2~4%)"],["온라인 광고 비중","약 60%","2025년 · KOBACO"]],
+ bars:[["2025","결산",17.27,17.27],["2026","전망",17.94,17.94],["2027","Editor 추정",18.3,18.6]],
+ mix:[["디지털(온라인)","전체의 약 60%","↑ 커머스·검색·숏폼 중심 증가"],["방송","전년 대비 약 13% 감소","↓ 감소 지속, CTV·FAST·어드레서블로 일부 회복 시도"],["옥외(OOH)","약 2% 이상 증가 (DOOH 주도)","↗ 디지털 옥외 중심 소폭 성장"],["인쇄","감소","↓ 구조적 감소"]],
+ side:[["방송광고 매출","2조134억원","2025 회계연도 · 12.3%↓ (방송사업자 재무 현황)"],["지상파 영업손실","1174억원","2025 회계연도 · 3년 연속 적자"],["유료방송 가입자","3615만명","2025년 하반기 · 방미통위"],["IPTV 점유율","59.57%","2025년 하반기 · 방미통위"],["TV 이용률","80.0%","2026 매체 이용 행태 조사 · KOBACO"]],
+ re:/광고비|광고 ?시장|광고경기|광고 ?매출|코바코|KOBACO|광고주|광고 ?단가|광고 ?수익/};
+function renderAdMarket(){var K=$("amkpis");K.textContent="";ADM.kpi.forEach(function(k,i){K.appendChild(el("div",{class:"amkpi"+(i===2?" est":"")},[el("small",{text:k[0]}),el("b",{text:k[1]}),el("span",{text:k[2]})]))});
+ var B=$("ambars");B.textContent="";var mx=19;ADM.bars.forEach(function(r){var lo=r[2]/mx*100,hi=r[3]/mx*100;B.appendChild(el("div",{class:"ambar"},[el("span",{class:"y",text:r[0]}),el("div",{class:"track"},[el("div",{class:"fill"+(r[1]==="Editor 추정"?" est":""),style:"width:"+lo+"%"}),r[3]>r[2]?el("div",{class:"range",style:"left:"+lo+"%;width:"+(hi-lo)+"%"}):null]),el("span",{class:"v",text:(r[2]===r[3]?r[2].toFixed(2):r[2].toFixed(1)+"~"+r[3].toFixed(1))+"조 · "+r[1]})]))});
+ var M=$("ammix");M.textContent="";ADM.mix.forEach(function(r){M.appendChild(el("tr",{},[el("td",{},[el("b",{text:r[0]})]),el("td",{text:r[1]}),el("td",{text:r[2]})]))});
+ var S=$("amside");S.textContent="";ADM.side.forEach(function(r){S.appendChild(el("div",{class:"amside"},[el("small",{text:r[0]}),el("b",{text:r[1]}),el("span",{text:r[2]})]))});
+ var F=$("amfeed");F.textContent="";var seen={},list=[];NEWS.forEach(function(n){if(ADM.re.test(n.t+" "+n.d+" "+(n.b||"")+" "+(n.cat||""))){seen[n.t]=1;list.push({x:n,now:1})}});
+ POOL.forEach(function(p){if(!seen[p.t]&&ADM.re.test(p.t+" "+p.d+" "+(p.b||"")))list.push({x:p})});
+ list.slice(0,24).forEach(function(o,i){F.appendChild(o.now?feedItem(o.x,true):poolCard(o.x));if(i===5&&list.length>8)F.appendChild(el("div",{class:"adslot","data-k":"infeed",style:"padding:16px;margin-block:20px"},[el("span",{class:"tag",text:"AD"}),"인피드 광고"]))});
+ if(!list.length)F.appendChild(el("p",{class:"empty",text:"관련 기사가 아직 없습니다."}));fillAds()}
 /* ROUTER */
-var PAGES=["nexttv","home","latest","opinion","datacenter","glossary","tools","lounge","events","partner","about","subscribe","search","privacy","archive","library"];
+var PAGES=["admarket","nexttv","home","latest","opinion","datacenter","glossary","tools","lounge","events","partner","about","subscribe","search","privacy","archive","library"];
 function route(){var r=(location.hash||"#home").slice(1);var isArt=/^a\d+$/.test(r),isCol=/^c\d+$/.test(r),isNote=/^n\d+$/.test(r),isEp=/^ep-[A-Za-z0-9_-]+$/.test(r);if(PAGES.indexOf(r)<0&&!HUB[r]&&!isArt&&!isCol&&!isNote&&!isEp)r="home";var ch=r!==state.route;state.route=r;
  var page=HUB[r]?"vertical":isArt?"article":isCol?"column":isNote?"note":isEp?"edpost":r;
  if(isEp)renderEdPost(r.slice(3));
@@ -2136,6 +2182,7 @@ function route(){var r=(location.hash||"#home").slice(1);var isArt=/^a\d+$/.test
  if(r==="archive")renderArchive();
  if(r==="library")renderLibrary();
  if(r==="nexttv")renderNextTV();
+ if(r==="admarket")renderAdMarket();
  if(isCol)renderColumn(+r.slice(1));
  if(HUB[r]){$("vloom").setAttribute("data-focus",r);renderLoom($("vloom"));renderVertical(r)}
  document.querySelectorAll("[data-page]").forEach(function(p){p.hidden=p.getAttribute("data-page")!==page});
