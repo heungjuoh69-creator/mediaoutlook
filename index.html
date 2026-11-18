@@ -540,6 +540,7 @@ footer .src li{font-size:12px}
 .libtype.t0{background:#2446C9}.libtype.t1{background:#6B3FA0}.libtype.t2{background:#C8371D}.libtype.t3{background:#0F7B6C}.libtype.t4{background:#B5791B}
 .libsum{font-size:14.5px;line-height:1.7;color:var(--muted)}
 .libfiles{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.voiceadd{font-size:13px;padding:6px 12px;margin-left:auto;margin-right:12px}
 .edpblock{margin-bottom:26px;margin-top:6px;border-top:3px solid var(--hot);padding-top:4px}.edpblock .sechd{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.edpblock .sechd small{font-size:14px;color:var(--muted);font-weight:600}
 .edplist{display:flex;flex-direction:column;gap:12px}
 .edpcard.hasimg{flex-direction:row!important;gap:16px!important;align-items:flex-start}.edpthumb{flex:none;width:200px;aspect-ratio:16/10;overflow:hidden;background:var(--band)}.edpthumb img{width:100%;height:100%;object-fit:cover;display:block}.edpbody{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
@@ -1556,7 +1557,7 @@ function renderHome(){
  var A=$("aisec");A.textContent="";NEWS.filter(function(n){return n.h.indexOf("ai")>=0}).slice(0,3).forEach(function(n){A.appendChild(card3(n,true))});
  var W=$("week");W.textContent="";var cm=NEWS.filter(function(n){return n.h[0]==="commerce"||(!n.hot&&n.h.indexOf("commerce")>=0)}).slice(0,5);
  cm.forEach(function(n,i){var c=card3(n,i===0);if(i===0)c.classList.add("big");W.appendChild(c)});
- var V=$("voices");V.textContent="";NOTES.slice(0,3).forEach(function(x,ni){V.appendChild(el("article",{class:"voice"+(matches(x.h)?"":" dim")},[el("div",{class:"who"},[el("span",{class:"av",text:"오"}),el("div",{},[el("small",{text:"MEDIA OUTLOOK Editor"})])]),el("h3",{class:"hl"},[el("a",{href:"#n"+ni,text:x.t})]),el("a",{href:"#n"+ni,class:"vqlink"},[el("blockquote",{class:"vq",text:x.e||(x.o+" — 사업모델: "+x.m)})]),el("a",{href:"#n"+ni,class:"readmore",text:"전체 보기 →"}),chipsFor(x.h),ED.on?edBtn("o",x):null]))});
+ renderVoices();
  var S=$("slider");if(!S.children.length){["브리핑 스폰서","허브 스폰서십","스폰서드 리포트","웨비나 협찬","뉴스레터 헤드라인"].forEach(function(t,i){S.appendChild(el("div",{class:"slide"},[el("span",{class:"lab",text:"PARTNER · 자리 "+(i+1)}),el("b",{text:t}),el("p",{text:"이 자리에 파트너 콘텐츠가 ‘스폰서드’ 표기와 함께 노출됩니다."}),el("a",{href:"#partner",text:"게재 문의 →"})]))})}
  var wt=$("watch");wt.textContent="";BRIEF.watch.forEach(function(x){wt.appendChild(el("div",{class:"wireitem"+(matches(x.h)?"":" dim")},[el("small",{text:x.w}),el("span",{},[el("b",{text:x.t}),el("span",{text:" — "+x.d,style:"color:var(--muted)"})])]))});
  var ht=$("hometerms");ht.textContent="";TERMS.filter(function(t){return matches(t.h)}).slice(0,4).forEach(function(t){ht.appendChild(termEl(t))});
@@ -1595,7 +1596,14 @@ function renderVertical(id){var h=HUB[id];if(!h)return;var pm=pairs(),n=NEWS.fil
  var T=$("vterms");T.textContent="";var ts=TERMS.filter(function(t){return t.h.indexOf(id)>=0});ts.slice(0,4).forEach(function(t){T.appendChild(termEl(t))});if(!ts.length)T.appendChild(el("p",{class:"empty",text:"아직 없습니다."}))}
 
 /* OPINION / DATA / GLOSSARY */
-function renderOpinion(){var n=$("notes");n.textContent="";NOTES.forEach(function(x,ni){n.appendChild(el("article",{class:"note"+(matches(x.h)?"":" dim")},[el("h3",{},[el("a",{href:"#n"+ni,text:x.t})]),el("div",{class:"flow"},[el("span",{text:"변화"}),el("div",{text:x.c}),el("span",{text:"기회"}),el("div",{text:x.o}),el("span",{text:"사업모델"}),el("div",{class:"bm",text:x.m})]),x.e?el("p",{class:"note-e"},[el("b",{text:"Editor · "}),x.e]):null,chipsFor(x.h),ED.on?edBtn("o",x):null]))});
+function renderVoices(){var V=$("voices");if(!V)return;V.textContent="";var hd=V.parentNode.querySelector(".sechd");var ob=hd&&hd.querySelector(".voiceadd");if(ob)ob.remove();if(ED.on&&hd)hd.insertBefore(el("button",{type:"button",class:"btn voiceadd",text:"+ 리더의 목소리 쓰기",on:{click:function(){edpForm(null,"voice")}}}),hd.lastChild);
+ var EV=voicePosts();EV.slice(0,3).forEach(function(x){V.appendChild(voiceCard(x))});NOTES.slice(0,Math.max(0,3-EV.length)).forEach(function(x,ni){V.appendChild(el("article",{class:"voice"+(matches(x.h)?"":" dim")},[el("div",{class:"who"},[el("span",{class:"av",text:"E"}),el("div",{},[el("small",{text:"MEDIA OUTLOOK Editor"})])]),el("h3",{class:"hl"},[el("a",{href:"#n"+ni,text:x.t})]),el("a",{href:"#n"+ni,class:"vqlink"},[el("blockquote",{class:"vq",text:x.e||(x.o+" — 사업모델: "+x.m)})]),el("a",{href:"#n"+ni,class:"readmore",text:"전체 보기 →"}),chipsFor(x.h),ED.on?edBtn("o",x):null]))});}
+function voicePosts(){return (EDP.items||[]).filter(function(x){return x.cats&&x.cats.indexOf("voice")>=0&&(ED.on||!x.hidden)}).sort(function(a,b){return (b.date||"")>(a.date||"")?1:-1})}
+function voiceCard(x){var hubs=x.cats.filter(function(c){return HUB[c]});var ex=x.s||String(x.body||"").replace(/[#*>|\-]/g,"").slice(0,220);
+ return el("article",{class:"voice"+(x.hidden?" dim":"")},[el("div",{class:"who"},[el("span",{class:"av",text:"E"}),el("div",{},[el("small",{text:"MEDIA OUTLOOK Editor"})])]),el("h3",{class:"hl"},[el("a",{href:"#ep-"+x.id,text:x.t})]),el("a",{href:"#ep-"+x.id,class:"vqlink"},[el("blockquote",{class:"vq",text:ex})]),el("a",{href:"#ep-"+x.id,class:"readmore",text:"전체 보기 →"}),hubs.length?chipsFor(hubs):null,ED.on?el("button",{type:"button",class:"edbtn",on:{click:function(){edpForm(x)}}},["✎ 이 글 수정"]):null])}
+function renderOpinion(){var n=$("notes");n.textContent="";var ohd=n.previousElementSibling;if(ohd&&ohd.classList.contains("sechd")){var ob2=ohd.querySelector(".voiceadd");if(ob2)ob2.remove();if(ED.on)ohd.appendChild(el("button",{type:"button",class:"btn voiceadd",text:"+ 리더의 목소리 쓰기",on:{click:function(){edpForm(null,"voice")}}}))}
+ voicePosts().forEach(function(x){var hubs=x.cats.filter(function(c){return HUB[c]});n.appendChild(el("article",{class:"note"+(x.hidden?" dim":"")},[el("h3",{},[el("a",{href:"#ep-"+x.id,text:x.t})]),x.s?el("p",{class:"note-e"},[el("b",{text:"Editor · "}),x.s]):null,el("a",{href:"#ep-"+x.id,class:"readmore",text:"전체 보기 →"}),hubs.length?chipsFor(hubs):null,ED.on?el("button",{type:"button",class:"edbtn",on:{click:function(){edpForm(x)}}},["✎ 이 글 수정"]):null]))});
+ NOTES.forEach(function(x,ni){n.appendChild(el("article",{class:"note"+(matches(x.h)?"":" dim")},[el("h3",{},[el("a",{href:"#n"+ni,text:x.t})]),el("div",{class:"flow"},[el("span",{text:"변화"}),el("div",{text:x.c}),el("span",{text:"기회"}),el("div",{text:x.o}),el("span",{text:"사업모델"}),el("div",{class:"bm",text:x.m})]),x.e?el("p",{class:"note-e"},[el("b",{text:"Editor · "}),x.e]):null,chipsFor(x.h),ED.on?edBtn("o",x):null]))});
  var c=$("columns");c.textContent="";COLUMNS.forEach(function(x,ci){c.appendChild(el("article",{class:"post"+(matches(x.h)?"":" dim")},[el("div",{class:"head"},[el("span",{class:"soon",text:x.body?"칼럼":"연재 예정"}),el("span",{text:"Editor"+(x.date?" · "+x.date:"")})]),el("h3",{style:"font-family:var(--serif);font-weight:800"},[x.body?el("a",{href:"#c"+ci,text:x.t}):x.t]),el("p",{style:"color:var(--muted);font-size:14px",text:x.d}),x.body?el("a",{href:"#c"+ci,class:"readmore",text:"칼럼 읽기 →"}):null,chipsFor(x.h),ED.on?edBtn("c",x):null]))});
  var k=$("skills");k.textContent="";SKILLS.forEach(function(x){k.appendChild(el("button",{type:"button",class:"skill"+(x.vision?" vision":"")+(state.focus===x.h&&!x.vision?" on":""),title:"연결 허브: "+HUB[x.h].name,on:{click:function(){setFocus(state.focus===x.h?null:x.h)}}},[el("span",{class:"en",text:x.k}),el("b",{text:x.n})]))})}
 function renderData(){var s=$("signals");s.textContent="";SIGNALS.forEach(function(x){var e=sigEl(x);if(!matches(x.h))e.classList.add("dim");s.appendChild(e)});
@@ -1729,7 +1737,7 @@ function renderColumn(i){var x=COLUMNS[i],V=$("colview"),R=$("colrel");V.textCon
  if(rn.length){R.appendChild(el("h2",{style:"margin-top:18px",text:"관련 뉴스"}));rn.forEach(function(n){R.appendChild(el("a",{href:"#a"+n.i,class:"mini"},[el("b",{class:"hl",text:n.t})]))})}}
 /* EDITOR POSTS — 카테고리별 Editor 직접 작성 글 (Firestore: edposts) */
 var EDP={items:[],loaded:false,p:null};
-var EDP_PAGES={nexttv:"CTV·FAST·어드레서블",admarket:"Korea Ad-Market",opinion:"오피니언",archive:"주간 인기",datacenter:"데이터센터",glossary:"용어사전",lounge:"라운지",library:"지식센터"};
+var EDP_PAGES={voice:"리더의 목소리",nexttv:"CTV·FAST·어드레서블",admarket:"Korea Ad-Market",opinion:"오피니언",archive:"주간 인기",datacenter:"데이터센터",glossary:"용어사전",lounge:"라운지",library:"지식센터"};
 function edpLabel(k){return k==="home"?"전체 메뉴":HUB[k]?HUB[k].name:(EDP_PAGES[k]||k)}
 function edpKeys(){return HUBS.map(function(h){return h.id}).concat(Object.keys(EDP_PAGES))}
 function edpLoad(force){if(EDP.p&&!force)return EDP.p;if(!fbOn()){EDP.loaded=true;return EDP.p=Promise.resolve()}
@@ -1760,11 +1768,12 @@ function edpBlock(k){var list=edpFor(k);if(!list.length&&!ED.on)return null;
   list.length?el("div",{class:"edplist"},list.slice(0,k==="home"?3:6).map(edpCard)):el("p",{class:"empty",text:k==="home"?"아직 Editor 글이 없습니다. '+ Editor 글쓰기'를 누르고 카테고리(TV·스트리밍 등)를 골라 첫 글을 올려 보세요.":"아직 이 카테고리에 올린 Editor 글이 없습니다. '+ Editor 글쓰기'로 첫 글을 올려 보세요."})])}
 function edpMount(k){var sec,anchor,old0=document.getElementById("edp-"+k);if(old0)old0.remove();if(k==="home"){var vs=$("voices").parentNode;sec=vs.parentNode;anchor=vs.nextSibling}else if(HUB[k]){sec=$("vfeed");anchor=sec.firstChild}else{sec=document.querySelector('[data-page="'+k+'"]');if(!sec)return;var pt=sec.querySelector(".pagetitle");anchor=pt?pt.nextSibling:sec.firstChild}
  var old=document.getElementById("edp-"+k);if(old)old.remove();var b=edpBlock(k);if(!b)return;if(HUB[k])sec.insertBefore(b,sec.firstChild);else(anchor?anchor.parentNode.insertBefore(b,anchor):sec.appendChild(b))}
-function edpRoute(r){if(!(r==="home"||HUB[r]||EDP_PAGES[r]))return;edpLoad().then(function(){if(state.route===r)edpMount(r)})}
+function edpVoicesRefresh(){edpLoad().then(function(){renderVoices();if(state.route==="opinion")renderOpinion()})}
+function edpRoute(r){if(r==="home"||r==="opinion")edpVoicesRefresh();if(!(r==="home"||HUB[r]||EDP_PAGES[r]))return;edpLoad().then(function(){if(state.route===r)edpMount(r)})}
 function renderEdPost(id){var V=$("edpview"),R=$("edprel");V.textContent="";R.textContent="";V.appendChild(el("p",{class:"empty",text:"불러오는 중…"}));
  edpLoad().then(function(){V.textContent="";var x=EDP.items.filter(function(y){return y.id===id})[0];
   if(!x||(x.hidden&&!ED.on)){V.appendChild(el("p",{class:"empty",text:"글을 찾을 수 없습니다."}));V.appendChild(el("a",{href:"#home",class:"btn",text:"홈으로"}));return}
-  var k=x.cats[0];V.appendChild(el("a",{href:"#"+(k||"home"),class:"back",text:"← "+(k?edpLabel(k):"홈")}));
+  var k=x.cats[0];V.appendChild(el("a",{href:"#"+(k==="voice"?"opinion":(k||"home")),class:"back",text:"← "+(k?edpLabel(k):"홈")}));
   V.appendChild(el("div",{class:"eyebrow",style:"margin-top:12px",text:"Editor 작성 · "+x.cats.map(edpLabel).join(" · ")}));
   V.appendChild(el("h1",{text:x.t}));if(x.s)V.appendChild(el("p",{class:"coldek",text:x.s}));
   V.appendChild(el("div",{class:"colby"},[el("b",{text:"MEDIA OUTLOOK Editor"}),el("span",{text:"광고·미디어 30년"+(x.date?" · "+x.date:"")})]));
@@ -1819,7 +1828,7 @@ function edpForm(x,k){var d=$("libmodal");if(d)d.remove();x=x||{cats:[k],files:[
   var cats=[prim.value];extra.querySelectorAll("input:checked").forEach(function(cb){if(cats.indexOf(cb.value)<0)cats.push(cb.value)});o.cats=cats;if(cats.indexOf("nexttv")<0&&ntKinds({t:o.t,d:o.s+" "+o.body}).length)o.cats.push("nexttv");
   sv.disabled=true;msg.textContent="저장 중…";var w=cl(o);w.at=firebase.firestore.FieldValue.serverTimestamp();var col=firebase.firestore().collection("edposts");
   (x.id?col.doc(x.id).set(w).then(function(){return {id:x.id}}):col.add(w)).then(function(ref){o.id=ref.id;EDP.items=EDP.items.filter(function(y){return y.id!==ref.id}).concat([o]);d.close();
-   if(/^ep-/.test(state.route))renderEdPost(o.id);else edpMount(state.route)}).catch(function(er){sv.disabled=false;var c=er&&(er.code||er.message)||er;msg.textContent=/permission/i.test(String(c))?"저장 권한이 없습니다. Firebase 규칙에 edposts 항목을 추가해 주세요. ("+c+")":"저장하지 못했습니다: "+c})});
+   renderVoices();if(state.route==="opinion")renderOpinion();if(/^ep-/.test(state.route))renderEdPost(o.id);else edpMount(state.route)}).catch(function(er){sv.disabled=false;var c=er&&(er.code||er.message)||er;msg.textContent=/permission/i.test(String(c))?"저장 권한이 없습니다. Firebase 규칙에 edposts 항목을 추가해 주세요. ("+c+")":"저장하지 못했습니다: "+c})});
  draw();idraw();d=el("dialog",{id:"libmodal"},[f]);document.body.appendChild(d);d.showModal();setTimeout(function(){t.focus()},50)}
 /* NEXT TV — CTV·FAST·어드레서블 모아보기 */
 var NT={f:""};
