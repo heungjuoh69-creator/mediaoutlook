@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://mediaoutlook.co.kr/sitemap.xml
+
+#DaumWebMasterTool:7a36a01e6637997b75918d46526862c2a4f3d32e3c6de6d862e544f658150f0c:CwADIp+6ZHYYqogn2XaFYA==
